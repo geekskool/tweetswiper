@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:padding="16dp"
+    android:background="@color/colorBackgroundDark"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight=".85">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:background="@color/colorBackgroundLight"
+            android:layout_height="match_parent">
+
+        </ScrollView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_weight=".15">
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:src="@drawable/tw__composer_logo_white"
+            android:layout_height="wrap_content" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:src="@drawable/tw__composer_logo_white"
+            android:layout_height="wrap_content" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:src="@drawable/tw__composer_logo_white"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</LinearLayout>
