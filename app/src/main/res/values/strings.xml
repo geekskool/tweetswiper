@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TwitterClient</string>
+    <string name="tweets">Tweets</string>
+    <string name="login_with_twitter">Log in with Twitter</string>
 </resources>

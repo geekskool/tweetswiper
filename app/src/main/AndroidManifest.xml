@@ -7,8 +7,9 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".MainActivity">
+        android:theme="@style/AppTheme">
+        <activity android:name=".Activities.MainActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -17,6 +18,8 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="fbab66c83d9c7966f34f54b0f061a5cdcb0f7010" />
+        <activity android:name=".Activities.TweetListActivity" android:label="@string/tweets"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>
