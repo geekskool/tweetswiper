@@ -13,8 +13,8 @@ import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends AppCompatActivity{
 
-    private static final String TWITTER_KEY = "bqZUYhIUmyKrj950JqTBV1xY8";
-    private static final String TWITTER_SECRET = "ouiIVTZ8wRHIfG6usQidV1j868aJymtWKRHIGuhX6b0us8GDqI";
+    public static final String TWITTER_KEY = "";
+    public static final String TWITTER_SECRET = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
