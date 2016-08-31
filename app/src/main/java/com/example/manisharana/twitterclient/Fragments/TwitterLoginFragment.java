@@ -35,7 +35,7 @@ public class TwitterLoginFragment extends Fragment  implements View.OnClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View rootView = inflater.inflate(R.layout.twitter_login_view,container);
+        View rootView = inflater.inflate(R.layout.twitter_login_view,container,false);
         mloginButton = (Button) rootView.findViewById(R.id.login_button);
 
         mloginButton.setOnClickListener(this);
