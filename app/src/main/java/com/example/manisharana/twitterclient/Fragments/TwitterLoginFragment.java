@@ -61,7 +61,7 @@ public class TwitterLoginFragment extends Fragment  implements View.OnClickListe
                         session.getAuthToken() +
                         "\nAuth Token Received: " +
                         result.data.getAuthToken().token;
-                Twitter.getApiClient(session).getAccountService().verifyCredentials(true, false).enqueue(new Callback<User>() {
+                Twitter.getApiClient(session).getAccountService().verifyCredentials(true, false, new Callback<User>() {
                     @Override
                     public void success(Result<User> result) {
                         String output = "Status: " +

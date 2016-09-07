@@ -35,15 +35,15 @@
         android:layout_weight=".15">
         <ImageButton
             android:layout_width="wrap_content"
-            android:src="@drawable/tw__composer_logo_white"
+            android:src="@drawable/tw__ic_logo_default"
             android:layout_height="wrap_content" />
         <ImageButton
             android:layout_width="wrap_content"
-            android:src="@drawable/tw__composer_logo_white"
+            android:src="@drawable/tw__ic_logo_default"
             android:layout_height="wrap_content" />
         <ImageButton
             android:layout_width="wrap_content"
-            android:src="@drawable/tw__composer_logo_white"
+            android:src="@drawable/tw__ic_logo_default"
             android:layout_height="wrap_content" />
 
     </LinearLayout>
