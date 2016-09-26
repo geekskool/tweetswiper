@@ -19,7 +19,7 @@
             android:name="io.fabric.ApiKey"
             android:value="fbab66c83d9c7966f34f54b0f061a5cdcb0f7010" />
         <activity android:name=".Activities.TweetListActivity" android:label="@string/tweets"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     </application>
 
 </manifest>
