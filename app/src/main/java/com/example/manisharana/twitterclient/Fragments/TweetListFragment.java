@@ -4,15 +4,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.manisharana.twitterclient.R;
+import com.example.manisharana.twitterclient.TweetUtils;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -30,30 +30,36 @@ public class TweetListFragment extends Fragment {
 
 
     private static final String TAG = TweetListFragment.class.getSimpleName();
-    private RecyclerView mTweetListView;
+
     private CustomTweetViewAdapter adapter;
     private TextView mErrorTextView;
-    private ProgressBar mProgressBar;
+    private LinearLayout mProgressBarContainer;
     private ViewPager tweetPage;
     private FixedTweetTimeline userTimeline;
+    private View mRootview;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View rootview = inflater.inflate(R.layout.tweet_list_view,container);
-        tweetPage = (ViewPager) rootview.findViewById(R.id.recycle_view_tweet_list);
-
-        adapter = new CustomTweetViewAdapter(getActivity(),new ArrayList<Tweet>());
+        mRootview = inflater.inflate(R.layout.tweet_list_view, container);
+        tweetPage = (ViewPager) mRootview.findViewById(R.id.view_pager_tweet_list);
+        mProgressBarContainer = (LinearLayout)mRootview.findViewById(R.id.progress_bar_container);
+        adapter = new CustomTweetViewAdapter(getActivity(), new ArrayList<Tweet>());
         tweetPage.setAdapter(adapter);
 
         TwitterSession session = Twitter.getInstance().core.getSessionManager().getActiveSession();
         long uid = session.getUserId();
 
+        getHomeTimelineTweets(uid);
+        return mRootview;
+    }
+
+    private void getHomeTimelineTweets(long uid) {
         if (uid != 0) {
 
             final StatusesService statusesService = Twitter.getApiClient().getStatusesService();
-            statusesService.homeTimeline(100,null,null,false,false,false,false,new Callback<List<Tweet>>() {
+            statusesService.homeTimeline(100, null, null, false, false, false, true, new Callback<List<Tweet>>() {
 
                 @Override
                 public void success(Result<List<Tweet>> listResult) {
@@ -61,16 +67,22 @@ public class TweetListFragment extends Fragment {
 //                    final FixedTweetTimeline userTimeline = new FixedTweetTimeline.Builder()
 //                            .setTweets(tweets)
 //                            .build();
+                    hideProgressBar();
                     adapter.swap(tweets);
                 }
 
                 @Override
                 public void failure(TwitterException e) {
-                    Log.d("Twitter","twitter " + e );
+                    Log.d(TAG, "twitter " + e);
+                    hideProgressBar();
+                    TweetUtils.showErrorDialog(getActivity(),"Error In Fetching Tweets");
                 }
             });
         }
-
-        return rootview;
     }
+
+    private void hideProgressBar() {
+        mProgressBarContainer.setVisibility(View.GONE);
+    }
+
 }

@@ -15,6 +15,7 @@
 
         <Button
             android:id="@+id/login_button"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"

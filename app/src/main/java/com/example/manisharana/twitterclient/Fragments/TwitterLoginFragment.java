@@ -12,6 +12,7 @@ import android.widget.Button;
 
 import com.example.manisharana.twitterclient.Activities.TweetListActivity;
 import com.example.manisharana.twitterclient.R;
+import com.example.manisharana.twitterclient.TweetUtils;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -20,7 +21,7 @@ import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.twitter.sdk.android.core.models.User;
 
-public class TwitterLoginFragment extends Fragment  implements View.OnClickListener {
+public class TwitterLoginFragment extends Fragment implements View.OnClickListener {
 
     private Button mloginButton;
     private TwitterAuthClient mTwitterAuthClient;
@@ -35,9 +36,9 @@ public class TwitterLoginFragment extends Fragment  implements View.OnClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View rootView = inflater.inflate(R.layout.twitter_login_view,container,false);
+        View rootView = inflater.inflate(R.layout.twitter_login_view, container, false);
         mloginButton = (Button) rootView.findViewById(R.id.login_button);
-
+        mloginButton.setVisibility(View.VISIBLE);
         mloginButton.setOnClickListener(this);
         return rootView;
     }
@@ -64,9 +65,6 @@ public class TwitterLoginFragment extends Fragment  implements View.OnClickListe
                 Twitter.getApiClient(session).getAccountService().verifyCredentials(true, false, new Callback<User>() {
                     @Override
                     public void success(Result<User> result) {
-                        String output = "Status: " +
-                                "Your login was successful " +
-                                result.data.name;
                         mloginButton.setVisibility(View.GONE);
                         Intent intent = getIntentData();
                         startActivity(intent);
@@ -74,7 +72,9 @@ public class TwitterLoginFragment extends Fragment  implements View.OnClickListe
 
                     @Override
                     public void failure(TwitterException exception) {
-                        Log.i("MainActivity","Errorrr in getting user details");
+                        mloginButton.setVisibility(View.VISIBLE);
+                        Log.i("MainActivity", "Error in getting user details");
+                        TweetUtils.showErrorDialog(getActivity(),"Error During Login");
                     }
                 });
 
@@ -83,13 +83,19 @@ public class TwitterLoginFragment extends Fragment  implements View.OnClickListe
 
             @Override
             public void failure(TwitterException exception) {
-                Log.i("MainActivity","Errorrr in getting session details");
+                mloginButton.setVisibility(View.VISIBLE);
+                Log.i("MainActivity", "Error in getting session details");
+                TweetUtils.showErrorDialog(getActivity(),"Error During Login");
             }
         });
+        mloginButton.setVisibility(View.GONE);
+
     }
 
     private Intent getIntentData() {
         return new Intent(getActivity(), TweetListActivity.class);
     }
+
+
 
 }

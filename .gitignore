@@ -39,8 +39,7 @@ gradlew.bat
 ehthumbs.db
 Thumbs.db
 /build/
-/tweet-composer/
-/tweet-ui/
-/twitter-core/
-/twitter/
 app/fabric.properties
+/tweet-ui/build
+/twitter-core/build
+/twitter/build
