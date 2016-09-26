@@ -38,8 +38,14 @@ public class TwitterLoginFragment extends Fragment implements View.OnClickListen
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.twitter_login_view, container, false);
         mloginButton = (Button) rootView.findViewById(R.id.login_button);
-        mloginButton.setVisibility(View.VISIBLE);
-        mloginButton.setOnClickListener(this);
+        Long userId = TweetUtils.getUserSessionDetails(getActivity());
+        if(userId != 0){
+            Intent intent = new Intent(getActivity(),TweetListActivity.class);
+            startActivity(intent);
+        }else{
+            mloginButton.setVisibility(View.VISIBLE);
+            mloginButton.setOnClickListener(this);
+        }
         return rootView;
     }
 
@@ -57,11 +63,7 @@ public class TwitterLoginFragment extends Fragment implements View.OnClickListen
             @Override
             public void success(Result<TwitterSession> result) {
                 session = Twitter.getSessionManager().getActiveSession();
-                String output = "Status: " +
-                        "Your login was successful " +
-                        session.getAuthToken() +
-                        "\nAuth Token Received: " +
-                        result.data.getAuthToken().token;
+                TweetUtils.saveUserSessionDetails(getActivity(), session);
                 Twitter.getApiClient(session).getAccountService().verifyCredentials(true, false, new Callback<User>() {
                     @Override
                     public void success(Result<User> result) {

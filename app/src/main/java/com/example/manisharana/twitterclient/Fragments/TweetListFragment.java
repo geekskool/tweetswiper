@@ -17,7 +17,6 @@ import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.services.StatusesService;
 import com.twitter.sdk.android.tweetui.CustomTweetViewAdapter;
@@ -50,8 +49,8 @@ public class TweetListFragment extends Fragment {
         //adapter = new CustomTweetViewAdapter(getActivity(), new ArrayList<Tweet>());
         //tweetPage.setAdapter(adapter);
 
-        TwitterSession session = Twitter.getInstance().core.getSessionManager().getActiveSession();
-        long uid = session.getUserId();
+ //       TwitterSession session = Twitter.getInstance().core.getSessionManager().getActiveSession();
+        long uid = TweetUtils.getUserSessionDetails(getActivity());
 
         HomeTimeline homeTimeLine = new HomeTimeline.Builder().userId(uid).includeReplies(false).includeRetweets(true).maxItemsPerRequest(30).build();
         hideProgressBar();

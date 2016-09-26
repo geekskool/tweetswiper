@@ -63,7 +63,7 @@ public class HomeTimeline extends BaseTimeline implements Timeline<Tweet> {
         return new LoggingCallback<TwitterApiClient>(cb, Fabric.getLogger()) {
             @Override
             public void success(Result<TwitterApiClient> result) {
-                result.data.getStatusesService().homeTimeline(100, sinceId, maxId, false, !includeReplies, null,
+                result.data.getStatusesService().homeTimeline(maxItemsPerRequest, sinceId, maxId, false, !includeReplies, null,
                         includeRetweets, new GuestCallback<>(new TweetsCallback(cb)));
 
                 /* TODO constructor inputs */

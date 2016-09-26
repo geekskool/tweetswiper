@@ -2,7 +2,10 @@ package com.example.manisharana.twitterclient;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
+
+import com.twitter.sdk.android.core.TwitterSession;
 
 public class TweetUtils {
 
@@ -21,4 +24,15 @@ public class TweetUtils {
         alertDialog.show();
     }
 
+    public static void saveUserSessionDetails(Context context, TwitterSession session) {
+        SharedPreferences myPreferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = myPreferences.edit();
+        editor.putLong("UserId",session.getUserId());
+        editor.commit();
+    }
+
+    public static Long getUserSessionDetails(Context context) {
+        SharedPreferences myPreferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        return myPreferences.getLong("UserId", 0);
+    }
 }

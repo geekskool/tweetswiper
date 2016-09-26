@@ -83,7 +83,7 @@ public class TweetActionBarView extends LinearLayout {
     void setTweet(Tweet tweet) {
         setLike(tweet);
         setShare(tweet);
-    //    setRetweet(tweet);
+        setRetweet(tweet);
         setReply(tweet);
     }
 
@@ -111,7 +111,7 @@ public class TweetActionBarView extends LinearLayout {
         final TweetUi tweetUi = dependencyProvider.getTweetUi();
         retweetCount.setText(String.valueOf(tweet.retweetCount));
         if (tweet != null) {
-            retweetButton.setToggledOn(tweet.retweeted);
+             retweetButton.setToggledOn(tweet.retweeted);
             final RetweetAction retweetAction = new RetweetAction(tweet,
                     tweetUi, actionCallback);
             retweetButton.setOnClickListener(retweetAction);
