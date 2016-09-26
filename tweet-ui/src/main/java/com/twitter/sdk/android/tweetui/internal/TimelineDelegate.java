@@ -19,6 +19,7 @@ package com.twitter.sdk.android.tweetui.internal;
 
 import android.database.DataSetObservable;
 import android.database.DataSetObserver;
+import android.support.v4.view.PagerAdapter;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -43,6 +44,7 @@ public class TimelineDelegate<T extends Identifiable> {
     // Observable for Adapter DataSetObservers (for ListViews)
     final DataSetObservable listAdapterObservable;
     final TimelineStateHolder timelineStateHolder;
+    private final PagerAdapter pagerAdapter;
     List<T> itemList;
 
     /**
@@ -51,10 +53,14 @@ public class TimelineDelegate<T extends Identifiable> {
      * @throws java.lang.IllegalArgumentException if timeline is null
      */
     public TimelineDelegate(Timeline<T> timeline) {
-        this(timeline, null, null);
+        this(timeline, null, null,null);
     }
 
-    TimelineDelegate(Timeline<T> timeline, DataSetObservable observable, List<T> items) {
+    public TimelineDelegate(Timeline<T> timeline, PagerAdapter pagerAdapter) {
+        this(timeline, null, null,pagerAdapter);
+    }
+
+    TimelineDelegate(Timeline<T> timeline, DataSetObservable observable, List<T> items, PagerAdapter pagerAdapter) {
         if (timeline == null) {
             throw new IllegalArgumentException("Timeline must not be null");
         }
@@ -65,6 +71,7 @@ public class TimelineDelegate<T extends Identifiable> {
         } else {
             listAdapterObservable = observable;
         }
+        this.pagerAdapter = pagerAdapter;
 
         if (items == null) {
             itemList = new ArrayList<>();
@@ -313,6 +320,7 @@ public class TimelineDelegate<T extends Identifiable> {
      */
     public void notifyDataSetChanged() {
         listAdapterObservable.notifyChanged();
+        pagerAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -321,5 +329,7 @@ public class TimelineDelegate<T extends Identifiable> {
      */
     public void notifyDataSetInvalidated() {
         listAdapterObservable.notifyInvalidated();
+
     }
+
 }

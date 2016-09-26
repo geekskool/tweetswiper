@@ -22,6 +22,7 @@ import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.services.StatusesService;
 import com.twitter.sdk.android.tweetui.CustomTweetViewAdapter;
 import com.twitter.sdk.android.tweetui.FixedTweetTimeline;
+import com.twitter.sdk.android.tweetui.HomeTimeline;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,13 +46,19 @@ public class TweetListFragment extends Fragment {
         mRootview = inflater.inflate(R.layout.tweet_list_view, container);
         tweetPage = (ViewPager) mRootview.findViewById(R.id.view_pager_tweet_list);
         mProgressBarContainer = (LinearLayout)mRootview.findViewById(R.id.progress_bar_container);
-        adapter = new CustomTweetViewAdapter(getActivity(), new ArrayList<Tweet>());
-        tweetPage.setAdapter(adapter);
+
+        //adapter = new CustomTweetViewAdapter(getActivity(), new ArrayList<Tweet>());
+        //tweetPage.setAdapter(adapter);
 
         TwitterSession session = Twitter.getInstance().core.getSessionManager().getActiveSession();
         long uid = session.getUserId();
 
-        getHomeTimelineTweets(uid);
+        HomeTimeline homeTimeLine = new HomeTimeline.Builder().userId(uid).includeReplies(false).includeRetweets(true).maxItemsPerRequest(30).build();
+        hideProgressBar();
+        adapter = new CustomTweetViewAdapter(getActivity(),homeTimeLine);
+        tweetPage.setAdapter(adapter);
+
+        // getHomeTimelineTweets(uid);
         return mRootview;
     }
 
@@ -59,16 +66,20 @@ public class TweetListFragment extends Fragment {
         if (uid != 0) {
 
             final StatusesService statusesService = Twitter.getApiClient().getStatusesService();
-            statusesService.homeTimeline(100, null, null, false, false, false, true, new Callback<List<Tweet>>() {
+            statusesService.homeTimeline(30, null, null, false, false, false, true, new Callback<List<Tweet>>() {
 
                 @Override
                 public void success(Result<List<Tweet>> listResult) {
                     ArrayList<Tweet> tweets = new ArrayList<>(listResult.data);
-//                    final FixedTweetTimeline userTimeline = new FixedTweetTimeline.Builder()
-//                            .setTweets(tweets)
-//                            .build();
+                    final FixedTweetTimeline userTimeline = new FixedTweetTimeline.Builder()
+                            .setTweets(tweets)
+                            .build();
                     hideProgressBar();
-                    adapter.swap(tweets);
+
+                    adapter = new CustomTweetViewAdapter(getActivity(),userTimeline);
+                    tweetPage.setAdapter(adapter);
+
+                  //  adapter.swap(tweets);
                 }
 
                 @Override

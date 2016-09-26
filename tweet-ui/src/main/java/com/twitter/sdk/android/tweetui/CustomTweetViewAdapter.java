@@ -13,7 +13,6 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.tweetui.internal.TimelineDelegate;
 
-import java.util.ArrayList;
 import java.util.Stack;
 
 public class CustomTweetViewAdapter extends PagerAdapter {
@@ -22,45 +21,51 @@ public class CustomTweetViewAdapter extends PagerAdapter {
     private static final String TAG = CustomTweetViewAdapter.class.getSimpleName();
     private final Context context;
     private final Stack mRecycledViewStack;
-    private ArrayList<Tweet> tweets;
+    private final TimelineDelegate<Tweet> delegate;
+    //  private ArrayList<Tweet> tweets;
     protected Callback<Tweet> actionCallback;
     final protected int styleResId;
 
-    public CustomTweetViewAdapter(Context context,ArrayList<Tweet> tweets){
-        this.context = context;
-        this.tweets = tweets;
-        this.mRecycledViewStack = new Stack();
-        this.styleResId = R.style.tw__TweetLightWithActionsStyle;
-    }
+//    public CustomTweetViewAdapter(Context context,ArrayList<Tweet> tweets){
+//        this.context = context;
+//     //   this.tweets = tweets;
+//        this.mRecycledViewStack = new Stack();
+//        this.styleResId = R.style.tw__TweetLightWithActionsStyle;
+//    }
 
-    public CustomTweetViewAdapter(Context context, FixedTweetTimeline timeline) {
+    public CustomTweetViewAdapter(Context context, Timeline<Tweet> timeline) {
         this(context, timeline, R.style.tw__TweetLightWithActionsStyle, null);
     }
 
-    CustomTweetViewAdapter(Context context, Timeline<Tweet> timeline, int styleResId, Callback<Tweet> cb) {
-        this(context, new TimelineDelegate<>(timeline), styleResId, cb);
-    }
+//    CustomTweetViewAdapter(Context context, Timeline<Tweet> timeline, int styleResId, Callback<Tweet> cb) {
+//        TimelineDelegate<Tweet> tweetTimelineDelegate =
+//
+//        this(context,tweetTimelineDelegate, styleResId, cb);
+//    }
 
-    CustomTweetViewAdapter(Context context, TimelineDelegate<Tweet> delegate, int styleResId, Callback<Tweet> cb) {
+    CustomTweetViewAdapter(Context context, Timeline<Tweet> timeline, int styleResId, Callback<Tweet> cb) {
         this.context = context;
-        this.tweets = new ArrayList<Tweet>();
+        //this.tweets = new ArrayList<Tweet>();
+        //this.tweets = delegate.getItem()
         this.styleResId = styleResId;
+        this.delegate = new TimelineDelegate<>(timeline, this);;
         this.actionCallback = new ReplaceTweetCallback(delegate, cb);
         this.mRecycledViewStack = new Stack();
+        delegate.refresh(null);
     }
 
 
-    public void swap(ArrayList<Tweet> datas) {
-        tweets.clear();
-        tweets.addAll(datas);
-        notifyDataSetChanged();
-    }
+//    public void swap(ArrayList<Tweet> datas) {
+//        tweets.clear();
+//        tweets.addAll(datas);
+//        notifyDataSetChanged();
+//    }
 
 
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        Tweet tweet = tweets.get(position);
+        Tweet tweet =  delegate.getItem(position);
         View itemView ;
 
         if (mRecycledViewStack.isEmpty()) {
@@ -90,9 +95,10 @@ public class CustomTweetViewAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        if (tweets.isEmpty())
-            return 0;
-        return tweets.size();
+        return delegate.getCount();
+//        if (tweets.isEmpty())
+//            return 0;
+//        return tweets.size();
     }
 
     @Override
