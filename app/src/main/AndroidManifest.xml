@@ -8,7 +8,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.MainActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity android:name=".Activities.MainActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:screenOrientation="portrait">
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,7 +19,9 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="fbab66c83d9c7966f34f54b0f061a5cdcb0f7010" />
-        <activity android:name=".Activities.TweetListActivity" android:label="@string/tweets"
+        <activity android:name=".Activities.TweetListActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/tweets"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     </application>
 

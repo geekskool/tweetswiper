@@ -42,6 +42,8 @@ public class TwitterLoginFragment extends Fragment implements View.OnClickListen
         if(userId != 0){
             Intent intent = new Intent(getActivity(),TweetListActivity.class);
             startActivity(intent);
+            getActivity().finish();
+
         }else{
             mloginButton.setVisibility(View.VISIBLE);
             mloginButton.setOnClickListener(this);
@@ -70,6 +72,7 @@ public class TwitterLoginFragment extends Fragment implements View.OnClickListen
                         mloginButton.setVisibility(View.GONE);
                         Intent intent = getIntentData();
                         startActivity(intent);
+                        getActivity().finish();
                     }
 
                     @Override

@@ -14,4 +14,10 @@ public class TweetListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tweet_list);
 
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
+    }
 }

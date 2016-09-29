@@ -23,15 +23,21 @@
 
     <application>
         <activity
+
             android:name=".PlayerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/MediaTheme"/>
         <activity
             android:name=".GalleryActivity"
             android:theme="@style/MediaTheme"/>
-        <activity android:name=".LinkWebViewActivity" android:theme="@style/AppTheme"/>
-        <activity android:name=".TweetRetweetActivity" android:label="@string/retweet"/>
-        <activity android:name=".TweetReplyActivity" android:label="@string/reply"/>
+        <activity android:name=".LinkWebViewActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".TweetRetweetActivity" android:label="@string/retweet" android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".TweetReplyActivity" android:label="@string/reply"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

@@ -53,8 +53,8 @@ public class TweetListFragment extends Fragment {
         long uid = TweetUtils.getUserSessionDetails(getActivity());
 
         HomeTimeline homeTimeLine = new HomeTimeline.Builder().userId(uid).includeReplies(false).includeRetweets(true).maxItemsPerRequest(30).build();
-        hideProgressBar();
         adapter = new CustomTweetViewAdapter(getActivity(),homeTimeLine);
+        hideProgressBar();
         tweetPage.setAdapter(adapter);
 
         // getHomeTimelineTweets(uid);

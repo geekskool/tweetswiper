@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:id="@+id/tweet_reply_container"
     android:layout_width="match_parent"
     android:background="@color/colorBackgroundDark"
@@ -127,36 +126,37 @@
 
                 <ImageButton
                     android:layout_width="wrap_content"
-                    android:id="@+id/tweet_retweet_button"
+                    android:id="@+id/tweet_camera_button"
+                    android:onClick="pickPhoto"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_tw_camera_icon" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight=".5"
-                android:gravity="center">
+            <!--<LinearLayout-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight=".5"-->
+                <!--android:gravity="center">-->
 
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:id="@+id/tweet_reply_button"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_gif_icon" />
-            </LinearLayout>
+                <!--<ImageButton-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:id="@+id/tweet_reply_button"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:background="@drawable/ic_gif_icon" />-->
+            <!--</LinearLayout>-->
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight=".5"
-                android:gravity="center">
+            <!--<LinearLayout-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight=".5"-->
+                <!--android:gravity="center">-->
 
-                <ImageButton
-                    android:id="@+id/tw__tweet_like_button"
-                    android:background="@drawable/ic_tw_add_poll_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                <!--<ImageButton-->
+                    <!--android:id="@+id/tw__tweet_like_button"-->
+                    <!--android:background="@drawable/ic_tw_add_poll_icon"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content" />-->
+            <!--</LinearLayout>-->
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -173,13 +173,19 @@
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
                 android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/text_view_char_count"
+                    android:layout_height="wrap_content"
+                    tools:text = "100"/>
 
                 <Button
                     android:id="@+id/tw__tweet_reply_button"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:onClick="replyToTweet"
                     android:layout_width="wrap_content"
-                    android:text="Reply" />
+                    android:text="@string/tweet" />
 
             </LinearLayout>
 
@@ -187,5 +193,4 @@
 
         </LinearLayout>
     </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

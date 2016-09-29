@@ -40,6 +40,7 @@ public class TweetActionBarView extends LinearLayout {
     private TextView retweetCount;
     private ImageButton replyButton;
     private ToggleImageButton retweetButton;
+    private Callback<Tweet> retweetActionCallback;
 
     public TweetActionBarView(Context context) {
         this(context, null, new DependencyProvider());
@@ -113,7 +114,7 @@ public class TweetActionBarView extends LinearLayout {
         if (tweet != null) {
              retweetButton.setToggledOn(tweet.retweeted);
             final RetweetAction retweetAction = new RetweetAction(tweet,
-                    tweetUi, actionCallback);
+                    tweetUi, retweetActionCallback);
             retweetButton.setOnClickListener(retweetAction);
         }
     }
@@ -134,6 +135,10 @@ public class TweetActionBarView extends LinearLayout {
         if (tweet != null) {
             shareButton.setOnClickListener(new ShareTweetAction(tweet, tweetUi));
         }
+    }
+
+    public void setRetweetCallback(Callback<Tweet> retweetReplaceCallback) {
+        this.retweetActionCallback = retweetReplaceCallback;
     }
 
     /**

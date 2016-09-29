@@ -438,8 +438,10 @@ public abstract class BaseTweetView extends LinearLayout {
      * @param actionCallback called when a Tweet action is performed.
      */
     public void setOnActionCallback(Callback<Tweet> actionCallback) {
+        TweetRepository tweetRepository = dependencyProvider.getTweetUi().getTweetRepository();
         tweetActionBarView.setOnActionCallback(new ResetTweetCallback(this,
-                dependencyProvider.getTweetUi().getTweetRepository(), actionCallback));
+                tweetRepository, actionCallback));
+        tweetActionBarView.setRetweetCallback(new RetweetReplaceCallback(this,tweetRepository,actionCallback));
         tweetActionBarView.setTweet(tweet);
     }
 
