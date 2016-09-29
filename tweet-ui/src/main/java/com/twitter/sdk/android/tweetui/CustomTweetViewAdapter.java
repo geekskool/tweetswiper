@@ -34,32 +34,19 @@ public class CustomTweetViewAdapter extends PagerAdapter {
 //    }
 
     public CustomTweetViewAdapter(Context context, Timeline<Tweet> timeline) {
-        this(context, timeline, R.style.tw__TweetLightWithActionsStyle, null);
+        this(context, timeline, null);
     }
 
-//    CustomTweetViewAdapter(Context context, Timeline<Tweet> timeline, int styleResId, Callback<Tweet> cb) {
-//        TimelineDelegate<Tweet> tweetTimelineDelegate =
-//
-//        this(context,tweetTimelineDelegate, styleResId, cb);
-//    }
-
-    CustomTweetViewAdapter(Context context, Timeline<Tweet> timeline, int styleResId, Callback<Tweet> cb) {
+    public CustomTweetViewAdapter(Context context, Timeline<Tweet> timeline, Callback<TimelineResult<Tweet>> cb) {
         this.context = context;
         //this.tweets = new ArrayList<Tweet>();
         //this.tweets = delegate.getItem()
-        this.styleResId = styleResId;
+        this.styleResId =  R.style.tw__TweetLightWithActionsStyle;
         this.delegate = new TimelineDelegate<>(timeline, this);;
-        this.actionCallback = new ReplaceTweetCallback(delegate, cb);
+        this.actionCallback = new ReplaceTweetCallback(delegate, null);
         this.mRecycledViewStack = new Stack();
-        delegate.refresh(null);
+        delegate.refresh(cb);
     }
-
-
-//    public void swap(ArrayList<Tweet> datas) {
-//        tweets.clear();
-//        tweets.addAll(datas);
-//        notifyDataSetChanged();
-//    }
 
 
 
@@ -185,7 +172,7 @@ public class CustomTweetViewAdapter extends PagerAdapter {
          * @return a TweetTimelineListAdpater
          */
         public CustomTweetViewAdapter build() {
-            return new CustomTweetViewAdapter(context, timeline, styleResId, actionCallback);
+            return new CustomTweetViewAdapter(context, timeline); // Do not use builder
         }
     }
 

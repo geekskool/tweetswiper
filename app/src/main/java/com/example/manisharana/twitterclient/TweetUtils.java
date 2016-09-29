@@ -28,11 +28,18 @@ public class TweetUtils {
         SharedPreferences myPreferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = myPreferences.edit();
         editor.putLong("UserId",session.getUserId());
-        editor.commit();
+        editor.apply();
     }
 
     public static Long getUserSessionDetails(Context context) {
         SharedPreferences myPreferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         return myPreferences.getLong("UserId", 0);
+    }
+
+    public static void removeUserSessionDetails(Context context) {
+        SharedPreferences myPreferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = myPreferences.edit();
+        editor.remove("UserId");
+        editor.apply();
     }
 }

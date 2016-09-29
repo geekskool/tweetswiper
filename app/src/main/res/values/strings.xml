@@ -3,4 +3,8 @@
     <string name="tweets">Tweets</string>
     <string name="login_with_twitter">Log in with Twitter</string>
     <string name="reply_to">Reply to</string>
+    <string name="home">Home</string>
+    <string name="about_us">About us</string>
+    <string name="logout">Logout</string>
+    <string name="compose_new_tweet">Compose new tweet</string>
 </resources>

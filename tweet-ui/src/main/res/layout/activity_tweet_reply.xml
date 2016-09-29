@@ -4,7 +4,7 @@
     android:id="@+id/tweet_reply_container"
     android:layout_width="match_parent"
     android:background="@color/colorBackgroundDark"
-    android:padding="24dp"
+    android:padding="8dp"
     android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
@@ -114,8 +114,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="10"
             android:gravity="center"
+            android:padding="8dp"
             android:orientation="horizontal">
 
             <LinearLayout
