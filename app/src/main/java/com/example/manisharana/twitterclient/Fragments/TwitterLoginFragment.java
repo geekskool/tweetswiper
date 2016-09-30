@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.manisharana.twitterclient.Activities.TweetListActivity;
+import com.example.manisharana.twitterclient.Activities.NavigationDrawerActivity;
 import com.example.manisharana.twitterclient.R;
 import com.example.manisharana.twitterclient.TweetUtils;
 import com.twitter.sdk.android.Twitter;
@@ -40,7 +40,7 @@ public class TwitterLoginFragment extends Fragment implements View.OnClickListen
         mloginButton = (Button) rootView.findViewById(R.id.login_button);
         Long userId = TweetUtils.getUserSessionDetails(getActivity());
         if(userId != 0){
-            Intent intent = new Intent(getActivity(),TweetListActivity.class);
+            Intent intent = new Intent(getActivity(),NavigationDrawerActivity.class);
             startActivity(intent);
             getActivity().finish();
 
@@ -98,7 +98,7 @@ public class TwitterLoginFragment extends Fragment implements View.OnClickListen
     }
 
     private Intent getIntentData() {
-        return new Intent(getActivity(), TweetListActivity.class);
+        return new Intent(getActivity(), NavigationDrawerActivity.class);
     }
 
 

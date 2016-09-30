@@ -37,7 +37,7 @@ public class TweetListFragment extends Fragment {
 
     private CustomTweetViewAdapter adapter;
     private TextView mErrorTextView;
-  //  private LinearLayout mProgressBarContainer;
+    //  private LinearLayout mProgressBarContainer;
     private ViewPager tweetPage;
     private View mRootview;
 
@@ -45,33 +45,37 @@ public class TweetListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        mRootview = inflater.inflate(R.layout.tweet_list_view, container, false);
-        tweetPage = (ViewPager) mRootview.findViewById(R.id.view_pager_tweet_list);
-        mErrorTextView = (TextView) mRootview.findViewById(R.id.text_view_error);
-   //      mProgressBarContainer = (LinearLayout)mRootview.findViewById(R.id.progress_bar_container);
-
-
         // TwitterSession session = Twitter.getInstance().core.getSessionManager().getActiveSession();
-        long uid = TweetUtils.getUserSessionDetails(getActivity());
+        Long uid = TweetUtils.getUserSessionDetails(getActivity());
 
-        HomeTimeline homeTimeLine = new HomeTimeline.Builder().userId(uid).includeReplies(false).includeRetweets(true).maxItemsPerRequest(30).build();
-        adapter = new CustomTweetViewAdapter(getActivity(), homeTimeLine, new Callback<TimelineResult<Tweet>>() {
-
-            @Override
-            public void success(Result<TimelineResult<Tweet>> result) {
-                mErrorTextView.setVisibility(View.GONE);
-       //         hideProgressBar();
-                tweetPage.setAdapter(adapter);
-            }
-
-            @Override
-            public void failure(TwitterException exception) {
-                mErrorTextView.setText(ERROR_MSG);
-    //            hideProgressBar();
-            }
-        });
+        if (uid == 0 || uid == null) {
+          //  mRootview = inflater.inflate(R.layout.login_again_view, container, false);
 
 
+        } else {
+            mRootview = inflater.inflate(R.layout.tweet_list_view, container, false);
+            tweetPage = (ViewPager) mRootview.findViewById(R.id.view_pager_tweet_list);
+            mErrorTextView = (TextView) mRootview.findViewById(R.id.text_view_error);
+            //      mProgressBarContainer = (LinearLayout)mRootview.findViewById(R.id.progress_bar_container);
+
+            HomeTimeline homeTimeLine = new HomeTimeline.Builder().userId(uid).includeReplies(false).includeRetweets(true).maxItemsPerRequest(30).build();
+
+            adapter = new CustomTweetViewAdapter(getActivity(), homeTimeLine, new Callback<TimelineResult<Tweet>>() {
+
+                @Override
+                public void success(Result<TimelineResult<Tweet>> result) {
+                    mErrorTextView.setVisibility(View.GONE);
+                    //         hideProgressBar();
+                    tweetPage.setAdapter(adapter);
+                }
+
+                @Override
+                public void failure(TwitterException exception) {
+                    mErrorTextView.setText(ERROR_MSG);
+                    //            hideProgressBar();
+                }
+            });
+        }
         return mRootview;
     }
 
@@ -107,7 +111,7 @@ public class TweetListFragment extends Fragment {
 
     private void hideProgressBar() {
 
-    //    mProgressBarContainer.setVisibility(View.GONE);
+        //    mProgressBarContainer.setVisibility(View.GONE);
     }
 
     private boolean isNetworkAvailable() {

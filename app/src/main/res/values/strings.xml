@@ -7,4 +7,6 @@
     <string name="about_us">About us</string>
     <string name="logout">Logout</string>
     <string name="compose_new_tweet">Compose new tweet</string>
+    <string name="login_again">Login again</string>
+    <string name="you_are_logged_out">You are logged out.</string>
 </resources>

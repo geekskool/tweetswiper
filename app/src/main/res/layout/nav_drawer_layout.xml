@@ -6,18 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/content_frame"
         android:orientation="vertical">
-        <!--<fragment-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:id="@+id/fragment_tweet_list"/>-->
-            <!--&lt;!&ndash;class="com.example.manisharana.twitterclient.Fragments.TweetListFragment"&ndash;&gt;-->
-
-    </LinearLayout>
+    </FrameLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
