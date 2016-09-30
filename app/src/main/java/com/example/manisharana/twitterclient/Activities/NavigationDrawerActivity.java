@@ -25,30 +25,45 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.nav_drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        if (navigationView != null) {
-            navigationView.getMenu().getItem(0).setChecked(true);
-        }
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (navigationView != null) {
+            selectDrawerItem(navigationView.getMenu().getItem(0));
+        }
         setUpNavigationDrawer(navigationView);
     }
 
     private void selectDrawerItem(MenuItem item) {
         Fragment fragment = null;
-        Class fragmentClass;
+        Class fragmentClass = null;
+        Long userSession = TweetUtils.getUserSessionDetails(this);
 
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.nav_home:
-                fragmentClass = TweetListFragment.class;
+                if (userSession == 0 || userSession == null) {
+                    fragmentClass = LoginAgainFragment.class;
+                } else {
+                    fragmentClass = TweetListFragment.class;
+                }
                 break;
             case R.id.nav_send_tweet:
-                fragmentClass = ComposeTweetFragment.class;
+                if (!item.isChecked()) {
+                    if (userSession == 0 || userSession == null) {
+                        fragmentClass = LoginAgainFragment.class;
+                    } else {
+                        fragmentClass = ComposeTweetFragment.class;
+                    }
+                }
                 break;
             case R.id.nav_about_us:
-                fragmentClass = AboutUsFragment.class;
+                if (!item.isChecked()) {
+                    fragmentClass = AboutUsFragment.class;
+                }
                 break;
             case R.id.nav_logout:
-                TweetUtils.removeUserSessionDetails(this);
-                fragmentClass = LoginAgainFragment.class;
+                if (!item.isChecked()) {
+                    TweetUtils.removeUserSessionDetails(this);
+                    fragmentClass = LoginAgainFragment.class;
+                }
                 break;
             default:
                 fragmentClass = TweetListFragment.class;

@@ -13,7 +13,6 @@
         android:padding="8dp">
 
         <TextView
-            android:id="@+id/text_view_reply_header"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -21,13 +20,6 @@
             android:text="@string/compose_new_tweet"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/colorBackgroundDark" />
-
-        <ImageButton
-            android:id="@+id/tw_tweet_reply_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_navigation_close"
-            android:onClick="closeActivity" />
     </LinearLayout>
 
     <LinearLayout
@@ -38,17 +30,30 @@
         android:padding="16dp">
 
         <EditText
-            android:id="@+id/edit_text_user_input_text"
+            android:id="@+id/edit_text_compose_tweet"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/tw__solid_white"
             android:ems="10"
+            android:hint="@string/what_happening"
             android:gravity="top"
             android:inputType="textMultiLine"
             android:maxLength="140"
             android:textSize="14sp" />
     </LinearLayout>
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:visibility="gone"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView_error_message"/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -67,8 +72,7 @@
                 android:id="@+id/tweet_camera_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ic_tw_camera_icon"
-                android:onClick="pickPhoto" />
+                android:background="@drawable/ic_tw_camera_icon"/>
         </LinearLayout>
 
         <!--<LinearLayout-->
@@ -94,10 +98,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center">
-
-
-        </LinearLayout>
+            android:gravity="center"/>
 
 
         <LinearLayout
@@ -113,15 +114,13 @@
                 tools:text="100" />
 
             <Button
-                android:id="@+id/tw__tweet_reply_button"
+                android:id="@+id/tw__compose_tweet_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:enabled="false"
-                android:onClick="replyToTweet"
                 android:text="@string/tweet" />
 
         </LinearLayout>
-
 
     </LinearLayout>
 </LinearLayout>

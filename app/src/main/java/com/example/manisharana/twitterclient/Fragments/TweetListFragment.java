@@ -48,34 +48,29 @@ public class TweetListFragment extends Fragment {
         // TwitterSession session = Twitter.getInstance().core.getSessionManager().getActiveSession();
         Long uid = TweetUtils.getUserSessionDetails(getActivity());
 
-        if (uid == 0 || uid == null) {
-          //  mRootview = inflater.inflate(R.layout.login_again_view, container, false);
+        mRootview = inflater.inflate(R.layout.tweet_list_view, container, false);
+        tweetPage = (ViewPager) mRootview.findViewById(R.id.view_pager_tweet_list);
+        mErrorTextView = (TextView) mRootview.findViewById(R.id.text_view_error);
+        //      mProgressBarContainer = (LinearLayout)mRootview.findViewById(R.id.progress_bar_container);
 
+        HomeTimeline homeTimeLine = new HomeTimeline.Builder().userId(uid).includeReplies(false).includeRetweets(true).maxItemsPerRequest(30).build();
 
-        } else {
-            mRootview = inflater.inflate(R.layout.tweet_list_view, container, false);
-            tweetPage = (ViewPager) mRootview.findViewById(R.id.view_pager_tweet_list);
-            mErrorTextView = (TextView) mRootview.findViewById(R.id.text_view_error);
-            //      mProgressBarContainer = (LinearLayout)mRootview.findViewById(R.id.progress_bar_container);
+        adapter = new CustomTweetViewAdapter(getActivity(), homeTimeLine, new Callback<TimelineResult<Tweet>>() {
 
-            HomeTimeline homeTimeLine = new HomeTimeline.Builder().userId(uid).includeReplies(false).includeRetweets(true).maxItemsPerRequest(30).build();
+            @Override
+            public void success(Result<TimelineResult<Tweet>> result) {
+                mErrorTextView.setVisibility(View.GONE);
+                //         hideProgressBar();
+                tweetPage.setAdapter(adapter);
+            }
 
-            adapter = new CustomTweetViewAdapter(getActivity(), homeTimeLine, new Callback<TimelineResult<Tweet>>() {
+            @Override
+            public void failure(TwitterException exception) {
+                mErrorTextView.setText(ERROR_MSG);
+                //            hideProgressBar();
+            }
+        });
 
-                @Override
-                public void success(Result<TimelineResult<Tweet>> result) {
-                    mErrorTextView.setVisibility(View.GONE);
-                    //         hideProgressBar();
-                    tweetPage.setAdapter(adapter);
-                }
-
-                @Override
-                public void failure(TwitterException exception) {
-                    mErrorTextView.setText(ERROR_MSG);
-                    //            hideProgressBar();
-                }
-            });
-        }
         return mRootview;
     }
 
