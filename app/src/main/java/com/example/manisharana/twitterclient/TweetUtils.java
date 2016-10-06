@@ -27,19 +27,19 @@ public class TweetUtils {
     public static void saveUserSessionDetails(Context context, TwitterSession session) {
         SharedPreferences myPreferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = myPreferences.edit();
-        editor.putLong("UserId",session.getUserId());
+        editor.putLong("UserSession",session.getUserId());
         editor.apply();
     }
 
     public static Long getUserSessionDetails(Context context) {
         SharedPreferences myPreferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-        return myPreferences.getLong("UserId", 0);
+        return myPreferences.getLong("UserSession", 0);
     }
 
     public static void removeUserSessionDetails(Context context) {
         SharedPreferences myPreferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = myPreferences.edit();
-        editor.remove("UserId");
+        editor.remove("UserSession");
         editor.apply();
     }
 }

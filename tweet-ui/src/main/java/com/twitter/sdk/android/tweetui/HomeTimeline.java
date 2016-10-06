@@ -58,8 +58,7 @@ public class HomeTimeline extends BaseTimeline implements Timeline<Tweet> {
         return SCRIBE_SECTION;
     }
 
-    Callback<TwitterApiClient> createUserTimelineRequest(final Long sinceId,
-                                                         final Long maxId, final Callback<TimelineResult<Tweet>> cb) {
+    Callback<TwitterApiClient> createUserTimelineRequest(final Long sinceId, final Long maxId, final Callback<TimelineResult<Tweet>> cb) {
 
         return new LoggingCallback<TwitterApiClient>(cb, Fabric.getLogger()) {
             @Override

@@ -90,6 +90,24 @@
         <item name="android:importantForAccessibility">no</item>
     </style>
 
+    <style name="tw__TweetText_inReply"
+        tools:ignore="NewApi">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/tw__tweet_text_margin_top</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginBottom">@dimen/tw__tweet_text_margin_top</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">@dimen/tw__text_size_small</item>
+        <item name="android:lineSpacingExtra">2dp</item>
+        <item name="android:textColor">@color/tw__tweet_light_primary_text_color</item>
+        <item name="android:textColorLink">@color/tw__tweet_action_color</item>
+        <item name="android:focusable">false</item>
+        <item name="android:importantForAccessibility">no</item>
+    </style>
+
+
     <!--Compact Styles-->
 
     <style name="tw__TweetRetweetedBy.Compact">

@@ -19,11 +19,11 @@ package com.twitter.sdk.android.core;
 
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
+
 import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.services.persistence.SerializationStrategy;
-
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.Gson;
 
 /**
  * Represents a Twitter session that is associated with a {@link com.twitter.sdk.android.core.TwitterAuthToken}.
@@ -84,7 +84,7 @@ public class TwitterSession extends Session<TwitterAuthToken> {
         return result;
     }
 
-    static class Serializer implements SerializationStrategy<TwitterSession> {
+    public static class Serializer implements SerializationStrategy<TwitterSession> {
 
         private final Gson gson;
 

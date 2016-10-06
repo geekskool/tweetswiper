@@ -17,10 +17,6 @@
 
 package com.twitter.sdk.android.tweetui;
 
-import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.Kit;
-import io.fabric.sdk.android.services.concurrency.DependsOn;
-
 import com.squareup.picasso.Picasso;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
@@ -33,6 +29,10 @@ import com.twitter.sdk.android.tweetui.internal.UserSessionProvider;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.fabric.sdk.android.Fabric;
+import io.fabric.sdk.android.Kit;
+import io.fabric.sdk.android.services.concurrency.DependsOn;
 
 /**
  * The TweetUi Kit provides views to render Tweets.
@@ -153,7 +153,7 @@ public class TweetUi extends Kit<Boolean> {
         this.tweetRepository = tweetRepository;
     }
 
-    Picasso getImageLoader() {
+    public Picasso getImageLoader() {
         return imageLoader;
     }
 

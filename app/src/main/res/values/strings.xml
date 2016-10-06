@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TweetSwipper</string>
+    <string name="app_name">TweetSwiper</string>
     <string name="tweets">Compose tweet</string>
     <string name="login_with_twitter">Log in with Twitter</string>
     <string name="reply_to">Reply to</string>

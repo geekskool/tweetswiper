@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tweet_reply_container"
     android:layout_width="match_parent"
+    android:padding="2dp"
     android:background="@color/colorBackgroundDark"
-    android:padding="8dp"
     android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,8 +17,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
             android:paddingRight="16dp"
             android:paddingLeft="16dp">
             <TextView
@@ -41,8 +41,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_weight="20"
             android:background="@color/tw__tweet_light_container_bg_color"
+            android:id="@+id/tweet_text_container"
             android:layout_height="wrap_content">
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -50,7 +50,7 @@
                     <ImageView
                         tools:ignore="ContentDescription"
                         android:id="@+id/tw__tweet_author_avatar"
-                        style="@style/tw__TweetAvatar"/>
+                        style="@style/tw__TweetAvatar_inReply"/>
 
                     <TextView
                         android:id="@+id/tw__tweet_author_full_name"
@@ -61,28 +61,17 @@
                         tools:text="Jack"/>
 
                     <TextView
-                        android:id="@+id/tw__tweet_author_screen_name"
-                        style="@style/tw__TweetScreenName"
-                        android:textColor="@color/tw__medium_gray"
-                        android:layout_below="@id/tw__tweet_author_full_name"
-                        android:layout_alignBottom="@id/tw__tweet_author_avatar"
-                        android:layout_toRightOf="@id/tw__tweet_author_avatar"
-                        android:layout_toEndOf="@id/tw__tweet_author_avatar"
-                        tools:text="\@jack"/>
-
-                    <TextView
                         android:id="@+id/tw__tweet_timestamp"
                         style="@style/tw__TweetTimestamp"
                         android:textColor="@color/tw__medium_gray"
-                        android:layout_below="@id/tw__tweet_author_full_name"
-                        android:layout_alignBottom="@id/tw__tweet_author_screen_name"
-                        android:layout_toRightOf="@id/tw__tweet_author_screen_name"
-                        android:layout_toEndOf="@id/tw__tweet_author_screen_name"
+                        android:layout_alignBottom="@id/tw__tweet_author_full_name"
+                        android:layout_toRightOf="@id/tw__tweet_author_full_name"
+                        android:layout_toEndOf="@id/tw__tweet_author_full_name"
                         tools:text="• 03/21/2006"/>
 
                     <TextView
                         android:id="@+id/tw__tweet_text"
-                        style="@style/tw__TweetText"
+                        style="@style/tw__TweetText_inReply"
                         android:layout_below="@id/tw__tweet_author_avatar"
                         android:visibility="gone"
                         tools:text="just setting up my twttr"
@@ -93,23 +82,41 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:orientation="vertical"
             android:background="@color/orangeLight"
-            android:padding="16dp"
+            android:padding="12dp"
             android:layout_weight="60">
 
             <EditText
                 android:layout_width="match_parent"
                 android:background="@color/tw__solid_white"
                 android:gravity="top"
+                android:layout_weight="1"
                 android:textSize="14sp"
                 android:maxLength="140"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
                 android:ems="10"
                 android:id="@+id/edit_text_user_input_text" />
+            <include layout="@layout/upload_content_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:visibility="gone"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView_error_message"/>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -121,7 +128,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight=".5"
+                android:layout_weight=".3"
                 android:gravity="center">
 
                 <ImageButton
@@ -171,7 +178,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight=".5"
+                android:layout_weight=".3"
                 android:gravity="center">
                 <TextView
                     android:layout_width="wrap_content"
@@ -181,16 +188,15 @@
 
                 <Button
                     android:id="@+id/tw__tweet_reply_button"
+                    style="?android:attr/buttonStyleSmall"
                     android:layout_height="wrap_content"
                     android:enabled="false"
+                    android:textAllCaps="false"
                     android:onClick="replyToTweet"
                     android:layout_width="wrap_content"
                     android:text="@string/tweet" />
 
             </LinearLayout>
-
-
-
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
