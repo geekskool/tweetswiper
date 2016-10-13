@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -91,6 +92,8 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && data != null) {
             data.getData();
+            FrameLayout parent = (FrameLayout) imgViewFirst.getParent();
+            parent.setVisibility(View.VISIBLE);
             imgViewFirst.setImageBitmap(getPath(data.getData()));
         } else {
             // error content cant be fetched
