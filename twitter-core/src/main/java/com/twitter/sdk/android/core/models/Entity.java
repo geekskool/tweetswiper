@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Provides metadata and additional contextual information about content posted on Twitter
  */
-class Entity implements Serializable {
+public class Entity implements Serializable {
     private static final int START_INDEX = 0;
     private static final int END_INDEX = 1;
 

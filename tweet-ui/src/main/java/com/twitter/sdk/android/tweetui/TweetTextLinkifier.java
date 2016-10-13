@@ -33,23 +33,25 @@ import java.util.List;
 final class TweetTextLinkifier {
     private static final String PHOTO_TYPE = "photo";
 
-    private TweetTextLinkifier() {}
+    private TweetTextLinkifier() {
+    }
 
     /**
      * Returns a charSequence with the display urls substituted in place of the t.co links. It will
      * strip off the last photo entity in the text if stripLastPhotoEntity is true. The return
      * value can be set directly onto a text view.
      *
-     * @param tweetText             The formatted and adjusted tweet wrapper
-     * @param listener              A listener to handle link clicks
-     * @param stripLastPhotoEntity  If true will strip the last photo entity from the linkified text
-     * @param linkColor             The link color
-     * @param linkHighlightColor    The link background color when pressed
-     * @return                      The Tweet text with displayUrls substituted in
+     * @param tweetText            The formatted and adjusted tweet wrapper
+     * @param listener             A listener to handle link clicks
+     * @param stripLastPhotoEntity If true will strip the last photo entity from the linkified text
+     * @param linkColor            The link color
+     * @param linkHighlightColor   The link background color when pressed
+     * @return The Tweet text with displayUrls substituted in
      */
     static CharSequence linkifyUrls(FormattedTweetText tweetText,
-            final LinkClickListener listener, boolean stripLastPhotoEntity, final int linkColor,
-            final int linkHighlightColor) {
+                                    final LinkClickListener listener, boolean stripLastPhotoEntity, final int linkColor,
+                                    final int linkHighlightColor) {
+
         if (tweetText == null) return null;
 
         if (TextUtils.isEmpty(tweetText.text)) {
@@ -58,6 +60,9 @@ final class TweetTextLinkifier {
 
         final SpannableStringBuilder spannable
                 = new SpannableStringBuilder(tweetText.text);
+        final List<FormattedMentionEntity> mentions = tweetText.userMentions;
+
+        final List<FormattedHashtagEntity> tags = tweetText.hashTags;
 
         final List<FormattedUrlEntity> urls = tweetText.urlEntities;
 
@@ -76,7 +81,7 @@ final class TweetTextLinkifier {
          */
         final List<FormattedUrlEntity> combined = mergeAndSortEntities(urls, media);
 
-        addUrlEntities(spannable, combined, lastPhoto, listener, linkColor, linkHighlightColor);
+        addUrlEntities(spannable, combined, mentions,tags, lastPhoto, listener, linkColor, linkHighlightColor);
         return spannable;
     }
 
@@ -86,10 +91,10 @@ final class TweetTextLinkifier {
      *
      * @param urls  Expected to be non-null
      * @param media Can be null
-     * @return      Combined and sorted list of urls and media
+     * @return Combined and sorted list of urls and media
      */
     static List<FormattedUrlEntity> mergeAndSortEntities(final List<FormattedUrlEntity> urls,
-            final List<FormattedMediaEntity> media) {
+                                                         final List<FormattedMediaEntity> media) {
         if (media == null) return urls;
 
         final ArrayList<FormattedUrlEntity> combined
@@ -112,18 +117,19 @@ final class TweetTextLinkifier {
 
     /**
      * Swaps display urls in for t.co urls and adjusts the remaining entity indices.
-     *
-     * @param spannable          The final formatted text that we are building
+     *  @param spannable          The final formatted text that we are building
      * @param entities           The combined list of media and url entities
+     * @param mentions
+     * @param tags
      * @param lastPhoto          If there is a final photo entity we should strip from the text
      * @param listener           The link click listener to attach to the span
      * @param linkColor          The link color
      * @param linkHighlightColor The link background color when pressed
      */
     private static void addUrlEntities(final SpannableStringBuilder spannable,
-            final List<FormattedUrlEntity> entities,
-            final FormattedMediaEntity lastPhoto,
-            final LinkClickListener listener, final int linkColor, final int linkHighlightColor) {
+                                       final List<FormattedUrlEntity> entities,
+                                       List<FormattedMentionEntity> mentions, List<FormattedHashtagEntity> tags, final FormattedMediaEntity lastPhoto,
+                                       final LinkClickListener listener, final int linkColor, final int linkHighlightColor) {
         if (entities == null || entities.isEmpty()) return;
 
         int offset = 0;
@@ -142,9 +148,9 @@ final class TweetTextLinkifier {
                     len = end - start;
                     end -= len;
                     offset += len;
-                } else if (!TextUtils.isEmpty(url.displayUrl)) {
-                    spannable.replace(start, end, url.displayUrl);
-                    len = end - (start + url.displayUrl.length());
+                } else if (!TextUtils.isEmpty(url.url)) {
+                    spannable.replace(start, end, url.url);
+                    len = end - (start + url.url.length());
                     end -= len;
                     offset += len;
 
@@ -157,9 +163,35 @@ final class TweetTextLinkifier {
                         }
                     };
                     spannable.setSpan(span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
                 }
             }
         }
+
+        for (final FormattedMentionEntity mentionEntity : mentions) {
+            final CharacterStyle mentionSpan = new ClickableLinkSpan(linkHighlightColor,
+                    linkColor, false) {
+                @Override
+                public void onClick(View widget) {
+                    if (listener == null) return;
+                      listener.onUrlClicked(mentionEntity.url);
+                }
+            };
+            spannable.setSpan(mentionSpan, mentionEntity.start, mentionEntity.end, 0);
+        }
+
+        for (final FormattedHashtagEntity hashtagEntity : tags) {
+            final CharacterStyle mentionSpan = new ClickableLinkSpan(linkHighlightColor,
+                    linkColor, false) {
+                @Override
+                public void onClick(View widget) {
+                    if (listener == null) return;
+                    listener.onUrlClicked(hashtagEntity.url);
+                }
+            };
+            spannable.setSpan(mentionSpan, hashtagEntity.start, hashtagEntity.end, 0);
+        }
+
     }
 
     private static FormattedMediaEntity getLastPhotoEntity(

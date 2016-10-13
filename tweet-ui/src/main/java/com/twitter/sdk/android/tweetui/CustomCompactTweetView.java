@@ -61,6 +61,7 @@ public class CustomCompactTweetView extends BaseTweetView{
             // portrait (tall) photos should be cropped to be square aspect ratio
           //  return SQUARE_ASPECT_RATIO;
             if(photoEntity.sizes.medium.h > getScreenHeight()){
+              //  double screenHeight = getScreenHeight();
                 return photoEntity.sizes.medium.w/getScreenHeight();
             }
              else if(photoEntity.sizes.medium.w > getScreenWidth()){
@@ -68,6 +69,7 @@ public class CustomCompactTweetView extends BaseTweetView{
             } else{
                 return ratio;
             }
+
         } else if (ratio > MAX_LANDSCAPE_ASPECT_RATIO) {
             // the widest landscape photos allowed are 3:1
             return MAX_LANDSCAPE_ASPECT_RATIO;

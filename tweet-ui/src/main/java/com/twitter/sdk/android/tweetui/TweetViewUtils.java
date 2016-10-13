@@ -67,6 +67,7 @@ public class TweetViewUtils {
         } else {
             fullNameView.setText(BaseTweetView.EMPTY_STRING);
         }
+
     }
 
     /**

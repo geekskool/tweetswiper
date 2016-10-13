@@ -491,7 +491,8 @@ public abstract class BaseTweetView extends LinearLayout {
         scribeImpression();
     }
 
-     void setProfilePhotoView(Tweet displayTweet ) {
+
+    void setProfilePhotoView(final Tweet displayTweet ) {
         final Picasso imageLoader = dependencyProvider.getImageLoader();
 
         if (imageLoader == null) return;
@@ -505,6 +506,22 @@ public abstract class BaseTweetView extends LinearLayout {
         }
 
         imageLoader.load(url).placeholder(mediaBg).into(avatarView);
+        avatarView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent(getContext(),LinkWebViewActivity.class);
+                String openUrl;
+                if (displayTweet != null) {
+                    openUrl = Uri.parse("https://twitter.com/").buildUpon().appendPath(displayTweet.user.screenName).build().toString();
+                    intent.putExtra("Url",openUrl);
+                    if (!IntentUtils.safeStartActivity(getContext(), intent)) {
+                        Fabric.getLogger().e(TweetUi.LOGTAG,
+                                "Activity cannot be found to open URL");
+                    }
+                }
+
+            }
+        });
     }
 
     public  void setContentDescription(Tweet displayTweet) {

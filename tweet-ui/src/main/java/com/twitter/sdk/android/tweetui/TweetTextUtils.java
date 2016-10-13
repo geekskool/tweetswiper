@@ -19,7 +19,9 @@ package com.twitter.sdk.android.tweetui;
 
 import android.text.TextUtils;
 
+import com.twitter.sdk.android.core.models.HashtagEntity;
 import com.twitter.sdk.android.core.models.MediaEntity;
+import com.twitter.sdk.android.core.models.MentionEntity;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.UrlEntity;
 import com.twitter.sdk.android.tweetui.internal.util.HtmlEntities;
@@ -28,14 +30,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 final class TweetTextUtils {
-    private TweetTextUtils() {}
+    private TweetTextUtils() {
+    }
 
     /**
      * Should not be called directly outside of TweetRepository, the return value should be cached
      * or memoized.
      *
      * @param tweet The tweet to format
-     * @return      The formatted Tweet text
+     * @return The formatted Tweet text
      */
     static FormattedTweetText formatTweetText(Tweet tweet) {
         if (tweet == null) return null;
@@ -52,7 +55,7 @@ final class TweetTextUtils {
      * Populates the list of formatted entities within the formattedTweetText.
      *
      * @param formattedTweetText The formatted tweet text that is to be populated
-     * @param tweet The source Tweet
+     * @param tweet              The source Tweet
      */
     static void convertEntities(FormattedTweetText formattedTweetText, Tweet tweet) {
         if (tweet.entities == null) return;
@@ -72,6 +75,22 @@ final class TweetTextUtils {
                 formattedTweetText.mediaEntities.add(formattedMediaEntity);
             }
         }
+
+        final List<MentionEntity> coreMention = tweet.entities.userMentions;
+        if (coreMention != null) {
+            for (MentionEntity entity : coreMention) {
+                final FormattedMentionEntity formattedMentionEntity = new FormattedMentionEntity(entity);
+                formattedTweetText.userMentions.add(formattedMentionEntity);
+            }
+        }
+
+        final List<HashtagEntity> coreTags = tweet.entities.hashtags;
+        if (coreTags != null) {
+            for (HashtagEntity entity : coreTags) {
+                final FormattedHashtagEntity formattedTagEntity = new FormattedHashtagEntity(entity);
+                formattedTweetText.hashTags.add(formattedTagEntity);
+            }
+        }
     }
 
     /**
@@ -79,7 +98,7 @@ final class TweetTextUtils {
      * emoji/supplementary characters.
      *
      * @param formattedTweetText The formatted tweet text that is to be populated
-     * @param tweet The source Tweet
+     * @param tweet              The source Tweet
      */
     static void format(FormattedTweetText formattedTweetText, Tweet tweet) {
         if (TextUtils.isEmpty(tweet.text)) return;
@@ -89,8 +108,51 @@ final class TweetTextUtils {
 
         adjustIndicesForEscapedChars(formattedTweetText.urlEntities, u.indices);
         adjustIndicesForEscapedChars(formattedTweetText.mediaEntities, u.indices);
+        adjustIndicesForEscapedCharsInNonUrlEntities(formattedTweetText.userMentions, u.indices);
+        adjustIndicesForEscapedCharsInNonUrlEntities(formattedTweetText.hashTags, u.indices);
+
+
         adjustIndicesForSupplementaryChars(result, formattedTweetText);
         formattedTweetText.text = result.toString();
+    }
+
+    private static void adjustIndicesForEscapedCharsInNonUrlEntities(List<? extends FormattedNonUrlEntity> nonUrlEntities, ArrayList<int[]> indices) {
+        if (nonUrlEntities == null || indices == null || indices.isEmpty()) {
+            return;
+        }
+        final int size = indices.size();
+        int m = 0; // marker
+        int diff = 0; // accumulated difference
+        int inDiff; // end difference for escapes in range
+        int len; // escaped length
+        int start; // escaped start
+        int end; // escaped end
+        int i; // reusable index
+        int[] index;
+        // For each of the entities, update the start and end indices
+        // Note: tweet entities are sorted.
+
+        for (FormattedNonUrlEntity entity : nonUrlEntities) {
+            inDiff = 0;
+            // Go through the escaped entities' indices
+            for (i = m; i < size; i++) {
+                index = indices.get(i);
+                start = index[0];
+                end = index[1];
+                // len is actually (end - start + 1) - 1
+                len = end - start;
+                if (end < entity.start) {
+                    // bump position of the next marker
+                    diff += len;
+                    m++;
+                } else if (end < entity.end) {
+                    inDiff += len;
+                }
+            }
+            // Once we've accumulated diffs, calc the offset
+            entity.start = entity.start - diff;
+            entity.end = entity.end - (diff + inDiff);
+        }
     }
 
     /**
@@ -99,7 +161,7 @@ final class TweetTextUtils {
      * them as necessary.
      *
      * @param entities The entities that need to be adjusted
-     * @param indices The indices of where there were escaped html chars that we unescaped
+     * @param indices  The indices of where there were escaped html chars that we unescaped
      */
     static void adjustIndicesForEscapedChars(
             List<? extends FormattedUrlEntity> entities,
@@ -147,11 +209,11 @@ final class TweetTextUtils {
      * UTF-8 (ones outside of U+0000 to U+FFFF range) are represented as a pair of char values, the
      * first from the high-surrogates range, and the second from the low-surrogates range.
      *
-     * @param content The content of the tweet
+     * @param content            The content of the tweet
      * @param formattedTweetText The formatted tweet text with entities that we need to adjust
      */
     static void adjustIndicesForSupplementaryChars(StringBuilder content,
-            FormattedTweetText formattedTweetText) {
+                                                   FormattedTweetText formattedTweetText) {
         final List<Integer> highSurrogateIndices = new ArrayList<>();
         final int len = content.length() - 1;
         for (int i = 0; i < len; ++i) {
@@ -170,10 +232,10 @@ final class TweetTextUtils {
      * runtime.
      *
      * @param entities The entities that need to be adjusted
-     * @param indices The indices in the string where there are supplementary chars
+     * @param indices  The indices in the string where there are supplementary chars
      */
     static void adjustEntitiesWithOffsets(List<? extends FormattedUrlEntity> entities,
-            List<Integer> indices) {
+                                          List<Integer> indices) {
         if (entities == null || indices == null) return;
         for (FormattedUrlEntity entity : entities) {
             // find all indices <= start and update offsets by that much

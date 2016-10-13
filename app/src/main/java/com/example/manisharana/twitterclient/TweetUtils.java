@@ -5,8 +5,6 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 
-import com.twitter.sdk.android.core.TwitterSession;
-
 public class TweetUtils {
 
     public static void showErrorDialog(Context context, String title) {
@@ -24,16 +22,16 @@ public class TweetUtils {
         alertDialog.show();
     }
 
-    public static void saveUserSessionDetails(Context context, TwitterSession session) {
+    public static void saveUserSessionDetails(Context context, String session) {
         SharedPreferences myPreferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = myPreferences.edit();
-        editor.putLong("UserSession",session.getUserId());
+        editor.putString("UserSession",session);
         editor.apply();
     }
 
-    public static Long getUserSessionDetails(Context context) {
+    public static String getUserSessionDetails(Context context) {
         SharedPreferences myPreferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-        return myPreferences.getLong("UserSession", 0);
+        return myPreferences.getString("UserSession", "");
     }
 
     public static void removeUserSessionDetails(Context context) {
