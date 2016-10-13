@@ -119,6 +119,28 @@ public class MediaEntity extends UrlEntity {
         this.videoInfo = videoInfo;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MediaEntity that = (MediaEntity) o;
+
+        if (!idStr.equals(that.idStr)) return false;
+        if (!mediaUrl.equals(that.mediaUrl)) return false;
+        if (!type.equals(that.type)) return false;
+        return (mediaUrlHttps.equals(that.mediaUrlHttps));
+    }
+
+    @Override
+    public int hashCode() {
+        int result = idStr.hashCode();
+        result = 31 * result + mediaUrl.hashCode();
+        result = 31 * result + mediaUrlHttps.hashCode();
+        result = 31 * result + type.hashCode();
+        return result;
+    }
+
     public static class Sizes implements Serializable {
         /**
          * Information for a medium-sized version of the media.

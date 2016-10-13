@@ -62,7 +62,6 @@ public class CustomTweetViewAdapter extends PagerAdapter {
         } else {
             itemView = (View) mRecycledViewStack.pop();
             ((BaseTweetView) itemView).setTweet(tweet);
-            Log.i(TAG,"Restored recycled view from cache "+ itemView.hashCode());
         }
 
         container.addView(itemView);

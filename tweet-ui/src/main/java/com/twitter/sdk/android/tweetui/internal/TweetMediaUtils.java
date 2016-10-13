@@ -80,6 +80,30 @@ final public class TweetMediaUtils {
         return null;
     }
 
+    static public ArrayList<MediaEntity> getAllPhotoEntities(Tweet tweet) {
+        ArrayList<MediaEntity> mediaEntities = new ArrayList<>();
+        final List<MediaEntity> mediaEntityList = getAllMediaEntities(tweet);
+        for (int i = mediaEntityList.size() - 1; i >= 0; i--) {
+            final MediaEntity entity = mediaEntityList.get(i);
+            if (entity.type != null && isPhotoType(entity)) {
+                mediaEntities.add(entity);
+            }
+        }
+        return mediaEntities;
+
+    }
+
+
+    static public ArrayList<MediaEntity> getAllVideoEntities(Tweet tweet) {
+        ArrayList<MediaEntity> mediaEntities = new ArrayList<>();
+        for (MediaEntity mediaEntity : getAllMediaEntities(tweet)) {
+            if (mediaEntity.type != null && isVideoType(mediaEntity)) {
+                mediaEntities.add(mediaEntity);
+            }
+        }
+        return mediaEntities;
+    }
+
     /**
      * Returns true if there is a media entity with the type of "video" or "animated_gif" and
      * playback is supported.
@@ -93,7 +117,7 @@ final public class TweetMediaUtils {
         return entity != null && getSupportedVariant(entity) != null;
     }
 
-    static boolean isPhotoType(MediaEntity mediaEntity) {
+    static public boolean isPhotoType(MediaEntity mediaEntity) {
         if (PHOTO_TYPE.equals(mediaEntity.type)) {
             return true;
         }
@@ -101,7 +125,7 @@ final public class TweetMediaUtils {
         return false;
     }
 
-    static boolean isVideoType(MediaEntity mediaEntity) {
+    static public boolean isVideoType(MediaEntity mediaEntity) {
         if (VIDEO_TYPE.equals(mediaEntity.type) || GIF_TYPE.equals(mediaEntity.type)) {
             return true;
         }
@@ -145,7 +169,11 @@ final public class TweetMediaUtils {
         }
 
         if (tweet.extendedEtities != null && tweet.extendedEtities.media != null) {
-            entities.addAll(tweet.extendedEtities.media);
+         //   entities.addAll(tweet.extendedEtities.media);
+            for(MediaEntity mediaEntity: tweet.extendedEtities.media)
+                if(!entities.contains(mediaEntity)){
+                    entities.add(mediaEntity);
+                }
         }
 
         return entities;

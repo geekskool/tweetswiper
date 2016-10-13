@@ -22,6 +22,6 @@
     <dimen name="tw__login_btn_drawable_padding">5dp</dimen>
     <dimen name="tw__login_btn_left_padding">10dp</dimen>
     <dimen name="tw__login_btn_right_padding">15dp</dimen>
-    <dimen name="tweet_view_text_size_with_media">14sp</dimen>
-    <dimen name="tweet_view_text_size_without_media">18sp</dimen>
+    <dimen name="tweet_view_text_size_with_media">10sp</dimen>
+    <dimen name="tweet_view_text_size_without_media">14sp</dimen>
 </resources>

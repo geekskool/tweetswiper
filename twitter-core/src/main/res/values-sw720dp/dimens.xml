@@ -18,6 +18,6 @@
 
 <resources>
     <dimen name="tw__padding_permission_horizontal_container">128dp</dimen>
-    <dimen name="tweet_view_text_size_with_media">18sp</dimen>
+    <dimen name="tweet_view_text_size_with_media">16sp</dimen>
     <dimen name="tweet_view_text_size_without_media">22sp</dimen>
 </resources>

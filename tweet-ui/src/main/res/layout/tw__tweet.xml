@@ -16,6 +16,7 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tw__tweet_view"
     style="@style/tw__TweetContainer"
@@ -25,73 +26,90 @@
     <TextView
         android:id="@+id/tw__tweet_retweeted_by"
         style="@style/tw__TweetRetweetedBy"
-        tools:text="retweeted by"/>
+        tools:text="retweeted by" />
 
     <ImageView
-        tools:ignore="ContentDescription"
         android:id="@+id/tw__tweet_author_avatar"
         style="@style/tw__TweetAvatar"
-        android:layout_below="@id/tw__tweet_retweeted_by"/>
+        android:layout_below="@id/tw__tweet_retweeted_by"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/tw__tweet_author_full_name"
         style="@style/tw__TweetFullName"
         android:layout_below="@id/tw__tweet_retweeted_by"
-        android:layout_toRightOf="@id/tw__tweet_author_avatar"
         android:layout_toEndOf="@id/tw__tweet_author_avatar"
-        tools:text="Jack"/>
+        android:layout_toRightOf="@id/tw__tweet_author_avatar"
+        tools:text="Jack" />
 
     <ImageView
-        tools:ignore="ContentDescription"
         android:id="@+id/tw__tweet_author_verified"
         style="@style/tw__TweetVerifiedCheck"
-        android:layout_toRightOf="@id/tw__tweet_author_full_name"
-        android:layout_toEndOf="@id/tw__tweet_author_full_name"
         android:layout_alignBottom="@id/tw__tweet_author_full_name"
+        android:layout_toEndOf="@id/tw__tweet_author_full_name"
+        android:layout_toRightOf="@id/tw__tweet_author_full_name"
         android:visibility="gone"
-        tools:visibility="visible"/>
+        tools:ignore="ContentDescription"
+        tools:visibility="visible" />
 
     <ImageView
-        tools:ignore="ContentDescription"
         android:id="@+id/tw__twitter_logo"
         style="@style/tw__TwitterLogo"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_below="@id/tw__tweet_retweeted_by"/>
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/tw__tweet_retweeted_by"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/tw__tweet_author_screen_name"
         style="@style/tw__TweetScreenName"
-        android:layout_below="@id/tw__tweet_author_full_name"
-        android:layout_alignBottom="@id/tw__tweet_author_avatar"
-        android:layout_toRightOf="@id/tw__tweet_author_avatar"
-        android:layout_toEndOf="@id/tw__tweet_author_avatar"
         android:layout_alignBaseline="@+id/tw__tweet_author_avatar"
-        tools:text="\@jack"/>
+        android:layout_alignBottom="@id/tw__tweet_author_avatar"
+        android:layout_below="@id/tw__tweet_author_full_name"
+        android:layout_toEndOf="@id/tw__tweet_author_avatar"
+        android:layout_toRightOf="@id/tw__tweet_author_avatar"
+        tools:text="\@jack" />
 
     <TextView
         android:id="@+id/tw__tweet_timestamp"
         style="@style/tw__TweetTimestamp"
-        android:layout_below="@id/tw__tweet_author_full_name"
         android:layout_alignBottom="@id/tw__tweet_author_screen_name"
-        android:layout_toRightOf="@id/tw__tweet_author_screen_name"
+        android:layout_below="@id/tw__tweet_author_full_name"
         android:layout_toEndOf="@id/tw__tweet_author_screen_name"
-        tools:text="• 03/21/2006"/>
+        android:layout_toRightOf="@id/tw__tweet_author_screen_name"
+        tools:text="• 03/21/2006" />
 
     <FrameLayout
         android:id="@+id/tw__tweet_media_container"
+        style="@style/tw__TweetMediaContainer"
         android:layout_below="@id/tw__tweet_author_avatar"
-        android:layout_marginTop="15dp"
-        style="@style/tw__TweetMediaContainer">
+        android:layout_marginTop="15dp">
 
-        <com.twitter.sdk.android.tweetui.internal.TweetMediaView
-            android:id="@+id/tw__tweet_media"
-            style="@style/tw__TweetMedia"
-            tools:ignore="ContentDescription" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/multiple_images_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
 
-        <com.twitter.sdk.android.tweetui.internal.MediaBadgeView
-            android:id="@+id/tw__tweet_media_badge"
-            style="@style/tw__TweetBadge" />
+        <ImageButton
+            android:id="@+id/imageButton_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginLeft="16dp"
+            android:src="@drawable/ic_image_navigate_before" />
+
+        <ImageButton
+            android:id="@+id/imageButton_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/ic_image_navigate_next" />
+
     </FrameLayout>
 
 
@@ -101,19 +119,12 @@
         android:layout_below="@id/tw__tweet_media_container"
         android:visibility="gone"
         tools:text="just setting up my twttr"
-        tools:visibility="visible"/>
-
-    <!--<include-->
-        <!--style="@style/tw__TweetActionButtonBar"-->
-        <!--layout="@layout/tw__action_bar"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@id/tw__tweet_text"/>-->
+        tools:visibility="visible" />
 
     <View
         android:id="@+id/bottom_separator"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tw__tweet_container_bottom_separator"
-        android:layout_below="@id/tw__tweet_text"/>
+        android:layout_below="@id/tw__tweet_text" />
 
 </RelativeLayout>

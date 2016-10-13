@@ -55,6 +55,7 @@
                     <TextView
                         android:id="@+id/tw__tweet_author_full_name"
                         style="@style/tw__TweetFullName"
+                        android:textSize="@dimen/text_size_in_reply"
                         android:textColor="@color/tw__tweet_light_primary_text_color"
                         android:layout_toRightOf="@id/tw__tweet_author_avatar"
                         android:layout_toEndOf="@id/tw__tweet_author_avatar"
@@ -63,6 +64,7 @@
                     <TextView
                         android:id="@+id/tw__tweet_timestamp"
                         style="@style/tw__TweetTimestamp"
+                        android:textSize="@dimen/text_size_in_reply"
                         android:textColor="@color/tw__medium_gray"
                         android:layout_alignBottom="@id/tw__tweet_author_full_name"
                         android:layout_toRightOf="@id/tw__tweet_author_full_name"
