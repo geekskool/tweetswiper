@@ -31,4 +31,6 @@
     <dimen name="tw__permission_title_text_size">24sp</dimen>
     <dimen name="tw__btn_bar_margin_left">8dp</dimen>
     <dimen name="tw__btn_bar_margin_right">8dp</dimen>
+    <dimen name="tweet_view_text_size_with_media">14sp</dimen>
+    <dimen name="tweet_view_text_size_without_media">16sp</dimen>
 </resources>

@@ -7,8 +7,8 @@ import com.twitter.sdk.android.core.models.HashtagEntity;
 public class FormattedHashtagEntity extends FormattedNonUrlEntity {
 
     final String text;
-    final int end;
-    final int start;
+    int end;
+    int start;
     final String url;
 
     public FormattedHashtagEntity(HashtagEntity entity) {

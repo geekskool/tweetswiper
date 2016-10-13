@@ -108,16 +108,15 @@ final class TweetTextUtils {
 
         adjustIndicesForEscapedChars(formattedTweetText.urlEntities, u.indices);
         adjustIndicesForEscapedChars(formattedTweetText.mediaEntities, u.indices);
-        adjustIndicesForEscapedCharsInNonUrlEntities(formattedTweetText.userMentions, u.indices);
-        adjustIndicesForEscapedCharsInNonUrlEntities(formattedTweetText.hashTags, u.indices);
-
+        adjustIndicesForEscapedCharsInMentionEntities(formattedTweetText.userMentions, u.indices);
+        adjustIndicesForEscapedCharsForHashTags(formattedTweetText.hashTags, u.indices);
 
         adjustIndicesForSupplementaryChars(result, formattedTweetText);
         formattedTweetText.text = result.toString();
     }
 
-    private static void adjustIndicesForEscapedCharsInNonUrlEntities(List<? extends FormattedNonUrlEntity> nonUrlEntities, ArrayList<int[]> indices) {
-        if (nonUrlEntities == null || indices == null || indices.isEmpty()) {
+    private static void adjustIndicesForEscapedCharsForHashTags(List<FormattedHashtagEntity> hashTags, ArrayList<int[]> indices) {
+        if (hashTags == null || indices == null || indices.isEmpty()) {
             return;
         }
         final int size = indices.size();
@@ -132,7 +131,7 @@ final class TweetTextUtils {
         // For each of the entities, update the start and end indices
         // Note: tweet entities are sorted.
 
-        for (FormattedNonUrlEntity entity : nonUrlEntities) {
+        for (FormattedHashtagEntity entity : hashTags) {
             inDiff = 0;
             // Go through the escaped entities' indices
             for (i = m; i < size; i++) {
@@ -154,6 +153,84 @@ final class TweetTextUtils {
             entity.end = entity.end - (diff + inDiff);
         }
     }
+
+    private static void adjustIndicesForEscapedCharsInMentionEntities(List<FormattedMentionEntity> userMentions, ArrayList<int[]> indices) {
+        if (userMentions == null || indices == null || indices.isEmpty()) {
+            return;
+        }
+        final int size = indices.size();
+        int m = 0; // marker
+        int diff = 0; // accumulated difference
+        int inDiff; // end difference for escapes in range
+        int len; // escaped length
+        int start; // escaped start
+        int end; // escaped end
+        int i; // reusable index
+        int[] index;
+        // For each of the entities, update the start and end indices
+        // Note: tweet entities are sorted.
+
+        for (FormattedMentionEntity entity : userMentions) {
+            inDiff = 0;
+            // Go through the escaped entities' indices
+            for (i = m; i < size; i++) {
+                index = indices.get(i);
+                start = index[0];
+                end = index[1];
+                // len is actually (end - start + 1) - 1
+                len = end - start;
+                if (end < entity.start) {
+                    // bump position of the next marker
+                    diff += len;
+                    m++;
+                } else if (end < entity.end) {
+                    inDiff += len;
+                }
+            }
+            // Once we've accumulated diffs, calc the offset
+            entity.start = entity.start - diff;
+            entity.end = entity.end - (diff + inDiff);
+        }
+    }
+
+//    private static void adjustIndicesForEscapedCharsInNonUrlEntities(List<? extends FormattedNonUrlEntity> nonUrlEntities, ArrayList<int[]> indices) {
+//        if (nonUrlEntities == null || indices == null || indices.isEmpty()) {
+//            return;
+//        }
+//        final int size = indices.size();
+//        int m = 0; // marker
+//        int diff = 0; // accumulated difference
+//        int inDiff; // end difference for escapes in range
+//        int len; // escaped length
+//        int start; // escaped start
+//        int end; // escaped end
+//        int i; // reusable index
+//        int[] index;
+//        // For each of the entities, update the start and end indices
+//        // Note: tweet entities are sorted.
+//
+//        for (FormattedNonUrlEntity entity : nonUrlEntities) {
+//            inDiff = 0;
+//            // Go through the escaped entities' indices
+//            for (i = m; i < size; i++) {
+//                index = indices.get(i);
+//                start = index[0];
+//                end = index[1];
+//                // len is actually (end - start + 1) - 1
+//                len = end - start;
+//                if (end < entity.start) {
+//                    // bump position of the next marker
+//                    diff += len;
+//                    m++;
+//                } else if (end < entity.end) {
+//                    inDiff += len;
+//                }
+//            }
+//            // Once we've accumulated diffs, calc the offset
+//            entity.start = entity.start - diff;
+//            entity.end = entity.end - (diff + inDiff);
+//        }
+//    }
 
     /**
      * Since the unescaping of html causes for example &amp; to turn into & we need to adjust

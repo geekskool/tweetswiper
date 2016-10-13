@@ -606,6 +606,11 @@ public abstract class BaseTweetView extends LinearLayout {
         final CharSequence tweetText = Utils.charSeqOrEmpty(getLinkifiedText(displayTweet));
         SpanClickHandler.enableClicksOnSpans(contentView);
         if (!TextUtils.isEmpty(tweetText)) {
+            if(displayTweet.entities.media == null){
+                contentView.setTextSize(getResources().getDimension(R.dimen.tweet_view_text_size_without_media));
+            }else{
+                contentView.setTextSize(getResources().getDimension(R.dimen.tweet_view_text_size_with_media));
+            }
             contentView.setText(tweetText);
             contentView.setVisibility(View.VISIBLE);
         } else {
