@@ -30,15 +30,15 @@
     <dimen name="tw__tweet_retweeted_by_drawable_padding">3dp</dimen>
 
     <!--Tweet Author Avatar-->
-    <dimen name="tw__tweet_avatar_size">36dp</dimen>
-    <dimen name="tw__tweet_avatar_margin_top">18dp</dimen>
+    <dimen name="tw__tweet_avatar_size">48dp</dimen>
+    <dimen name="tw__tweet_avatar_margin_top">20dp</dimen>
     <dimen name="tw__tweet_avatar_margin_left">20dp</dimen>
     <dimen name="tw__tweet_avatar_margin_right">8dp</dimen>
     <!--Twitter Logo-->
     <dimen name="tw__tweet_logo_margin_top">18dp</dimen>
     <dimen name="tw__tweet_logo_margin_right">20dp</dimen>
     <!--Tweet Author Attribution-->
-    <dimen name="tw__tweet_full_name_margin_top">15dp</dimen>
+    <dimen name="tw__tweet_full_name_margin_top">20dp</dimen>
     <dimen name="tw__tweet_verified_margin_bottom">3dp</dimen>
     <dimen name="tw__tweet_verified_check_padding_left">3dp</dimen>
     <dimen name="tw__tweet_screen_name_margin_top">-4dp</dimen>
@@ -104,8 +104,8 @@
 
     <!-- Text sizes -->
     <!--density-independent(micro 10sp, small 12sp, medium 14sp, large 16sp)-->
-    <dimen name="tw__text_size_large">16sp</dimen>
-    <dimen name="tw__text_size_medium">14sp</dimen>
+    <dimen name="tw__text_size_large">18sp</dimen>
+    <dimen name="tw__text_size_medium">16sp</dimen>
     <dimen name="tw__text_size_small">12sp</dimen>
 
     <!-- Video controls -->

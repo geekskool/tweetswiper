@@ -2,6 +2,7 @@ package com.twitter.sdk.android.tweetui;
 
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -16,6 +17,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -27,12 +29,18 @@ import android.widget.Toast;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.internal.UserUtils;
+import com.twitter.sdk.android.core.models.Media;
 import com.twitter.sdk.android.core.models.Tweet;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+
+import retrofit.mime.TypedFile;
 
 public class TweetReplyActivity extends AppCompatActivity implements TextWatcher {
 
@@ -54,6 +62,8 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
     private LinearLayout actualTweetContainer;
     private TextView errorMessage;
     private ImageView imgViewFirst;
+    private TextView imgUrl;
+    private ImageButton removeMediaButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,6 +82,8 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
         charCountView = (TextView) findViewById(R.id.text_view_char_count);
         errorMessage = (TextView) findViewById(R.id.textView_error_message);
         imgViewFirst = (ImageView) findViewById(R.id.image_view_1);
+        imgUrl = (TextView) findViewById(R.id.image_url);
+        removeMediaButton = (ImageButton) findViewById(R.id.image_remove_button);
         Intent intent = getIntent();
         tweet = (Tweet) intent.getSerializableExtra("Tweet");
         if (tweet != null) {
@@ -83,7 +95,8 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
 
     public void pickPhoto(View view) {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/* video/*");
+        //   intent.setType("image/* video/*");
+        intent.setType("image/*");
         startActivityForResult(Intent.createChooser(intent, "Select Media"), SELECT_PICTURE);
     }
 
@@ -91,20 +104,17 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && data != null) {
-            data.getData();
-            FrameLayout parent = (FrameLayout) imgViewFirst.getParent();
-            parent.setVisibility(View.VISIBLE);
-            imgViewFirst.setImageBitmap(getPath(data.getData()));
+            fillImageViewWithContent(data.getData());
         } else {
             // error content cant be fetched
         }
     }
 
-    private Bitmap getPath(Uri uri) {
-        Bitmap thumbnail = null;
-
+    private void fillImageViewWithContent(Uri data) {
+        FrameLayout parent = (FrameLayout) imgViewFirst.getParent();
+        parent.setVisibility(View.VISIBLE);
         String[] projection = {MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA, MediaStore.Images.Media.MIME_TYPE};
-        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+        Cursor cursor = getContentResolver().query(data, projection, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
             int idColumnIndex = cursor.getColumnIndex(projection[0]);
@@ -117,25 +127,36 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
             cursor.close();
 
             if (mimeType.startsWith("image")) {
-                 thumbnail = MediaStore.Images.Thumbnails.getThumbnail(getContentResolver(), imgId, MediaStore.Images.Thumbnails.MINI_KIND, null);
-                if(thumbnail == null){
+                Bitmap thumbnail = MediaStore.Images.Thumbnails.getThumbnail(getContentResolver(), imgId, MediaStore.Images.Thumbnails.MINI_KIND, null);
+                if (thumbnail == null) {
                     Toast.makeText(getApplicationContext(),
                             "Failed to get thumbnail for our image.",
                             Toast.LENGTH_SHORT).show();
 
                 }
-            } else if (mimeType.startsWith("video")) {
-
+                imgViewFirst.setImageBitmap(thumbnail);
+                imgUrl.setText(filePath);
             }
+//            else if (mimeType.startsWith("video")) {
+//
+//            }
+            removeMediaButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ViewGroup parent = (ViewGroup) v.getParent();
+                    ImageView imgView = (ImageView) parent.getChildAt(1);
+                    imgView.setImageBitmap(null);
+                    imgUrl.setText("");
+                    parent.setVisibility(View.GONE);
 
+                }
+            });
 
 
         }
 
         // Convert file path into bitmap image using below line.
         //Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-
-        return thumbnail;
     }
 
     private void polpulateTweetView(Tweet tweet) {
@@ -167,8 +188,10 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
 
             errorMessage.setText("Error in encoding reply");
         }
+        String imgUrl = TweetReplyActivity.this.imgUrl.getText().toString();
+
         if (replyText.length() != userScreenName.trim().length())
-            new ReplyTask(dependencyProvider).execute(replyText);
+            new ReplyTask(dependencyProvider, this).execute(replyText, imgUrl);
     }
 
     public void closeActivity(View v) {
@@ -205,29 +228,123 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
     class ReplyTask extends AsyncTask<String, Void, Void> {
 
         private final BaseTweetView.DependencyProvider dependencyProvider;
+        private final Context context;
+        private TwitterSession.Serializer serializer;
 
-        public ReplyTask(BaseTweetView.DependencyProvider dependencyProvider) {
+        public ReplyTask(BaseTweetView.DependencyProvider dependencyProvider, Context context) {
             this.dependencyProvider = dependencyProvider;
+            this.context = context;
         }
 
         @Override
-        protected Void doInBackground(String... inputs) {
-            dependencyProvider.getTweetUi().getTweetRepository().update(tweet.id, inputs[0], null, null, null, null, new Callback<Tweet>() {
-                @Override
-                public void success(Result<Tweet> result) {
-                    finish();
-                }
+        protected Void doInBackground(final String... inputs) {
+            serializer = new TwitterSession.Serializer();
+            TwitterSession userSession = serializer.deserialize(TweetUtils.getUserSessionDetails(context));
 
-                @Override
-                public void failure(TwitterException exception) {
-                    Log.i("TweetReplyActivity", "Exception: " + exception);
-                    errorMessage.setVisibility(View.VISIBLE);
-                    errorMessage.setText("Error in posting tweet");
-                }
-            });
+            if (inputs[1] != null || !inputs[1].isEmpty()) {
+                File photo = new File(inputs[1]);
+                TypedFile typedFile = new TypedFile("application/octet-stream", photo);
+
+
+                TwitterCore.getInstance().getApiClient(userSession).getMediaService().upload(typedFile, null, null, new Callback<Media>() {
+                    @Override
+                    public void success(Result<Media> result) {
+                        String mediaIdString = result.data.mediaIdString;
+                        dependencyProvider.getTweetUi().getTweetRepository().update(tweet.id, inputs[0], null, null, null, mediaIdString, new Callback<Tweet>() {
+                            @Override
+                            public void success(Result<Tweet> result) {
+                                finish();
+                            }
+
+                            @Override
+                            public void failure(TwitterException exception) {
+                                Log.i("TweetReplyActivity", "Exception: " + exception);
+                                errorMessage.setVisibility(View.VISIBLE);
+                                errorMessage.setText("Error in posting tweet");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void failure(TwitterException exception) {
+                        Log.i("TweetReplyActivity", "Exception: " + exception);
+                        errorMessage.setVisibility(View.VISIBLE);
+                        errorMessage.setText("Error in uploading image");
+                    }
+                });
+            } else {
+                dependencyProvider.getTweetUi().getTweetRepository().update(tweet.id, inputs[0], null, null, "", "", new Callback<Tweet>() {
+                    @Override
+                    public void success(Result<Tweet> result) {
+                        finish();
+                    }
+
+                    @Override
+                    public void failure(TwitterException exception) {
+                        Log.i("TweetReplyActivity", "Exception: " + exception);
+                        errorMessage.setVisibility(View.VISIBLE);
+                        errorMessage.setText("Error in posting tweet");
+                    }
+                });
+
+            }
+
+
+//            dependencyProvider.getTweetUi().getTweetRepository().update(tweet.id, inputs[0], null, null, null, null, new Callback<Tweet>() {
+//                @Override
+//                public void success(Result<Tweet> result) {
+//                    finish();
+//                }
+//
+//                @Override
+//                public void failure(TwitterException exception) {
+//                    Log.i("TweetReplyActivity", "Exception: " + exception);
+//                    errorMessage.setVisibility(View.VISIBLE);
+//                    errorMessage.setText("Error in posting tweet");
+//                }
+//            });
             return null;
         }
 
     }
+
+//    public void uploadPhoto(View view) {
+//        try {
+//            executeMultipartPost();
+//        } catch (Exception e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+//    }
+
+//    public void executeMultipartPost() throws Exception {
+//
+//        try {
+//
+//            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//
+//            BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+//
+//            Bitmap bitmap = drawable.getBitmap();
+//
+//            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bos);
+//
+//            byte[] data = bos.toByteArray();
+//
+//
+//            ByteArrayBody bab = new ByteArrayBody(data, fileName);
+//
+//            // File file= new File("/mnt/sdcard/forest.png");
+//
+//            // FileBody bin = new FileBody(file);
+//
+//            MultipartEntity reqEntity = new MultipartEntity(
+//
+//                    HttpMultipartMode.BROWSER_COMPATIBLE);
+//
+//            reqEntity.addPart("file", bab);
+//
+//        }
+//    }
 
 }

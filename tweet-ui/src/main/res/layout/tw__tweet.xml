@@ -66,6 +66,7 @@
         android:layout_alignBottom="@id/tw__tweet_author_avatar"
         android:layout_toRightOf="@id/tw__tweet_author_avatar"
         android:layout_toEndOf="@id/tw__tweet_author_avatar"
+        android:layout_alignBaseline="@+id/tw__tweet_author_avatar"
         tools:text="\@jack"/>
 
     <TextView
@@ -80,7 +81,7 @@
     <FrameLayout
         android:id="@+id/tw__tweet_media_container"
         android:layout_below="@id/tw__tweet_author_avatar"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="15dp"
         style="@style/tw__TweetMediaContainer">
 
         <com.twitter.sdk.android.tweetui.internal.TweetMediaView

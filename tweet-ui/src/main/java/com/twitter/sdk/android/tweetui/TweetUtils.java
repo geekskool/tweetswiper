@@ -17,6 +17,8 @@
 
 package com.twitter.sdk.android.tweetui;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.text.TextUtils;
 
@@ -41,6 +43,12 @@ public final class TweetUtils {
     static final String LOAD_TWEET_DEBUG = "loadTweet failure for Tweet Id %d.";
 
     private TweetUtils() {}
+
+
+    public static String getUserSessionDetails(Context context) {
+        SharedPreferences myPreferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        return myPreferences.getString("UserSession", "");
+    }
 
     /**
      * Loads a single Tweet by id.
