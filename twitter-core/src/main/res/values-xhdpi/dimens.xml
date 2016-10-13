@@ -18,6 +18,4 @@
 
 <resources>
     <dimen name="tw__login_btn_text_size">18sp</dimen>
-    <dimen name="tweet_view_text_size_with_media">12sp</dimen>
-    <dimen name="tweet_view_text_size_without_media">16sp</dimen>
 </resources>
