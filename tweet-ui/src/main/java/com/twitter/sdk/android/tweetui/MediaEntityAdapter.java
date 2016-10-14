@@ -63,7 +63,6 @@ public class MediaEntityAdapter extends RecyclerView.Adapter<MediaEntityAdapter.
 
         }
 
-
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)

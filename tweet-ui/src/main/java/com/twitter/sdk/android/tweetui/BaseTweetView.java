@@ -32,7 +32,6 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -98,7 +97,7 @@ public abstract class BaseTweetView extends LinearLayout {
     TextView screenNameView;
     ImageView verifiedCheckView;
     FrameLayout mediaContainerView;
-   // TweetMediaView mediaView;
+    // TweetMediaView mediaView;
     TextView contentView;
     TextView timestampView;
     ImageView twitterLogoView;
@@ -124,8 +123,9 @@ public abstract class BaseTweetView extends LinearLayout {
 
     /**
      * Constructs a view from the given Tweet.
+     *
      * @param context the context of the view
-     * @param tweet a Tweet object
+     * @param tweet   a Tweet object
      */
     BaseTweetView(Context context, Tweet tweet) {
         this(context, tweet, DEFAULT_STYLE);
@@ -133,8 +133,9 @@ public abstract class BaseTweetView extends LinearLayout {
 
     /**
      * Constructs a view from the given Tweet.
-     * @param context the context of the view
-     * @param tweet a Tweet object
+     *
+     * @param context    the context of the view
+     * @param tweet      a Tweet object
      * @param styleResId resource id of the Tweet view style
      */
     BaseTweetView(Context context, Tweet tweet, int styleResId) {
@@ -143,13 +144,14 @@ public abstract class BaseTweetView extends LinearLayout {
 
     /**
      * Constructs a view from the given Tweet using the given dependency provider
-     * @param context the context of the view
-     * @param tweet a Tweet object
-     * @param styleResId resource id of the Tweet view style
+     *
+     * @param context            the context of the view
+     * @param tweet              a Tweet object
+     * @param styleResId         resource id of the Tweet view style
      * @param dependencyProvider the dependency provider
      */
     BaseTweetView(Context context, Tweet tweet, int styleResId,
-            DependencyProvider dependencyProvider) {
+                  DependencyProvider dependencyProvider) {
         super(context, null);
 
         this.dependencyProvider = dependencyProvider;
@@ -166,8 +168,9 @@ public abstract class BaseTweetView extends LinearLayout {
 
     /**
      * Constructs a view with data retrieved from the API, for the XML defined tweetId.
+     *
      * @param context the context of the view
-     * @param attrs the attributes of the XML tag that is inflating the TweetView.
+     * @param attrs   the attributes of the XML tag that is inflating the TweetView.
      * @throws IllegalArgumentException if the Tweet id is invalid.
      */
     public BaseTweetView(Context context, AttributeSet attrs) {
@@ -176,8 +179,9 @@ public abstract class BaseTweetView extends LinearLayout {
 
     /**
      * Constructs a view from xml with the given dependency provider
-     * @param context the context of the view
-     * @param attrs the attributes of the XML tag that is inflating the TweetView
+     *
+     * @param context            the context of the view
+     * @param attrs              the attributes of the XML tag that is inflating the TweetView
      * @param dependencyProvider the dependency provider
      * @throws java.lang.IllegalAccessError if the Tweet id is invalid
      */
@@ -190,8 +194,9 @@ public abstract class BaseTweetView extends LinearLayout {
 
     /**
      * Performs inflation from XML and apply a class-specific base style.
-     * @param context the context of the view
-     * @param attrs the attributes of the XML tag that is inflating the TweetView.
+     *
+     * @param context  the context of the view
+     * @param attrs    the attributes of the XML tag that is inflating the TweetView.
      * @param defStyle An attribute in the current theme that contains a reference to a style
      *                 resource to apply to this view. If 0, no default style will be applied.
      * @throws IllegalArgumentException if the Tweet id is invalid.
@@ -203,16 +208,17 @@ public abstract class BaseTweetView extends LinearLayout {
     /**
      * Performs inflation from XML and apply a class-specific base style with the given dependency
      * provider.
-     * @param context the context of the view
-     * @param attrs the attributes of the XML tag that is inflating the TweetView
-     * @param defStyle An attribute in the current theme that contains a reference to a style
-     *                 resource to apply to this view. If 0, no default style will be applied.
+     *
+     * @param context            the context of the view
+     * @param attrs              the attributes of the XML tag that is inflating the TweetView
+     * @param defStyle           An attribute in the current theme that contains a reference to a style
+     *                           resource to apply to this view. If 0, no default style will be applied.
      * @param dependencyProvider the dependency provider
      * @throws IllegalArgumentException if the Tweet id is invalid.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     BaseTweetView(Context context, AttributeSet attrs, int defStyle,
-            DependencyProvider dependencyProvider) {
+                  DependencyProvider dependencyProvider) {
         super(context, attrs, defStyle);
         this.dependencyProvider = dependencyProvider;
         initXmlAttributes(context, attrs);
@@ -238,8 +244,9 @@ public abstract class BaseTweetView extends LinearLayout {
     /**
      * Initializes XML attributes needed before view inflation. This initializer should be called
      * by the XML constructor. For XML Tweet views, the style is obtained from XML attrs.
+     *
      * @param context the context of the view
-     * @param attrs set of raw XML attributes associated with the view's XML tag
+     * @param attrs   set of raw XML attributes associated with the view's XML tag
      * @throws IllegalArgumentException if the tw__tweet_id XML attribute is invalid
      */
     private void initXmlAttributes(Context context, AttributeSet attrs) {
@@ -257,6 +264,7 @@ public abstract class BaseTweetView extends LinearLayout {
 
     /**
      * Parses and sets the Tweet data XML attributes. Must be called before view inflation.
+     *
      * @param a A TypedArray holding the attribute values obtained from the XML attributes
      * @throws IllegalArgumentException if the tw__tweet_id XML attribute is invalid
      */
@@ -275,6 +283,7 @@ public abstract class BaseTweetView extends LinearLayout {
     /**
      * Parses and sets style attributes. Must be called before view inflation. Defaults style
      * attributes to the light style values.
+     *
      * @param a A TypedArray holding style-related attribute values.
      */
     private void setStyleAttributes(TypedArray a) {
@@ -319,6 +328,7 @@ public abstract class BaseTweetView extends LinearLayout {
 
     /**
      * Inflate the TweetView using the layout that has been set.
+     *
      * @param context The Context the view is running in.
      */
     private void inflateView(Context context) {
@@ -334,6 +344,7 @@ public abstract class BaseTweetView extends LinearLayout {
 
     /**
      * Finalize inflating a view from XML.
+     *
      * @throws IllegalArgumentException
      */
     @Override
@@ -359,6 +370,7 @@ public abstract class BaseTweetView extends LinearLayout {
 
     /**
      * Checks whether the TweetUi kit is setup and the instance is available.
+     *
      * @return true if the instance is available and view creation can continue
      * or false otherwise
      */
@@ -421,6 +433,7 @@ public abstract class BaseTweetView extends LinearLayout {
      * Set the Tweet to be displayed and update the subviews. For any data that is missing from
      * the Tweet, invalidate the subview value (e.g. text views set to empty string) for view
      * recycling. Cannot be called before inflation has completed.
+     *
      * @param tweet Tweet data
      * @throws IllegalArgumentException
      */
@@ -438,18 +451,20 @@ public abstract class BaseTweetView extends LinearLayout {
 
     /**
      * Sets the callback to call when a Tweet action (favorite, unfavorite) is performed.
+     *
      * @param actionCallback called when a Tweet action is performed.
      */
     public void setOnActionCallback(Callback<Tweet> actionCallback) {
         TweetRepository tweetRepository = dependencyProvider.getTweetUi().getTweetRepository();
         tweetActionBarView.setOnActionCallback(new ResetTweetCallback(this,
                 tweetRepository, actionCallback));
-        tweetActionBarView.setRetweetCallback(new RetweetReplaceCallback(this,tweetRepository,actionCallback));
+        tweetActionBarView.setRetweetCallback(new RetweetReplaceCallback(this, tweetRepository, actionCallback));
         tweetActionBarView.setTweet(tweet);
     }
 
     /**
      * Override the default action when media is clicked.
+     *
      * @param tweetMediaClickListener called when media is clicked.
      */
     public void setTweetMediaClickListener(TweetMediaClickListener tweetMediaClickListener) {
@@ -458,6 +473,7 @@ public abstract class BaseTweetView extends LinearLayout {
 
     /**
      * Override the default action when link is clicked.
+     *
      * @param tweetLinkClickListener called when url is clicked.
      */
     public void setTweetLinkClickListener(TweetLinkClickListener tweetLinkClickListener) {
@@ -468,6 +484,7 @@ public abstract class BaseTweetView extends LinearLayout {
      * Render the Tweet by updating the subviews. For any data that is missing from the Tweet,
      * invalidate the subview value (e.g. text views set to empty string) for view recycling.
      * Do not call with render true until inflation has completed.
+     *
      * @throws IllegalArgumentException
      */
     void render() {
@@ -475,7 +492,7 @@ public abstract class BaseTweetView extends LinearLayout {
         setProfilePhotoView(displayTweet);
         TweetViewUtils.setName(displayTweet, fullNameView);
         TweetViewUtils.setScreenName(displayTweet, screenNameView);
-        TweetViewUtils.setTimestamp(displayTweet,getContext().getResources(),timestampView);
+        TweetViewUtils.setTimestamp(displayTweet, getContext().getResources(), timestampView);
         setTweetMedia(displayTweet);
         setText(displayTweet);
         setContentDescription(displayTweet);
@@ -495,7 +512,7 @@ public abstract class BaseTweetView extends LinearLayout {
     }
 
 
-    void setProfilePhotoView(final Tweet displayTweet ) {
+    void setProfilePhotoView(final Tweet displayTweet) {
         final Picasso imageLoader = dependencyProvider.getImageLoader();
 
         if (imageLoader == null) return;
@@ -512,7 +529,7 @@ public abstract class BaseTweetView extends LinearLayout {
         avatarView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Intent intent = new Intent(getContext(),LinkWebViewActivity.class);
+                final Intent intent = new Intent(getContext(), LinkWebViewActivity.class);
                 String openUrl;
                 if (displayTweet != null) {
                     if (displayTweet.user != null) {
@@ -529,7 +546,7 @@ public abstract class BaseTweetView extends LinearLayout {
         });
     }
 
-    public  void setContentDescription(Tweet displayTweet) {
+    public void setContentDescription(Tweet displayTweet) {
         if (!TweetUtils.isTweetResolvable(displayTweet)) {
             setContentDescription(getResources().getString(R.string.tw__loading_tweet));
             return;
@@ -554,6 +571,7 @@ public abstract class BaseTweetView extends LinearLayout {
     /**
      * LoadTweet will trigger a request to the Twitter API and hydrate the view with the result.
      * In the event of an error it will call the listener that was provided to setOnTwitterApiError.
+     *
      * @throws java.lang.IllegalStateException If there is no auth configured for the Twitter API
      */
     private void loadTweet() {
@@ -591,6 +609,7 @@ public abstract class BaseTweetView extends LinearLayout {
 
     /**
      * Toggles display of "Retweeted by" text based on status from the API.
+     *
      * @param tweet The status from the API, if it is a retweet show the "retweeted by" text
      */
     void showRetweetedBy(Tweet tweet) {
@@ -611,9 +630,9 @@ public abstract class BaseTweetView extends LinearLayout {
         final CharSequence tweetText = Utils.charSeqOrEmpty(getLinkifiedText(displayTweet));
         SpanClickHandler.enableClicksOnSpans(contentView);
         if (!TextUtils.isEmpty(tweetText)) {
-            if(displayTweet.entities.media == null){
+            if (displayTweet.entities.media == null) {
                 contentView.setTextSize(getResources().getDimension(R.dimen.tweet_view_text_size_without_media));
-            }else{
+            } else {
                 contentView.setTextSize(getResources().getDimension(R.dimen.tweet_view_text_size_with_media));
             }
             contentView.setText(tweetText);
@@ -629,7 +648,7 @@ public abstract class BaseTweetView extends LinearLayout {
      * @param displayTweet The unformatted Tweet
      * @return The linkified text with display url's subbed for t.co links
      */
-     CharSequence getLinkifiedText(Tweet displayTweet) {
+    CharSequence getLinkifiedText(Tweet displayTweet) {
         final FormattedTweetText formattedText = dependencyProvider.getTweetUi()
                 .getTweetRepository().formatTweetText(displayTweet);
 
@@ -701,10 +720,9 @@ public abstract class BaseTweetView extends LinearLayout {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.multiple_images_recycler_view);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         List<MediaEntity> mediaEntityList = new ArrayList<>();
-        MediaEntityAdapter mediaAdapter = new MediaEntityAdapter(getContext(), mediaEntityList,displayTweet,tweetMediaClickListener,mediaBgColor);
+        MediaEntityAdapter mediaAdapter = new MediaEntityAdapter(getContext(), mediaEntityList, displayTweet, tweetMediaClickListener, mediaBgColor);
         recyclerView.setAdapter(mediaAdapter);
-        ImageButton leftArrow = (ImageButton) findViewById(R.id.imageButton_left);
-        ImageButton rightArrow = (ImageButton) findViewById(R.id.imageButton_right);
+        final LinearLayout circlesList = (LinearLayout) findViewById(R.id.view_page_indicator);
 
 
         if (displayTweet.card != null && VineCardUtils.isVine(displayTweet.card)) {
@@ -723,42 +741,90 @@ public abstract class BaseTweetView extends LinearLayout {
 //            scribeCardImpression(displayTweet.id, vineCard);
         } else if (TweetMediaUtils.hasSupportedVideo(displayTweet)) {
             final ArrayList<MediaEntity> mediaEntity = TweetMediaUtils.getAllVideoEntities(displayTweet);
-//             set the image view to visible before setting via picasso placeholders into so
-//             measurements are done correctly, fixes a bug where the placeholder was a small square
-//             in the corner of the view
             mediaContainerView.setVisibility(ImageView.VISIBLE);
             mediaEntityList.addAll(mediaEntity);
             mediaAdapter.notifyDataSetChanged();
-            if(mediaEntity.size()>1){
-                leftArrow.setVisibility(VISIBLE);
-                rightArrow.setVisibility(VISIBLE);
-
-            }else{
-                leftArrow.setVisibility(GONE);
-                rightArrow.setVisibility(GONE);
-            }
+            setPageIndicatorView(mediaEntity, circlesList);
+            if(mediaEntity.size()>1)
+                setScrollListener(recyclerView,circlesList);
 
         } else if (TweetMediaUtils.hasPhoto(displayTweet)) {
             final ArrayList<MediaEntity> mediaEntity = TweetMediaUtils.getAllPhotoEntities(displayTweet);
-            // set the image view to visible before setting via picasso placeholders into so
-            // measurements are done correctly, fixes a bug where the placeholder was a small square
-            // in the corner of the view
             mediaContainerView.setVisibility(ImageView.VISIBLE);
             mediaEntityList.addAll(mediaEntity);
             mediaAdapter.notifyDataSetChanged();
-            if(mediaEntity.size()>1){
-                leftArrow.setVisibility(VISIBLE);
-                rightArrow.setVisibility(VISIBLE);
+            setPageIndicatorView(mediaEntity, circlesList);
+            if(mediaEntity.size()>1)
+                setScrollListener(recyclerView,circlesList);
 
-            }else{
-                leftArrow.setVisibility(GONE);
-                rightArrow.setVisibility(GONE);
-            }
         } else {
             mediaContainerView.setVisibility(ImageView.GONE);
         }
     }
 
+    private void setPageIndicatorView(ArrayList<MediaEntity> mediaEntity, LinearLayout circlesList) {
+        for (int i = 0; i < 4; i++) {
+            ImageView currentView = (ImageView) circlesList.getChildAt(i);
+            currentView.setVisibility(GONE);
+        }
+        for (int i = 0; i < mediaEntity.size(); i++) {
+            ImageView currentView = (ImageView) circlesList.getChildAt(i);
+            currentView.setVisibility(VISIBLE);
+        }
+
+    }
+
+    private void setScrollListener(RecyclerView recyclerView, final LinearLayout circlesList) {
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                int mCurrentPosition = Math.round((recyclerView.computeHorizontalScrollOffset() * 1.0f) / (recyclerView.getWidth() * 1.0f));
+                ImageView currentView = (ImageView) circlesList.getChildAt(mCurrentPosition);
+
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    currentView.setImageResource(R.drawable.ic_circle_filled);
+
+                } else {
+                    currentView.setImageResource(R.drawable.ic_circle_empty);
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+//                int position = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+//                ;
+//                View currentView = circlesList.getChildAt(position);
+//
+//                int lastPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+//                View lastView = circlesList.getChildAt(lastPosition);
+//                ImageView circle;
+//                if (dx>0) {
+//                    if (currentView != null && lastPosition != position) {
+//                        circle = (ImageView) currentView.findViewById(R.id.img);
+//                        circle.setImageResource(R.drawable.ic_circle_empty);
+//                    }
+//                    if (lastView != null && lastPosition != position) {
+//                        circle = (ImageView) lastView.findViewById(R.id.img);
+//                        circle.setImageResource(R.drawable.ic_circle_filled);
+//                    }
+//                }else if (dx<0){
+//                    if (currentView != null && lastPosition != position) {
+//                        circle = (ImageView) currentView.findViewById(R.id.img);
+//                        circle.setImageResource(R.drawable.ic_circle_filled);
+//                    }
+//                    if (lastView != null && lastPosition != position) {
+//                        circle = (ImageView) lastView.findViewById(R.id.img);
+//                        circle.setImageResource(R.drawable.ic_circle_empty);
+//                    }
+//                }
+            }
+        });
+
+    }
 
     protected double getAspectRatio(MediaEntity photoEntity) {
         if (photoEntity == null || photoEntity.sizes == null || photoEntity.sizes.medium == null ||
@@ -797,6 +863,7 @@ public abstract class BaseTweetView extends LinearLayout {
 
     /**
      * Enable or disable Tweet actions
+     *
      * @param enabled True to enable Tweet actions, false otherwise.
      */
     public void setTweetActionsEnabled(boolean enabled) {
@@ -820,8 +887,8 @@ public abstract class BaseTweetView extends LinearLayout {
                     if (tweetLinkClickListener != null) {
                         tweetLinkClickListener.onLinkClick(tweet, url);
                     } else {
-                        final Intent intent = new Intent(getContext(),LinkWebViewActivity.class);
-                        intent.putExtra("Url",url);
+                        final Intent intent = new Intent(getContext(), LinkWebViewActivity.class);
+                        intent.putExtra("Url", url);
                         //Intent.ACTION_VIEW, Uri.parse(url));
                         if (!IntentUtils.safeStartActivity(getContext(), intent)) {
                             Fabric.getLogger().e(TweetUi.LOGTAG,
