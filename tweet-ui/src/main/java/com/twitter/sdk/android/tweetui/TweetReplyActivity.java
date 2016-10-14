@@ -38,7 +38,6 @@ import com.twitter.sdk.android.core.models.Tweet;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 import retrofit.mime.TypedFile;
 
@@ -62,7 +61,7 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
     private LinearLayout actualTweetContainer;
     private TextView errorMessage;
     private ImageView imgViewFirst;
-    private TextView imgUrl;
+    private TextView imgUrlView;
     private ImageButton removeMediaButton;
 
     @Override
@@ -82,7 +81,7 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
         charCountView = (TextView) findViewById(R.id.text_view_char_count);
         errorMessage = (TextView) findViewById(R.id.textView_error_message);
         imgViewFirst = (ImageView) findViewById(R.id.image_view_1);
-        imgUrl = (TextView) findViewById(R.id.image_url);
+        imgUrlView = (TextView) findViewById(R.id.image_url);
         removeMediaButton = (ImageButton) findViewById(R.id.image_remove_button);
         Intent intent = getIntent();
         tweet = (Tweet) intent.getSerializableExtra("Tweet");
@@ -135,7 +134,7 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
 
                 }
                 imgViewFirst.setImageBitmap(thumbnail);
-                imgUrl.setText(filePath);
+                imgUrlView.setText(filePath);
             }
 //            else if (mimeType.startsWith("video")) {
 //
@@ -146,7 +145,7 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
                     ViewGroup parent = (ViewGroup) v.getParent();
                     ImageView imgView = (ImageView) parent.getChildAt(1);
                     imgView.setImageBitmap(null);
-                    imgUrl.setText("");
+                    imgUrlView.setText("");
                     parent.setVisibility(View.GONE);
 
                 }
@@ -180,18 +179,16 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
     public void replyToTweet(View view) {
         String replyText = null;
         try {
-            replyText = URLEncoder.encode(userInput.getText().toString().trim(), "UTF-8");
+            replyText = new String(userInput.getText().toString().trim().getBytes("UTF-8"), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             errorMessage.setVisibility(View.VISIBLE);
             //   errorMessage.setTextColor(getResources().getColor(android.R.color.holo_red_dark,null));
-
-
             errorMessage.setText("Error in encoding reply");
         }
-        String imgUrl = TweetReplyActivity.this.imgUrl.getText().toString();
+        String imageUrl = imgUrlView.getText().toString();
 
         if (replyText.length() != userScreenName.trim().length())
-            new ReplyTask(dependencyProvider, this).execute(replyText, imgUrl);
+            new ReplyTask(dependencyProvider, this).execute(replyText, imageUrl);
     }
 
     public void closeActivity(View v) {

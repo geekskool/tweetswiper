@@ -83,7 +83,7 @@ final public class TweetMediaUtils {
     static public ArrayList<MediaEntity> getAllPhotoEntities(Tweet tweet) {
         ArrayList<MediaEntity> mediaEntities = new ArrayList<>();
         final List<MediaEntity> mediaEntityList = getAllMediaEntities(tweet);
-        for (int i = mediaEntityList.size() - 1; i >= 0; i--) {
+        for (int i = 0;i<mediaEntityList.size(); i++) {
             final MediaEntity entity = mediaEntityList.get(i);
             if (entity.type != null && isPhotoType(entity)) {
                 mediaEntities.add(entity);

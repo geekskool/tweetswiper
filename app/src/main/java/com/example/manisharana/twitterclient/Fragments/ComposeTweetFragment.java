@@ -3,8 +3,10 @@ package com.example.manisharana.twitterclient.Fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +22,11 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 public class ComposeTweetFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
     private static final int CHAR_COUNT = 140;
+    private static final String TAG = ComposeTweetFragment.class.getSimpleName();
     private EditText tweetText;
     private Button sendTweetButton;
     private TextView charCountView;
@@ -37,7 +39,7 @@ public class ComposeTweetFragment extends Fragment implements View.OnClickListen
         View rootView = inflater.inflate(R.layout.fragment_compose_new_tweet, container, false);
         tweetText = (EditText) rootView.findViewById(R.id.edit_text_compose_tweet);
         tweetText.addTextChangedListener(this);
-        errorMsgView = (TextView) rootView.findViewById(R.id.textView_error_message);
+        errorMsgView = (TextView) rootView.findViewById(R.id.text_view_error_message);
         charCountView = (TextView) rootView.findViewById(R.id.text_view_char_count);
         sendTweetButton = (Button) rootView.findViewById(R.id.tw__compose_tweet_button);
         sendTweetButton.setOnClickListener(this);
@@ -51,24 +53,33 @@ public class ComposeTweetFragment extends Fragment implements View.OnClickListen
             String inputText = tweetText.getText().toString();
             if(inputText.length()>0 && !inputText.isEmpty()){
                 try {
-                    String encodedString = URLEncoder.encode(inputText, "UTF-8");
-                    Twitter.getApiClient().getStatusesService().update(encodedString, null, false, null, null, null, false, true, null, new Callback<Tweet>() {
+                    String encodedString = new String(inputText.getBytes("UTF-8"), "UTF-8");
+                    Twitter.getApiClient().getStatusesService().update(encodedString, null, true, null, null, null, false, true, null, new Callback<Tweet>() {
                         @Override
                         public void success(Result<Tweet> result) {
                             tweetText.setText("");
                             errorMsgView.setVisibility(View.VISIBLE);
-                            errorMsgView.setText("Tweet posted successfully");
+                            errorMsgView.setTextColor(ContextCompat.getColor(getActivity(), android.R.color.holo_green_light));
+                            errorMsgView.setText(getActivity().getString(R.string.tweet_posted_successfully));
+                            //clear the data (text/ image) and set text message successful
                         }
-
                         @Override
                         public void failure(TwitterException exception) {
                             errorMsgView.setVisibility(View.VISIBLE);
-                            errorMsgView.setText("Error in posting tweet text");
+                            errorMsgView.setTextColor(ContextCompat.getColor(getActivity(), android.R.color.holo_red_dark));
+                            errorMsgView.setText(getActivity().getString(R.string.error_in_posting_tweet));
+
+                            Log.i(TAG,"Error in posting tweet"+exception.getMessage());
+
                         }
                     });
                 } catch (UnsupportedEncodingException e) {
                     errorMsgView.setVisibility(View.VISIBLE);
-                    errorMsgView.setText("Error in encoding tweet text");
+                    errorMsgView.setTextColor(ContextCompat.getColor(getActivity(), android.R.color.holo_red_dark));
+                    errorMsgView.setText(getActivity().getString(R.string.error_in_encoding));
+
+                    Log.i(TAG,"Error in encoding tweet text"+e.getMessage());
+
                 }
             }
         }
