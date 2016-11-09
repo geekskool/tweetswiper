@@ -59,14 +59,14 @@ public class ComposeTweetFragment extends Fragment implements View.OnClickListen
                         public void success(Result<Tweet> result) {
                             tweetText.setText("");
                             errorMsgView.setVisibility(View.VISIBLE);
-                            errorMsgView.setTextColor(ContextCompat.getColor(getActivity(), android.R.color.holo_green_light));
+                            errorMsgView.setTextColor(ContextCompat.getColor(getActivity(), R.color.holo_green_light));
                             errorMsgView.setText(getActivity().getString(R.string.tweet_posted_successfully));
                             //clear the data (text/ image) and set text message successful
                         }
                         @Override
                         public void failure(TwitterException exception) {
                             errorMsgView.setVisibility(View.VISIBLE);
-                            errorMsgView.setTextColor(ContextCompat.getColor(getActivity(), android.R.color.holo_red_dark));
+                            errorMsgView.setTextColor(ContextCompat.getColor(getActivity(), R.color.holo_red_dark));
                             errorMsgView.setText(getActivity().getString(R.string.error_in_posting_tweet));
 
                             Log.i(TAG,"Error in posting tweet"+exception.getMessage());
@@ -75,7 +75,7 @@ public class ComposeTweetFragment extends Fragment implements View.OnClickListen
                     });
                 } catch (UnsupportedEncodingException e) {
                     errorMsgView.setVisibility(View.VISIBLE);
-                    errorMsgView.setTextColor(ContextCompat.getColor(getActivity(), android.R.color.holo_red_dark));
+                    errorMsgView.setTextColor(ContextCompat.getColor(getActivity(), R.color.holo_red_dark));
                     errorMsgView.setText(getActivity().getString(R.string.error_in_encoding));
 
                     Log.i(TAG,"Error in encoding tweet text"+e.getMessage());

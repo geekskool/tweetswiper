@@ -12,10 +12,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            android:id="@+id/image_url"/>
+            android:id="@+id/text_view_selected_media_url"/>
         <ImageView
             android:layout_width="wrap_content"
-            android:id="@+id/image_view_1"
+            android:id="@+id/image_view_selected_media"
             android:layout_margin="10dp"
             android:layout_height="wrap_content" />
         <ImageButton
@@ -28,19 +28,19 @@
             android:background="@drawable/ic_navigation_close"/>
     </FrameLayout>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:id="@+id/image_view_2"
-        android:layout_weight="1"
-        android:layout_height="wrap_content" />
-    <ImageView
-        android:layout_width="wrap_content"
-        android:id="@+id/image_view_3"
-        android:layout_weight="1"
-        android:layout_height="wrap_content" />
-    <ImageView
-        android:layout_width="wrap_content"
-        android:id="@+id/image_view_4"
-        android:layout_weight="1"
-        android:layout_height="wrap_content" />
+    <!--<ImageView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:id="@+id/image_view_2"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_height="wrap_content" />-->
+    <!--<ImageView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:id="@+id/image_view_3"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_height="wrap_content" />-->
+    <!--<ImageView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:id="@+id/image_view_4"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_height="wrap_content" />-->
 </LinearLayout>

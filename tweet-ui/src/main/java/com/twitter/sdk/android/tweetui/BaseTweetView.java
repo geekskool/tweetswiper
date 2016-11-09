@@ -744,18 +744,30 @@ public abstract class BaseTweetView extends LinearLayout {
             mediaContainerView.setVisibility(ImageView.VISIBLE);
             mediaEntityList.addAll(mediaEntity);
             mediaAdapter.notifyDataSetChanged();
-            setPageIndicatorView(mediaEntity, circlesList);
-            if(mediaEntity.size()>1)
+            if(mediaEntity.size()>1) {
+                setPageIndicatorView(mediaEntity, circlesList);
                 setScrollListener(recyclerView,circlesList);
+            }else{
+                for (int i = 0; i < 4; i++) {
+                    ImageView currentView = (ImageView) circlesList.getChildAt(i);
+                    currentView.setVisibility(GONE);
+                }
+            }
 
         } else if (TweetMediaUtils.hasPhoto(displayTweet)) {
             final ArrayList<MediaEntity> mediaEntity = TweetMediaUtils.getAllPhotoEntities(displayTweet);
             mediaContainerView.setVisibility(ImageView.VISIBLE);
             mediaEntityList.addAll(mediaEntity);
             mediaAdapter.notifyDataSetChanged();
-            setPageIndicatorView(mediaEntity, circlesList);
-            if(mediaEntity.size()>1)
+            if(mediaEntity.size()>1) {
+                setPageIndicatorView(mediaEntity, circlesList);
                 setScrollListener(recyclerView,circlesList);
+            }else{
+                for (int i = 0; i < 4; i++) {
+                    ImageView currentView = (ImageView) circlesList.getChildAt(i);
+                    currentView.setVisibility(GONE);
+                }
+            }
 
         } else {
             mediaContainerView.setVisibility(ImageView.GONE);
@@ -763,10 +775,6 @@ public abstract class BaseTweetView extends LinearLayout {
     }
 
     private void setPageIndicatorView(ArrayList<MediaEntity> mediaEntity, LinearLayout circlesList) {
-        for (int i = 0; i < 4; i++) {
-            ImageView currentView = (ImageView) circlesList.getChildAt(i);
-            currentView.setVisibility(GONE);
-        }
         for (int i = 0; i < mediaEntity.size(); i++) {
             ImageView currentView = (ImageView) circlesList.getChildAt(i);
             currentView.setVisibility(VISIBLE);

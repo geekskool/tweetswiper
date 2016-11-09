@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="tweet_view_text_size_with_media">14sp</dimen>
-    <dimen name="tweet_view_text_size_without_media">16sp</dimen>
+    <dimen name="tweet_view_text_size_with_media">12sp</dimen>
+    <dimen name="tweet_view_text_size_without_media">14sp</dimen>
 </resources>

@@ -19,13 +19,8 @@ public class RetweetReplaceCallback extends Callback<Tweet> {
 
     @Override
     public void success(Result<Tweet> result) {
-        if(result.data.retweeted){
-            tweetRepository.updateCache(result.data.retweetedStatus);
-            baseTweetView.setTweet(result.data.retweetedStatus);
-        }else{
-            tweetRepository.updateCache(result.data);
-            baseTweetView.setTweet(result.data);
-        }
+        tweetRepository.updateCache(result.data);
+        baseTweetView.setTweet(result.data);
         if (cb != null) {
             cb.success(result);
         }

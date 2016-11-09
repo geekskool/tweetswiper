@@ -38,4 +38,5 @@
     <color name="colorPrimary">#FFA500</color>
     <color name="orangeLight">#EBBD63</color>
     <color name="colorAccent">#1DC6FF</color>
+    <color name="holo_red_dark">#ffcc0000</color>
 </resources>

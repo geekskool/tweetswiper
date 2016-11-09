@@ -60,6 +60,11 @@ public class TimelineDelegate<T extends Identifiable> {
         this(timeline, null, null,pagerAdapter);
     }
 
+    public TimelineDelegate(Timeline<T> timeline,DataSetObservable observable, List<T> items) {
+        this(timeline, observable, items,null);
+    }
+
+
     TimelineDelegate(Timeline<T> timeline, DataSetObservable observable, List<T> items, PagerAdapter pagerAdapter) {
         if (timeline == null) {
             throw new IllegalArgumentException("Timeline must not be null");
