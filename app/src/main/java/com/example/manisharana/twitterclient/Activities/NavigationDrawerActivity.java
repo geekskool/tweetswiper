@@ -44,16 +44,19 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         Intent intent = getIntent();
+        User currentUser = (User) intent.getSerializableExtra("Current User");
+
         if (navigationView != null) {
             selectDrawerItem(navigationView.getMenu().getItem(0));
             navHeaderView = (RelativeLayout) navigationView.getHeaderView(0);
         }
-        User currentUser = (User) intent.getSerializableExtra("Current User");
+
         if(currentUser == null){
             getUserAndPopulateNavHeader(navHeaderView);
         }else{
             populateNavHeader(navHeaderView,currentUser);
         }
+
         setUpNavigationDrawer(navigationView);
 
     }
@@ -87,6 +90,8 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         if (imageLoader == null) return;
 
         final String url;
+        final String bannerUrl;
+
         if (currentUser.profileImageUrlHttps == null) {
             url = null;
         } else {
@@ -95,23 +100,21 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
         imageLoader.load(url).placeholder(R.drawable.ic_tw_default_user_img).into(usrImg);
 
-        if(currentUser.screenName !=null){
-
+        if(currentUser.screenName !=null)
             usrScreenName.setText(UserUtils.formatScreenName(currentUser.screenName));
-        }
 
-        if(currentUser.name !=null){
+
+        if(currentUser.name !=null)
             usrName.setText(currentUser.name);
-        }
 
-        final String bannelUrl;
+
         if (currentUser.profileImageUrlHttps == null) {
-            bannelUrl = null;
+            bannerUrl = null;
         } else {
-            bannelUrl = currentUser.profileBannerUrl+"/mobile"; //UserUtils.getProfileImageUrlHttps(currentUser, UserUtils.AvatarSize.REASONABLY_SMALL);
+            bannerUrl = currentUser.profileBannerUrl+"/mobile";
         }
 
-        imageLoader.load(bannelUrl).into(profileBannerImg);
+        imageLoader.load(bannerUrl).into(profileBannerImg);
 
     }
 
@@ -121,33 +124,36 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         String userSession = TweetUtils.getUserSessionDetails(this);
 
         switch (item.getItemId()) {
+
             case R.id.nav_home:
-                if (userSession.isEmpty()) {
+                if (userSession.isEmpty())
                     fragmentClass = LoginAgainFragment.class;
-                } else {
+                 else
                     fragmentClass = TweetListFragment.class;
-                }
                 break;
+
             case R.id.nav_send_tweet:
                 if (!item.isChecked()) {
-                    if (userSession.isEmpty()) {
+                    if (userSession.isEmpty())
                         fragmentClass = LoginAgainFragment.class;
-                    } else {
+                     else
                         fragmentClass = ComposeTweetFragment.class;
-                    }
                 }
                 break;
+
             case R.id.nav_about_us:
                 if (!item.isChecked()) {
                     fragmentClass = AboutUsFragment.class;
                 }
                 break;
+
             case R.id.nav_logout:
                 if (!item.isChecked()) {
                     TweetUtils.removeUserSessionDetails(this);
                     fragmentClass = LoginAgainFragment.class;
                 }
                 break;
+
             default:
                 fragmentClass = TweetListFragment.class;
         }
@@ -171,7 +177,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 selectDrawerItem(item);
-                return false;
+                return true;
             }
         });
     }

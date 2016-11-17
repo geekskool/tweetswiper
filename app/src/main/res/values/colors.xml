@@ -7,4 +7,5 @@
     <color name="colorBackgroundLight">#F9FAFA</color>
     <color name="colorBackgroundDark">#323A45</color>
     <color name="holo_green_light">#ff99cc00</color>
+    <color name="logout_bg_color">#113B51</color>
 </resources>

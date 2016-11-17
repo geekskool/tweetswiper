@@ -58,17 +58,13 @@ final class TweetTextLinkifier {
             return tweetText.text;
         }
 
-        final SpannableStringBuilder spannable
-                = new SpannableStringBuilder(tweetText.text);
+        final SpannableStringBuilder spannable = new SpannableStringBuilder(tweetText.text);
         final List<FormattedMentionEntity> mentions = tweetText.userMentions;
-
         final List<FormattedHashtagEntity> tags = tweetText.hashTags;
-
         final List<FormattedUrlEntity> urls = tweetText.urlEntities;
-
-        final List<FormattedMediaEntity> media
-                = tweetText.mediaEntities;
+        final List<FormattedMediaEntity> media = tweetText.mediaEntities;
         final FormattedMediaEntity lastPhoto;
+
         if (stripLastPhotoEntity) {
             lastPhoto = getLastPhotoEntity(tweetText);
         } else {
@@ -81,7 +77,7 @@ final class TweetTextLinkifier {
          */
         final List<FormattedUrlEntity> combined = mergeAndSortEntities(urls, media);
 
-        addUrlEntities(spannable, combined, mentions,tags, lastPhoto, listener, linkColor, linkHighlightColor);
+        addSpannnableEntities(spannable, combined, mentions, tags, lastPhoto, listener, linkColor, linkHighlightColor);
         return spannable;
     }
 
@@ -117,7 +113,8 @@ final class TweetTextLinkifier {
 
     /**
      * Swaps display urls in for t.co urls and adjusts the remaining entity indices.
-     *  @param spannable          The final formatted text that we are building
+     *
+     * @param spannable          The final formatted text that we are building
      * @param entities           The combined list of media and url entities
      * @param mentions
      * @param tags
@@ -126,11 +123,50 @@ final class TweetTextLinkifier {
      * @param linkColor          The link color
      * @param linkHighlightColor The link background color when pressed
      */
-    private static void addUrlEntities(final SpannableStringBuilder spannable,
-                                       final List<FormattedUrlEntity> entities,
-                                       List<FormattedMentionEntity> mentions, List<FormattedHashtagEntity> tags, final FormattedMediaEntity lastPhoto,
-                                       final LinkClickListener listener, final int linkColor, final int linkHighlightColor) {
-        if (entities == null || entities.isEmpty()) return;
+    private static void addSpannnableEntities(final SpannableStringBuilder spannable,
+                                              final List<FormattedUrlEntity> entities,
+                                              List<FormattedMentionEntity> mentions, List<FormattedHashtagEntity> tags, final FormattedMediaEntity lastPhoto,
+                                              final LinkClickListener listener, final int linkColor, final int linkHighlightColor) {
+
+        spanUrlEntities(spannable, entities, listener, linkColor, linkHighlightColor);
+        spanMentionEntities(spannable, mentions, listener, linkColor, linkHighlightColor);
+        spanHashtagsEntities(spannable, tags, listener, linkColor, linkHighlightColor);
+    }
+
+    private static void spanHashtagsEntities(SpannableStringBuilder spannable, List<FormattedHashtagEntity> tags, final LinkClickListener listener, final int linkColor, final int linkHighlightColor) {
+        if (isEmpty(tags)) return;
+
+        for (final FormattedHashtagEntity hashtagEntity : tags) {
+            final CharacterStyle mentionSpan = new ClickableLinkSpan(linkHighlightColor, linkColor, false) {
+                @Override
+                public void onClick(View widget) {
+                    if (listener == null) return;
+                    listener.onUrlClicked(hashtagEntity.url);
+                }
+            };
+            spannable.setSpan(mentionSpan, hashtagEntity.start, hashtagEntity.end, 0);
+        }
+    }
+
+    private static void spanMentionEntities(SpannableStringBuilder spannable, List<FormattedMentionEntity> mentions, final LinkClickListener listener, final int linkColor, final int linkHighlightColor) {
+        if (isEmpty(mentions)) return;
+
+        for (final FormattedMentionEntity mentionEntity : mentions) {
+            final CharacterStyle mentionSpan = new ClickableLinkSpan(linkHighlightColor,
+                    linkColor, false) {
+                @Override
+                public void onClick(View widget) {
+                    if (listener == null) return;
+                    listener.onUrlClicked(mentionEntity.url);
+                }
+            };
+            spannable.setSpan(mentionSpan, mentionEntity.start, mentionEntity.end, 0);
+        }
+    }
+
+    private static void spanUrlEntities(SpannableStringBuilder spannable, List<FormattedUrlEntity> entities, final LinkClickListener listener, final int linkColor, final int linkHighlightColor) {
+
+        if (isEmpty(entities)) return;
 
         int offset = 0;
         int len;
@@ -143,12 +179,13 @@ final class TweetTextLinkifier {
                 // replace the last photo url with empty string, we can use the start indices as
                 // as simple check, since none of this will work anyways if we have overlapping
                 // entities
-                if (lastPhoto != null && lastPhoto.start == url.start) {
-                    spannable.replace(start, end, "");
-                    len = end - start;
-                    end -= len;
-                    offset += len;
-                } else if (!TextUtils.isEmpty(url.url)) {
+//                if (lastPhoto != null && lastPhoto.start == url.start) {
+//                    spannable.replace(start, end, "");
+//                    len = end - start;
+//                    end -= len;
+//                    offset += len;
+//                } else
+                if (!TextUtils.isEmpty(url.url)) {
                     spannable.replace(start, end, url.url);
                     len = end - (start + url.url.length());
                     end -= len;
@@ -167,31 +204,10 @@ final class TweetTextLinkifier {
                 }
             }
         }
+    }
 
-        for (final FormattedMentionEntity mentionEntity : mentions) {
-            final CharacterStyle mentionSpan = new ClickableLinkSpan(linkHighlightColor,
-                    linkColor, false) {
-                @Override
-                public void onClick(View widget) {
-                    if (listener == null) return;
-                      listener.onUrlClicked(mentionEntity.url);
-                }
-            };
-            spannable.setSpan(mentionSpan, mentionEntity.start, mentionEntity.end, 0);
-        }
-
-        for (final FormattedHashtagEntity hashtagEntity : tags) {
-            final CharacterStyle mentionSpan = new ClickableLinkSpan(linkHighlightColor,
-                    linkColor, false) {
-                @Override
-                public void onClick(View widget) {
-                    if (listener == null) return;
-                    listener.onUrlClicked(hashtagEntity.url);
-                }
-            };
-            spannable.setSpan(mentionSpan, hashtagEntity.start, hashtagEntity.end, 0);
-        }
-
+    private static boolean isEmpty(List entities) {
+        return entities == null || entities.isEmpty();
     }
 
     private static FormattedMediaEntity getLastPhotoEntity(
