@@ -61,7 +61,7 @@ public class ComposeTweetFragment extends Fragment implements View.OnClickListen
                             errorMsgView.setVisibility(View.VISIBLE);
                             errorMsgView.setTextColor(ContextCompat.getColor(getActivity(), R.color.holo_green_light));
                             errorMsgView.setText(getActivity().getString(R.string.tweet_posted_successfully));
-                            //clear the data (text/ image) and set text message successful
+
                         }
                         @Override
                         public void failure(TwitterException exception) {

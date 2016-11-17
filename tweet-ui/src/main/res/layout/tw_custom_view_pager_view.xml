@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorBackgroundLight"
+        android:background="@color/tw__tweet_light_container_bg_color"
         android:orientation="vertical">
 
         <LinearLayout
@@ -36,6 +36,7 @@
             android:layout_weight=".90"
             android:visibility="gone"
             tools:visibility="visible"
+            android:background="@color/colorBackgroundLight"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -54,6 +55,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
                     android:id="@+id/textview_retweet_count"
                     android:textColor="@color/tw__medium_gray"
                     android:gravity="center"
@@ -87,6 +89,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
                     android:id="@+id/textview_like_count"
                     android:textColor="@color/tw__medium_gray"
                     android:gravity="center"

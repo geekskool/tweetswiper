@@ -13,4 +13,10 @@
     <string name="tweet_posted_successfully">Tweet posted successfully</string>
     <string name="error_in_posting_tweet">Error in posting tweet</string>
     <string name="error_in_encoding">Error in encoding tweet</string>
+    <string name="geekskool">Geekskool</string>
+    <string name="geekskool_intro">We are an organisation that helps student improve their programming skills through project based learning.It is a 3 month, full time, intensive, coding and training program held in Bangalore. TweetSwiper is one such initiative towards learning Android programming.</string>
+    <string name="geekskool_moto">We make programmers better.\n Let your code do the talking.</string>
+    <string name="app_suggestions">Any useful feeback/suggestion can be mailed at info@geekskool.com</string>
+    <string name="geekskool_made_with_love">Made with</string>
+    <string name="by_geekskool">by Geekskool</string>
 </resources>

@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.manisharana.twitterclient.R;
@@ -31,10 +32,10 @@ public class TweetListFragment extends Fragment {
 
     private CustomTweetViewAdapter adapter;
     private TextView mErrorTextView;
-    //  private LinearLayout mProgressBarContainer;
     private ViewPager tweetPage;
     private View mRootview;
     private TwitterSession.Serializer serializer;
+    private ProgressBar mProgressBar;
 
     @Nullable
     @Override
@@ -47,7 +48,7 @@ public class TweetListFragment extends Fragment {
         mRootview = inflater.inflate(R.layout.tweet_list_view, container, false);
         tweetPage = (ViewPager) mRootview.findViewById(R.id.view_pager_tweet_list);
         mErrorTextView = (TextView) mRootview.findViewById(R.id.text_view_error);
-        //      mProgressBarContainer = (LinearLayout)mRootview.findViewById(R.id.progress_bar_container);
+        mProgressBar = (ProgressBar)mRootview.findViewById(R.id.progress_bar_tweet_data);
 
         HomeTimeline homeTimeLine = new HomeTimeline.Builder().userId(userSession.getUserId()).includeReplies(false).includeRetweets(true).maxItemsPerRequest(30).build();
 
@@ -62,8 +63,8 @@ public class TweetListFragment extends Fragment {
 
             @Override
             public void failure(TwitterException exception) {
+                hideProgressBar();
                 mErrorTextView.setText(ERROR_MSG);
-                //            hideProgressBar();
             }
         });
 
@@ -71,8 +72,7 @@ public class TweetListFragment extends Fragment {
     }
 
     private void hideProgressBar() {
-
-        //    mProgressBarContainer.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.GONE);
     }
 
     private boolean isNetworkAvailable() {

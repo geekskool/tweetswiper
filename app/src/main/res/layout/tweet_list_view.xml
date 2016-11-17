@@ -1,34 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView android:id="@+id/text_view_error"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal|center_vertical"
-        tools:text="No Tweets"/>
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:gravity="center"-->
-        <!--android:id="@+id/progress_bar_container"-->
-        <!--android:layout_height="match_parent">-->
-        <!--<ProgressBar-->
-            <!--style="?android:attr/progressBarStyleLarge"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:indeterminate="true"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/progress_bar_tweet_data" />-->
-    <!--</LinearLayout>-->
-
-
+    <ProgressBar
+        android:id="@+id/progress_bar_tweet_data"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="true" />
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager_tweet_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="#e1e8ed"
-        android:dividerHeight="1dp"
-        android:drawSelectorOnTop="false"/>
-</LinearLayout>
+        android:layout_height="match_parent" />
+    <TextView
+        android:id="@+id/text_view_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        tools:text="No Tweets" />
+
+</RelativeLayout>

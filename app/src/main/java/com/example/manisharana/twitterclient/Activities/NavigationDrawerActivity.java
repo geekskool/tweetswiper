@@ -35,7 +35,6 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private RelativeLayout navHeaderView;
     private String TAG = NavigationDrawerActivity.class.getSimpleName();
-    private TwitterSession.Serializer serializer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,8 +61,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     }
 
     private void getUserAndPopulateNavHeader(final RelativeLayout navHeaderView) {
-        serializer = new TwitterSession.Serializer();
-        TwitterSession userSession = serializer.deserialize(TweetUtils.getUserSessionDetails(this));
+        TwitterSession userSession = new TwitterSession.Serializer().deserialize(TweetUtils.getUserSessionDetails(this));
 
         Twitter.getApiClient(userSession).getAccountService().verifyCredentials(true, false, new Callback<User>() {
             @Override
@@ -120,6 +118,25 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
     private void selectDrawerItem(MenuItem item) {
         Fragment fragment = null;
+        Class fragmentClass;
+
+        fragmentClass = getFragmentClass(item);
+
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        item.setChecked(true);
+        drawerLayout.closeDrawers();
+
+    }
+
+    private Class getFragmentClass(MenuItem item) {
         Class fragmentClass = null;
         String userSession = TweetUtils.getUserSessionDetails(this);
 
@@ -157,19 +174,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
             default:
                 fragmentClass = TweetListFragment.class;
         }
-
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-        item.setChecked(true);
-        drawerLayout.closeDrawers();
-
+        return fragmentClass;
     }
 
     private void setUpNavigationDrawer(NavigationView navigationView) {

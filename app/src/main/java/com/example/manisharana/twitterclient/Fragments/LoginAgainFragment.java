@@ -31,6 +31,7 @@ public class LoginAgainFragment extends Fragment implements View.OnClickListener
         if(v==loginAgainLater){
             Intent intent = new Intent(getActivity(), MainActivity.class);
             startActivity(intent);
+            getActivity().finish();
         }
     }
 }

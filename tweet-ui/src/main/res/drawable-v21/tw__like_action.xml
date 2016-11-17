@@ -21,12 +21,12 @@
     <item
         android:id="@+id/heart_on"
         twitter:state_toggled_on="true">
-        <bitmap android:src="@drawable/tw__action_heart_on_default"/>
+        <bitmap android:src="@drawable/ic_tw__action_like_default"/>
     </item>
 
     <item
         android:id="@+id/heart_off">
-        <bitmap android:src="@drawable/tw__action_heart_off_default"/>
+        <bitmap android:src="@drawable/ic_tw__action_unlike_default"/>
     </item>
 
     <transition
