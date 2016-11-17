@@ -22,7 +22,6 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,18 +54,15 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
     private EditText userInput;
     private Tweet tweet;
     private String userScreenName;
-    private ImageButton cameraButton;
     private Button tweetButton;
     private TextView charCountView;
-    private LinearLayout actualTweetContainer;
     private TextView errorView;
     private ImageView imgViewSelectedMedia;
     private TextView imgUrlTextView;
-    private Bundle savedInstanceState;
     private ImageButton removeMediaButton;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstansavedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tweet_reply);
         rootView = findViewById(R.id.tweet_reply_container);
@@ -81,14 +77,14 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
     }
 
     private void populateReplyView() {
-        actualTweetContainer = (LinearLayout) findViewById(R.id.tweet_text_container);
+       // actualTweetContainer = (LinearLayout) findViewById(R.id.tweet_text_container);
         avatarView = (ImageView) findViewById(R.id.tw__tweet_author_avatar);
         header = (TextView) findViewById(R.id.text_view_reply_header);
         fullNameView = (TextView) findViewById(R.id.tw__tweet_author_full_name);
         contentView = (TextView) findViewById(R.id.tw__tweet_text);
         timestampView = (TextView) findViewById(R.id.tw__tweet_timestamp);
         userInput = (EditText) findViewById(R.id.edit_text_user_input_text);
-        cameraButton = (ImageButton) findViewById(R.id.tweet_camera_button);
+        //cameraButton = (ImageButton) findViewById(R.id.tweet_camera_button);
         tweetButton = (Button) findViewById(R.id.tw__tweet_reply_button);
         charCountView = (TextView) findViewById(R.id.text_view_char_count);
         errorView = (TextView) findViewById(R.id.textView_error_message);
@@ -142,40 +138,39 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
             String mimeType = cursor.getString(mimeTypeColumnIndex);
             long fileSize = cursor.getLong(sizeColumnIndex);
             cursor.close();
-            String fp = filePath.substring(filePath.lastIndexOf(".") + 1);
-            if (isValidImage(fp, mimeType, fileSize)) {
-                Bitmap thumbnail = MediaStore.Images.Thumbnails.getThumbnail(getContentResolver(), imgId, MediaStore.Images.Thumbnails.MINI_KIND, null);
-                if (thumbnail == null) {
-                    Toast.makeText(getApplicationContext(),
-                            "Failed to get thumbnail for our image.",
-                            Toast.LENGTH_SHORT).show();
-
-                }
-                FrameLayout parent = (FrameLayout) imgViewSelectedMedia.getParent();
-                parent.setVisibility(View.VISIBLE);
-                imgViewSelectedMedia.setImageBitmap(thumbnail);
-                imgUrlTextView.setText(filePath);
-
-                removeMediaButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ViewGroup parent = (ViewGroup) v.getParent();
-                        ImageView imgView = (ImageView) parent.getChildAt(1);
-                        imgView.setImageBitmap(null);
-                        imgUrlTextView.setText("");
-                        parent.setVisibility(View.GONE);
-
-                    }
-                });
-            }
+            fillMediaContainer(imgId, filePath, mimeType, fileSize);
 
         } else {
             Toast.makeText(this, "You have selected invalid image", Toast.LENGTH_LONG).show();
-
         }
+    }
 
-        // Convert file path into bitmap image using below line.
-        //Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+    private void fillMediaContainer(long imgId, String filePath, String mimeType, long fileSize) {
+        String fp = filePath.substring(filePath.lastIndexOf(".") + 1);
+        if (isValidImage(fp, mimeType, fileSize)) {
+            Bitmap thumbnail = MediaStore.Images.Thumbnails.getThumbnail(getContentResolver(), imgId, MediaStore.Images.Thumbnails.MINI_KIND, null);
+            if (thumbnail == null) {
+                Toast.makeText(getApplicationContext(),
+                        "Failed to get thumbnail for our image.",
+                        Toast.LENGTH_SHORT).show();
+            }
+            FrameLayout parent = (FrameLayout) imgViewSelectedMedia.getParent();
+            parent.setVisibility(View.VISIBLE);
+            imgViewSelectedMedia.setImageBitmap(thumbnail);
+            imgUrlTextView.setText(filePath);
+
+            removeMediaButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ViewGroup parent = (ViewGroup) v.getParent();
+                    ImageView imgView = (ImageView) parent.getChildAt(1);
+                    imgView.setImageBitmap(null);
+                    imgUrlTextView.setText("");
+                    parent.setVisibility(View.GONE);
+
+                }
+            });
+        }
     }
 
     private void populateTweetView(Tweet tweet) {
@@ -199,16 +194,15 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
         String replyText = null;
         try {
             replyText = new String(userInput.getText().toString().trim().getBytes("UTF-8"), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-
-            errorView.setVisibility(View.VISIBLE);
-            errorView.setTextColor(ContextCompat.getColor(this, R.color.holo_red_dark));
-            errorView.setText("Error in encoding reply");
+        } catch (UnsupportedEncodingException exception) {
+            Log.i("TweetReplyActivity", "Exception: " + exception);
+            setErrorMessage("Error in encoding text");
         }
         String imageUrl = imgUrlTextView.getText().toString();
 
-        if (replyText.length() != userScreenName.trim().length())
+        if (replyText.length() != userScreenName.trim().length()) {
             new ReplyTask(dependencyProvider, this).execute(replyText, imageUrl);
+        }
     }
 
     public void closeActivity(View v) {
@@ -239,6 +233,12 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
     @Override
     public void afterTextChanged(Editable s) {
 
+    }
+
+    private void setErrorMessage(String errorMessage) {
+        errorView.setVisibility(View.VISIBLE);
+        errorView.setTextColor(ContextCompat.getColor(this, R.color.holo_red_dark));
+        errorView.setText(errorMessage);
     }
 
 
@@ -286,14 +286,16 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
 
                         @Override
                         public void failure(TwitterException exception) {
-                            setErrorMessage("Error in posting tweet", exception);
+                            Log.i("TweetReplyActivity", "Exception: " + exception);
+                            setErrorMessage("Error in posting tweet");
                         }
                     });
                 }
 
                 @Override
                 public void failure(TwitterException exception) {
-                    setErrorMessage("Error in uploading image", exception);
+                    Log.i("TweetReplyActivity", "Exception: " + exception);
+                    setErrorMessage("Error in uploading image");
                 }
             });
         }
@@ -307,16 +309,10 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
 
                 @Override
                 public void failure(TwitterException exception) {
-                    setErrorMessage("Error in posting tweet", exception);
+                    Log.i("TweetReplyActivity", "Exception: " + exception);
+                    setErrorMessage("Error in posting tweet");
                 }
             });
-        }
-
-        private void setErrorMessage(String errorMessage, TwitterException exception) {
-            Log.i("TweetReplyActivity", "Exception: " + exception);
-            errorView.setVisibility(View.VISIBLE);
-            errorView.setTextColor(ContextCompat.getColor(context, R.color.holo_red_dark));
-            errorView.setText(errorMessage);
         }
 
     }
