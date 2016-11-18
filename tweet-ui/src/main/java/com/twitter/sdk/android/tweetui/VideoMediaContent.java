@@ -2,9 +2,8 @@ package com.twitter.sdk.android.tweetui;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.provider.MediaStore;
 
-public class ImageMediaContent implements IMediaContent {
+public class VideoMediaContent implements IMediaContent{
 
     private static final long ALLOWED_FILE_SIZE = 3 * 1024 * 1024;
 
@@ -17,7 +16,7 @@ public class ImageMediaContent implements IMediaContent {
 
     @Override
     public Bitmap getThumbnail(Activity activity, long mediaId) {
-        return MediaStore.Images.Thumbnails.getThumbnail(activity.getContentResolver(), mediaId, MediaStore.Video.Thumbnails.MINI_KIND, null);
+        return null;
     }
 
     private boolean validFileExt(String extension) {
@@ -25,5 +24,4 @@ public class ImageMediaContent implements IMediaContent {
             return true;
         return false;
     }
-
 }

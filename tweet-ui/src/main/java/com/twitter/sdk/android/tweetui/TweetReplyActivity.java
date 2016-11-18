@@ -95,8 +95,7 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
 
     public void pickPhoto(View view) {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        //   intent.setType("image/* video/*");
-        intent.setType("image/*");
+        intent.setType("image/* video/* gif/*");
         startActivityForResult(Intent.createChooser(intent, "Select Media"), SELECT_PICTURE);
     }
 
@@ -110,21 +109,9 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
         }
     }
 
-    private boolean isValidImage(String extension, String mimeType, Long fileSize) {
-        if (fileSize <= ALLOWED_FILE_SIZE && mimeType.startsWith("image") && validFileExt(extension))
-            return true;
-        return false;
-    }
-
-    private boolean validFileExt(String extension) {
-        if (extension.equals("png") || extension.equals("jpg") || extension.equals("webp"))
-            return true;
-        return false;
-    }
-
     private void verifyDataAndFillView(Uri data) {
 
-        String[] projection = {MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA, MediaStore.Images.Media.MIME_TYPE, MediaStore.Images.Media.SIZE};
+        String[] projection = {MediaStore.MediaColumns._ID, MediaStore.MediaColumns.DATA, MediaStore.MediaColumns.MIME_TYPE, MediaStore.MediaColumns.SIZE};
         Cursor cursor = getContentResolver().query(data, projection, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
@@ -147,8 +134,11 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
 
     private void fillMediaContainer(long imgId, String filePath, String mimeType, long fileSize) {
         String fp = filePath.substring(filePath.lastIndexOf(".") + 1);
-        if (isValidImage(fp, mimeType, fileSize)) {
-            Bitmap thumbnail = MediaStore.Images.Thumbnails.getThumbnail(getContentResolver(), imgId, MediaStore.Images.Thumbnails.MINI_KIND, null);
+        IMediaContent mediaInstance = MediaContentHandler.getMediaInstance(mimeType);
+
+        if (mediaInstance.isValidMedia(fp, mimeType, fileSize)) {
+            Bitmap thumbnail = mediaInstance.getThumbnail(this,imgId);
+                   // MediaStore.Images.Thumbnails.getThumbnail(getContentResolver(), imgId, MediaStore.Video.Thumbnails.MINI_KIND, null);
             if (thumbnail == null) {
                 Toast.makeText(getApplicationContext(),
                         "Failed to get thumbnail for our image.",
