@@ -1,5 +1,6 @@
 package com.example.manisharana.twitterclient.Fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,8 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.manisharana.twitterclient.Activities.TweetListActivity;
+import com.example.manisharana.twitterclient.Activities.NavigationDrawerActivity;
 import com.example.manisharana.twitterclient.R;
+import com.example.manisharana.twitterclient.TweetUtils;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -20,10 +22,11 @@ import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.twitter.sdk.android.core.models.User;
 
-public class TwitterLoginFragment extends Fragment  implements View.OnClickListener {
+public class TwitterLoginFragment extends Fragment implements View.OnClickListener {
 
     private Button mloginButton;
     private TwitterAuthClient mTwitterAuthClient;
+    private TwitterSession.Serializer serializer;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,17 +38,31 @@ public class TwitterLoginFragment extends Fragment  implements View.OnClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View rootView = inflater.inflate(R.layout.twitter_login_view,container,false);
+        View rootView = inflater.inflate(R.layout.twitter_login_view, container, false);
         mloginButton = (Button) rootView.findViewById(R.id.login_button);
+        serializer = new TwitterSession.Serializer();
+        TwitterSession userSession = serializer.deserialize(TweetUtils.getUserSessionDetails(getActivity()));
 
-        mloginButton.setOnClickListener(this);
+        if (userSession != null) {
+            Intent intent = new Intent(getActivity(), NavigationDrawerActivity.class);
+            startActivity(intent);
+            getActivity().finish();
+
+        } else {
+            mloginButton.setVisibility(View.VISIBLE);
+            mloginButton.setOnClickListener(this);
+        }
         return rootView;
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mTwitterAuthClient.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && data != null)
+            mTwitterAuthClient.onActivityResult(requestCode, resultCode, data);
+        else{
+          //  mloginButton.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -56,25 +73,22 @@ public class TwitterLoginFragment extends Fragment  implements View.OnClickListe
             @Override
             public void success(Result<TwitterSession> result) {
                 session = Twitter.getSessionManager().getActiveSession();
-                String output = "Status: " +
-                        "Your login was successful " +
-                        session.getAuthToken() +
-                        "\nAuth Token Received: " +
-                        result.data.getAuthToken().token;
-                Twitter.getApiClient(session).getAccountService().verifyCredentials(true, false).enqueue(new Callback<User>() {
+                TweetUtils.saveUserSessionDetails(getActivity(), serializer.serialize(session));
+                Twitter.getApiClient(session).getAccountService().verifyCredentials(true, false, new Callback<User>() {
                     @Override
                     public void success(Result<User> result) {
-                        String output = "Status: " +
-                                "Your login was successful " +
-                                result.data.name;
                         mloginButton.setVisibility(View.GONE);
                         Intent intent = getIntentData();
+                        intent.putExtra("Current User",result.data);
                         startActivity(intent);
+                        getActivity().finish();
                     }
 
                     @Override
                     public void failure(TwitterException exception) {
-                        Log.i("MainActivity","Errorrr in getting user details");
+                        mloginButton.setVisibility(View.VISIBLE);
+                        Log.i("MainActivity", "Error in getting user details");
+                        TweetUtils.showErrorDialog(getActivity(), "Error During Login");
                     }
                 });
 
@@ -83,13 +97,18 @@ public class TwitterLoginFragment extends Fragment  implements View.OnClickListe
 
             @Override
             public void failure(TwitterException exception) {
-                Log.i("MainActivity","Errorrr in getting session details");
+                mloginButton.setVisibility(View.VISIBLE);
+                Log.i("MainActivity", "Error in getting session details");
+                TweetUtils.showErrorDialog(getActivity(), "Error During Login");
             }
         });
+        mloginButton.setVisibility(View.GONE);
+
     }
 
     private Intent getIntentData() {
-        return new Intent(getActivity(), TweetListActivity.class);
+        return new Intent(getActivity(), NavigationDrawerActivity.class);
     }
+
 
 }

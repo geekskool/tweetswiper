@@ -1,5 +1,22 @@
 <resources>
-    <string name="app_name">TwitterClient</string>
-    <string name="tweets">Tweets</string>
+    <string name="app_name">TweetSwiper</string>
+    <string name="tweets">Compose tweet</string>
     <string name="login_with_twitter">Log in with Twitter</string>
+    <string name="reply_to">Reply to</string>
+    <string name="home">Home</string>
+    <string name="about_us">About us</string>
+    <string name="logout">Logout</string>
+    <string name="compose_new_tweet">Compose new tweet</string>
+    <string name="login_again">Login again</string>
+    <string name="you_are_logged_out">You have logged out successfully.\nPlease login to continue</string>
+    <string name="what_happening">//Right now it only supports text</string>
+    <string name="tweet_posted_successfully">Tweet posted successfully</string>
+    <string name="error_in_posting_tweet">Error in posting tweet</string>
+    <string name="error_in_encoding">Error in encoding tweet</string>
+    <string name="geekskool">Geekskool</string>
+    <string name="geekskool_intro">We are an organisation that helps student improve their programming skills through project based learning.It is a 3 month, full time, intensive, coding and training program held in Bangalore. TweetSwiper is one such initiative towards learning Android programming.</string>
+    <string name="geekskool_moto">We make programmers better.\n Let your code do the talking.</string>
+    <string name="app_suggestions">Any useful feeback/suggestion can be mailed at info@geekskool.com</string>
+    <string name="geekskool_made_with_love">Made with</string>
+    <string name="by_geekskool">by Geekskool</string>
 </resources>

@@ -1,0 +1,148 @@
+<!--
+  ~ Copyright (C) 2015 Twitter, Inc.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tw__tweet_view"
+    style="@style/tw__TweetContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tw__tweet_retweeted_by"
+        style="@style/tw__TweetRetweetedBy"
+        tools:text="retweeted by" />
+
+    <ImageView
+        android:id="@+id/tw__tweet_author_avatar"
+        style="@style/tw__TweetAvatar"
+        android:layout_below="@id/tw__tweet_retweeted_by"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tw__tweet_author_full_name"
+        style="@style/tw__TweetFullName"
+        android:layout_below="@id/tw__tweet_retweeted_by"
+        android:layout_toEndOf="@id/tw__tweet_author_avatar"
+        android:layout_toRightOf="@id/tw__tweet_author_avatar"
+        tools:text="Jack" />
+
+    <ImageView
+        android:id="@+id/tw__tweet_author_verified"
+        style="@style/tw__TweetVerifiedCheck"
+        android:layout_alignBottom="@id/tw__tweet_author_full_name"
+        android:layout_toEndOf="@id/tw__tweet_author_full_name"
+        android:layout_toRightOf="@id/tw__tweet_author_full_name"
+        android:visibility="gone"
+        tools:ignore="ContentDescription"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/tw__twitter_logo"
+        style="@style/tw__TwitterLogo"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/tw__tweet_retweeted_by"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tw__tweet_author_screen_name"
+        style="@style/tw__TweetScreenName"
+        android:layout_alignBaseline="@+id/tw__tweet_author_avatar"
+        android:layout_alignBottom="@id/tw__tweet_author_avatar"
+        android:layout_below="@id/tw__tweet_author_full_name"
+        android:layout_toEndOf="@id/tw__tweet_author_avatar"
+        android:layout_toRightOf="@id/tw__tweet_author_avatar"
+        tools:text="\@jack" />
+
+    <TextView
+        android:id="@+id/tw__tweet_timestamp"
+        style="@style/tw__TweetTimestamp"
+        android:layout_alignBottom="@id/tw__tweet_author_screen_name"
+        android:layout_below="@id/tw__tweet_author_full_name"
+        android:layout_toEndOf="@id/tw__tweet_author_screen_name"
+        android:layout_toRightOf="@id/tw__tweet_author_screen_name"
+        tools:text="• 03/21/2006" />
+
+    <FrameLayout
+        android:id="@+id/tw__tweet_media_container"
+        style="@style/tw__TweetMediaContainer"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tw__tweet_author_avatar"
+        android:layout_marginTop="15dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/multiple_images_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:id="@+id/view_page_indicator"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_gravity="bottom|center">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:id="@+id/img"
+                android:visibility="gone"
+                android:src="@drawable/ic_circle_filled"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:visibility="gone"
+                android:src="@drawable/ic_circle_empty"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:visibility="gone"
+                android:src="@drawable/ic_circle_empty"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:visibility="gone"
+                android:src="@drawable/ic_circle_empty"/>
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/tw__tweet_text"
+        style="@style/tw__TweetText"
+        android:layout_below="@id/tw__tweet_media_container"
+        android:visibility="gone"
+        tools:text="just setting up my twttr"
+        tools:visibility="visible" />
+
+    <View
+        android:id="@+id/bottom_separator"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tw__tweet_container_bottom_separator"
+        android:layout_below="@id/tw__tweet_text" />
+
+</RelativeLayout>
