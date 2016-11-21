@@ -1,6 +1,7 @@
 package com.twitter.sdk.android.tweetui;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -41,9 +42,8 @@ import retrofit.mime.TypedFile;
 
 public class TweetReplyActivity extends AppCompatActivity implements TextWatcher {
 
-    private static final int SELECT_PICTURE = 0;
+    private static final int SELECT_MEDIA = 0;
     private static final int CHAR_ALLOWED_COUNT = 140;
-    private static final long ALLOWED_FILE_SIZE = 3 * 1024 * 1024;
     private ImageView avatarView;
     private TextView fullNameView;
     private TextView contentView;
@@ -77,14 +77,12 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
     }
 
     private void populateReplyView() {
-       // actualTweetContainer = (LinearLayout) findViewById(R.id.tweet_text_container);
         avatarView = (ImageView) findViewById(R.id.tw__tweet_author_avatar);
         header = (TextView) findViewById(R.id.text_view_reply_header);
         fullNameView = (TextView) findViewById(R.id.tw__tweet_author_full_name);
         contentView = (TextView) findViewById(R.id.tw__tweet_text);
         timestampView = (TextView) findViewById(R.id.tw__tweet_timestamp);
         userInput = (EditText) findViewById(R.id.edit_text_user_input_text);
-        //cameraButton = (ImageButton) findViewById(R.id.tweet_camera_button);
         tweetButton = (Button) findViewById(R.id.tw__tweet_reply_button);
         charCountView = (TextView) findViewById(R.id.text_view_char_count);
         errorView = (TextView) findViewById(R.id.textView_error_message);
@@ -96,7 +94,7 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
     public void pickPhoto(View view) {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/* video/* gif/*");
-        startActivityForResult(Intent.createChooser(intent, "Select Media"), SELECT_PICTURE);
+        startActivityForResult(Intent.createChooser(intent, "Select Media"), SELECT_MEDIA);
     }
 
     @Override
@@ -138,7 +136,6 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
 
         if (mediaInstance.isValidMedia(fp, mimeType, fileSize)) {
             Bitmap thumbnail = mediaInstance.getThumbnail(this,imgId);
-                   // MediaStore.Images.Thumbnails.getThumbnail(getContentResolver(), imgId, MediaStore.Video.Thumbnails.MINI_KIND, null);
             if (thumbnail == null) {
                 Toast.makeText(getApplicationContext(),
                         "Failed to get thumbnail for our image.",
@@ -237,10 +234,21 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
         private final BaseTweetView.DependencyProvider dependencyProvider;
         private final Context context;
         private TwitterSession.Serializer serializer;
+        private ProgressDialog pD;
 
         public ReplyTask(BaseTweetView.DependencyProvider dependencyProvider, Context context) {
             this.dependencyProvider = dependencyProvider;
             this.context = context;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pD = new ProgressDialog(context);
+            pD.setMessage(context.getResources().getString(R.string.uploading_msg));
+            pD.setCancelable(false);
+            pD.setIndeterminate(true);
+            pD.show();
         }
 
         @Override
@@ -252,9 +260,14 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
                 replyWithMedia(userSession, inputs);
             } else {
                 replyWithoutMedia(inputs[0]);
-
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            pD.dismiss();
         }
 
         private void replyWithMedia(TwitterSession userSession, final String[] inputs) {

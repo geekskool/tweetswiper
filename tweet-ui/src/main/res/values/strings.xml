@@ -44,5 +44,6 @@
     <string name="retweet">Retweet</string>
     <string name="reply">Reply</string>
     <string name="tweet">Tweet</string>
+    <string name="uploading_msg">Uploading ...</string>
 
 </resources>

@@ -1,6 +1,5 @@
 package com.example.manisharana.twitterclient.Activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -20,6 +19,7 @@ import com.example.manisharana.twitterclient.Fragments.LoginAgainFragment;
 import com.example.manisharana.twitterclient.Fragments.TweetListFragment;
 import com.example.manisharana.twitterclient.R;
 import com.example.manisharana.twitterclient.TweetUtils;
+import com.example.manisharana.twitterclient.UserUtility;
 import com.squareup.picasso.Picasso;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
@@ -42,8 +42,8 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         setContentView(R.layout.nav_drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        Intent intent = getIntent();
-        User currentUser = (User) intent.getSerializableExtra("Current User");
+
+        User currentUser = new UserUtility().getDetails();
 
         if (navigationView != null) {
             selectDrawerItem(navigationView.getMenu().getItem(0));

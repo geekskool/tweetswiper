@@ -38,13 +38,6 @@
             android:textSize="14sp"
             android:textColor="@android:color/white"
             android:id="@+id/tv_user_screen_name"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tv_user_desc"
-            tools:text="Description"
-            android:textColor="@android:color/white" />
     </LinearLayout>
 
 
