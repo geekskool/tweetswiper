@@ -9,6 +9,25 @@ buildscript {
 }
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+apply plugin: 'org.moallemi.advanced-build-version'
+
+advancedVersioning {
+    nameOptions {
+            versionMajor 1
+            versionMinor 1
+            versionPatch 0
+    }
+    codeOptions {
+        versionCodeType org.moallemi.gradle.internal.VersionCodeType.AUTO_INCREMENT_ONE_STEP
+    }
+    outputOptions {
+        renameOutput true
+        nameFormat '${appName}-${buildType}-${versionName}'
+    }
+
+}
+
+
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
@@ -28,8 +47,8 @@ android {
         applicationId "com.example.manisharana.twitterclient"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode = advancedVersioning.versionCode
+        versionName = advancedVersioning.versionName
     }
     buildTypes {
         release {
