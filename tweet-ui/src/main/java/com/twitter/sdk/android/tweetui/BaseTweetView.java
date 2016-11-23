@@ -705,19 +705,10 @@ public abstract class BaseTweetView extends LinearLayout {
      * the url is not available, sets the Tweet photo visibility to gone.
      */
     final void setTweetMedia(Tweet displayTweet) {
-        clearMediaView();
-
         if (displayTweet == null) {
             mediaContainerView.setVisibility(ImageView.GONE);
             return;
         }
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.multiple_images_recycler_view);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        List<MediaEntity> mediaEntityList = new ArrayList<>();
-        MediaEntityAdapter mediaAdapter = new MediaEntityAdapter(getContext(), mediaEntityList, displayTweet, tweetMediaClickListener, mediaBgColor);
-        recyclerView.setAdapter(mediaAdapter);
-        final LinearLayout circlesList = (LinearLayout) findViewById(R.id.view_page_indicator);
-
 
         if (displayTweet.card != null && VineCardUtils.isVine(displayTweet.card)) {
 //            final Card vineCard = displayTweet.card;
@@ -735,36 +726,36 @@ public abstract class BaseTweetView extends LinearLayout {
 //            scribeCardImpression(displayTweet.id, vineCard);
         } else if (TweetMediaUtils.hasSupportedVideo(displayTweet)) {
             final ArrayList<MediaEntity> mediaEntity = TweetMediaUtils.getAllVideoEntities(displayTweet);
-            mediaContainerView.setVisibility(ImageView.VISIBLE);
-            mediaEntityList.addAll(mediaEntity);
-            mediaAdapter.notifyDataSetChanged();
-            if(mediaEntity.size()>1) {
-                setPageIndicatorView(mediaEntity, circlesList);
-                setScrollListener(recyclerView,circlesList);
-            }else{
-                for (int i = 0; i < 4; i++) {
-                    ImageView currentView = (ImageView) circlesList.getChildAt(i);
-                    currentView.setVisibility(GONE);
-                }
-            }
+            setUpMediaRecyclerView(displayTweet,mediaEntity);
 
         } else if (TweetMediaUtils.hasPhoto(displayTweet)) {
             final ArrayList<MediaEntity> mediaEntity = TweetMediaUtils.getAllPhotoEntities(displayTweet);
-            mediaContainerView.setVisibility(ImageView.VISIBLE);
-            mediaEntityList.addAll(mediaEntity);
-            mediaAdapter.notifyDataSetChanged();
-            if(mediaEntity.size()>1) {
-                setPageIndicatorView(mediaEntity, circlesList);
-                setScrollListener(recyclerView,circlesList);
-            }else{
-                for (int i = 0; i < 4; i++) {
-                    ImageView currentView = (ImageView) circlesList.getChildAt(i);
-                    currentView.setVisibility(GONE);
-                }
-            }
+            setUpMediaRecyclerView(displayTweet, mediaEntity);
 
         } else {
             mediaContainerView.setVisibility(ImageView.GONE);
+        }
+    }
+
+    private void setUpMediaRecyclerView(Tweet displayTweet, ArrayList<MediaEntity> mediaEntity) {
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.multiple_images_recycler_view);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        List<MediaEntity> mediaEntityList = new ArrayList<>();
+        MediaEntityAdapter mediaAdapter = new MediaEntityAdapter(getContext(), mediaEntityList, displayTweet, tweetMediaClickListener, mediaBgColor);
+        recyclerView.setAdapter(mediaAdapter);
+        final LinearLayout circlesList = (LinearLayout) findViewById(R.id.view_page_indicator);
+
+        mediaContainerView.setVisibility(ImageView.VISIBLE);
+        mediaEntityList.addAll(mediaEntity);
+        mediaAdapter.notifyDataSetChanged();
+        if(mediaEntity.size()>1) {
+            setPageIndicatorView(mediaEntity, circlesList);
+            setScrollListener(recyclerView,circlesList);
+        }else{
+            for (int i = 0; i < 4; i++) {
+                ImageView currentView = (ImageView) circlesList.getChildAt(i);
+                currentView.setVisibility(GONE);
+            }
         }
     }
 
@@ -793,37 +784,6 @@ public abstract class BaseTweetView extends LinearLayout {
                 }
             }
 
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-//                int position = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
-//                ;
-//                View currentView = circlesList.getChildAt(position);
-//
-//                int lastPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
-//                View lastView = circlesList.getChildAt(lastPosition);
-//                ImageView circle;
-//                if (dx>0) {
-//                    if (currentView != null && lastPosition != position) {
-//                        circle = (ImageView) currentView.findViewById(R.id.img);
-//                        circle.setImageResource(R.drawable.ic_circle_empty);
-//                    }
-//                    if (lastView != null && lastPosition != position) {
-//                        circle = (ImageView) lastView.findViewById(R.id.img);
-//                        circle.setImageResource(R.drawable.ic_circle_filled);
-//                    }
-//                }else if (dx<0){
-//                    if (currentView != null && lastPosition != position) {
-//                        circle = (ImageView) currentView.findViewById(R.id.img);
-//                        circle.setImageResource(R.drawable.ic_circle_filled);
-//                    }
-//                    if (lastView != null && lastPosition != position) {
-//                        circle = (ImageView) lastView.findViewById(R.id.img);
-//                        circle.setImageResource(R.drawable.ic_circle_empty);
-//                    }
-//                }
-            }
         });
 
     }
@@ -843,20 +803,6 @@ public abstract class BaseTweetView extends LinearLayout {
         }
 
         return (double) imageValue.width / imageValue.height;
-    }
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    protected void clearMediaView() {
-        // Clear out the background behind any potential error images that we had
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//            mediaView.setBackground(null);
-//        } else {
-//            mediaView.setBackgroundDrawable(null);
-//        }
-//
-//        mediaView.setOverlayDrawable(null);
-//        mediaView.setOnClickListener(null);
-//        mediaView.setClickable(false);
     }
 
     void setTweetActions(Tweet tweet) {
