@@ -529,16 +529,10 @@ public abstract class BaseTweetView extends LinearLayout {
         avatarView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Intent intent = new Intent(getContext(), LinkWebViewActivity.class);
-                String openUrl;
                 if (displayTweet != null) {
                     if (displayTweet.user != null) {
-                        openUrl = Uri.parse("https://twitter.com/").buildUpon().appendPath(displayTweet.user.screenName).build().toString();
-                        intent.putExtra("Url", openUrl);
-                    }
-                    if (!IntentUtils.safeStartActivity(getContext(), intent)) {
-                        Fabric.getLogger().e(TweetUi.LOGTAG,
-                                "Activity cannot be found to open URL");
+                         String openUrl = Uri.parse("https://twitter.com/").buildUpon().appendPath(displayTweet.user.screenName).build().toString();
+                        new CustomTab(getContext()).getTabsIntent().viewLink(openUrl);
                     }
                 }
 
@@ -895,13 +889,7 @@ public abstract class BaseTweetView extends LinearLayout {
                     if (tweetLinkClickListener != null) {
                         tweetLinkClickListener.onLinkClick(tweet, url);
                     } else {
-                        final Intent intent = new Intent(getContext(), LinkWebViewActivity.class);
-                        intent.putExtra("Url", url);
-                        //Intent.ACTION_VIEW, Uri.parse(url));
-                        if (!IntentUtils.safeStartActivity(getContext(), intent)) {
-                            Fabric.getLogger().e(TweetUi.LOGTAG,
-                                    "Activity cannot be found to open URL");
-                        }
+                      new CustomTab(getContext()).getTabsIntent().viewLink(url);
                     }
                 }
 

@@ -30,8 +30,6 @@
         <activity
             android:name=".GalleryActivity"
             android:theme="@style/MediaTheme"/>
-        <activity android:name=".LinkWebViewActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:screenOrientation="portrait"/>
         <activity android:name=".TweetRetweetActivity" android:label="@string/retweet" android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="portrait"/>
         <activity android:name=".TweetReplyActivity" android:label="@string/reply"
