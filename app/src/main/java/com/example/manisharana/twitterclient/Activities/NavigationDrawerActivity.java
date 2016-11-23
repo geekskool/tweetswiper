@@ -18,7 +18,7 @@ import com.example.manisharana.twitterclient.Fragments.ComposeTweetFragment;
 import com.example.manisharana.twitterclient.Fragments.LoginAgainFragment;
 import com.example.manisharana.twitterclient.Fragments.TweetListFragment;
 import com.example.manisharana.twitterclient.R;
-import com.example.manisharana.twitterclient.TweetUtils;
+import com.example.manisharana.twitterclient.SessionUtils;
 import com.example.manisharana.twitterclient.UserUtility;
 import com.squareup.picasso.Picasso;
 import com.twitter.sdk.android.Twitter;
@@ -35,6 +35,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private RelativeLayout navHeaderView;
     private String TAG = NavigationDrawerActivity.class.getSimpleName();
+    private SessionUtils sessionUtils;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,7 +43,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         setContentView(R.layout.nav_drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
+        sessionUtils = new SessionUtils(this);
         User currentUser = new UserUtility().getDetails();
 
         if (navigationView != null) {
@@ -61,7 +62,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     }
 
     private void getUserAndPopulateNavHeader(final RelativeLayout navHeaderView) {
-        TwitterSession userSession = new TwitterSession.Serializer().deserialize(TweetUtils.getUserSessionDetails(this));
+        TwitterSession userSession = new TwitterSession.Serializer().deserialize(sessionUtils.getUserSessionDetails());
 
         Twitter.getApiClient(userSession).getAccountService().verifyCredentials(true, false, new Callback<User>() {
             @Override
@@ -138,7 +139,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
     private Class getFragmentClass(MenuItem item) {
         Class fragmentClass = null;
-        String userSession = TweetUtils.getUserSessionDetails(this);
+        String userSession = sessionUtils.getUserSessionDetails();
 
         switch (item.getItemId()) {
 
@@ -166,7 +167,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
             case R.id.nav_logout:
                 if (!item.isChecked()) {
-                    TweetUtils.removeUserSessionDetails(this);
+                    sessionUtils.removeUserSessionDetails();
                     fragmentClass = LoginAgainFragment.class;
                 }
                 break;

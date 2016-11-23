@@ -1,8 +1,5 @@
 package com.example.manisharana.twitterclient.Fragments;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,7 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.manisharana.twitterclient.R;
-import com.example.manisharana.twitterclient.TweetUtils;
+import com.example.manisharana.twitterclient.SessionUtils;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
@@ -43,7 +40,7 @@ public class TweetListFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         // TwitterSession session = Twitter.getInstance().core.getSessionManager().getActiveSession();
         serializer = new TwitterSession.Serializer();
-        TwitterSession userSession = serializer.deserialize(TweetUtils.getUserSessionDetails(getActivity()));
+        TwitterSession userSession = serializer.deserialize(new SessionUtils(getActivity()).getUserSessionDetails());
 
         mRootview = inflater.inflate(R.layout.tweet_list_view, container, false);
         tweetPage = (ViewPager) mRootview.findViewById(R.id.view_pager_tweet_list);
@@ -73,12 +70,6 @@ public class TweetListFragment extends Fragment {
 
     private void hideProgressBar() {
         mProgressBar.setVisibility(View.GONE);
-    }
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 
 

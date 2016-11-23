@@ -23,4 +23,3 @@
         app:menu="@menu/drawer_layout" />
 
 </android.support.v4.widget.DrawerLayout>
-    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"--><!--android:orientation="vertical" android:layout_width="match_parent"--><!--android:layout_height="match_parent">--><!--<fragment--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:id="@+id/fragment_tweet_list"--><!--class="com.example.manisharana.twitterclient.Fragments.TweetListFragment">--><!--</fragment>--><!----><!--</LinearLayout>-->
