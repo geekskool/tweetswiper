@@ -499,16 +499,6 @@ public abstract class BaseTweetView extends LinearLayout {
         setTweetActions(tweet);
         showRetweetedBy(tweet);
 
-        // set permalink if tweet id and screen name are available
-        if (TweetUtils.isTweetResolvable(tweet)) {
-            setPermalinkUri(tweet.user.screenName, getTweetId());
-        } else {
-            permalinkUri = null;
-        }
-
-        // set or update the permalink launcher with the current permalinkUri
-        setPermalinkLauncher();
-        scribeImpression();
     }
 
 

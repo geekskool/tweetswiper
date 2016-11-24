@@ -19,7 +19,7 @@
     <string name="app_suggestions">Any useful feeback/suggestion can be mailed at info@geekskool.com</string>
     <string name="geekskool_made_with_love">Made with</string>
     <string name="by_geekskool">by Geekskool</string>
-    <string name="internet_connection">It looks like your internet connection is off. Please turn it on and try again.</string>
+    <string name="internet_connection">Internet connection off</string>
     <string name="autorization_error">Authorization Error</string>
     <string name="login_error">Some error occured during login. Please try again later.</string>
 </resources>

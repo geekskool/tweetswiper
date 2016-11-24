@@ -1,6 +1,5 @@
 package com.example.manisharana.twitterclient.Fragments;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,11 +16,9 @@ import com.example.manisharana.twitterclient.R;
 import com.example.manisharana.twitterclient.SessionUtils;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterApiException;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
-import com.twitter.sdk.android.core.internal.TwitterApiConstants;
 
 public class TwitterLoginFragment extends Fragment implements View.OnClickListener {
 
@@ -64,8 +61,7 @@ public class TwitterLoginFragment extends Fragment implements View.OnClickListen
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && data != null)
-            mTwitterAuthClient.onActivityResult(requestCode, resultCode, data);
+        mTwitterAuthClient.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -92,17 +88,8 @@ public class TwitterLoginFragment extends Fragment implements View.OnClickListen
 
             @Override
             public void failure(TwitterException exception) {
+                sessionUtils.showErrorDialog(exception.getMessage());
                 mloginButton.setVisibility(View.VISIBLE);
-                TwitterApiException apiException = (TwitterApiException) exception;
-                int errorCode = apiException.getErrorCode();
-                switch (errorCode) {
-                    case TwitterApiConstants.Errors.APP_AUTH_ERROR_CODE:
-                    case TwitterApiConstants.Errors.GUEST_AUTH_ERROR_CODE:
-                        sessionUtils.showErrorDialog(activity.getResources().getString(R.string.autorization_error));
-                        break;
-                    default:
-                        sessionUtils.showErrorDialog(activity.getResources().getString(R.string.login_error));
-                }
                 Log.i("MainActivity", "Error in getting session details");
             }
         });
