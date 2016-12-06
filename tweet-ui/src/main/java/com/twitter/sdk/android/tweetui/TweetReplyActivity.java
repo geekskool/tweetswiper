@@ -66,7 +66,7 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tweet_reply);
         rootView = findViewById(R.id.tweet_reply_container);
-        populateReplyView();
+        getViewReferences();
         Intent intent = getIntent();
         tweet = (Tweet) intent.getSerializableExtra("Tweet");
         if (tweet != null) {
@@ -76,7 +76,7 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
         //   actualTweetContainer.animate().translationY(0-actualTweetContainer.getHeight());
     }
 
-    private void populateReplyView() {
+    private void getViewReferences() {
         avatarView = (ImageView) findViewById(R.id.tw__tweet_author_avatar);
         header = (TextView) findViewById(R.id.text_view_reply_header);
         fullNameView = (TextView) findViewById(R.id.tw__tweet_author_full_name);
@@ -101,63 +101,70 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && data != null) {
-            verifyDataAndFillView(data.getData());
-        } else {
-            // error content cant be fetched
+            getMedia(data.getData());
         }
     }
 
-    private void verifyDataAndFillView(Uri data) {
-
-        String[] projection = {MediaStore.MediaColumns._ID, MediaStore.MediaColumns.DATA, MediaStore.MediaColumns.MIME_TYPE, MediaStore.MediaColumns.SIZE};
+    private void getMedia(Uri data) {
+        String[] projection = {MediaStore.MediaColumns.MIME_TYPE,MediaStore.MediaColumns.DATA};
         Cursor cursor = getContentResolver().query(data, projection, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
-            int idColumnIndex = cursor.getColumnIndex(projection[0]);
-            int pathColumnIndex = cursor.getColumnIndexOrThrow(projection[1]);
-            int mimeTypeColumnIndex = cursor.getColumnIndex(projection[2]);
-            int sizeColumnIndex = cursor.getColumnIndex(projection[3]);
+            int mimeTypeColumnIndex = cursor.getColumnIndex(projection[0]);
+            int pathColumnIndex = cursor.getColumnIndex(projection[1]);
 
-            long imgId = cursor.getLong(idColumnIndex);
-            String filePath = cursor.getString(pathColumnIndex);
             String mimeType = cursor.getString(mimeTypeColumnIndex);
-            long fileSize = cursor.getLong(sizeColumnIndex);
+            String path = cursor.getString(pathColumnIndex);
             cursor.close();
-            fillMediaContainer(imgId, filePath, mimeType, fileSize);
-
-        } else {
-            Toast.makeText(this, "You have selected invalid image", Toast.LENGTH_LONG).show();
+            IMediaContent mediaInstance = MediaContentHandler.getMediaInstance(mimeType);
+            mediaInstance.initializeFileDetails(this,data);
+            fillMediaContainer(mediaInstance,path);
         }
     }
 
-    private void fillMediaContainer(long imgId, String filePath, String mimeType, long fileSize) {
-        String fp = filePath.substring(filePath.lastIndexOf(".") + 1);
-        IMediaContent mediaInstance = MediaContentHandler.getMediaInstance(mimeType);
+    private void fillMediaContainer(IMediaContent mediaInstance, String filePath) {
+        String extension = filePath.substring(filePath.lastIndexOf(".") + 1);
 
-        if (mediaInstance.isValidMedia(fp, mimeType, fileSize)) {
-            Bitmap thumbnail = mediaInstance.getThumbnail(this,imgId);
+        if (mediaInstance.isValidMedia(extension)) {
+            Bitmap thumbnail = mediaInstance.getThumbnail(this);
             if (thumbnail == null) {
                 Toast.makeText(getApplicationContext(),
-                        "Failed to get thumbnail for our image.",
+                        "Failed to get thumbnail for the media.",
                         Toast.LENGTH_SHORT).show();
+            } else {
+                setUpMediaView(filePath, thumbnail);
             }
-            FrameLayout parent = (FrameLayout) imgViewSelectedMedia.getParent();
-            parent.setVisibility(View.VISIBLE);
-            imgViewSelectedMedia.setImageBitmap(thumbnail);
-            imgUrlTextView.setText(filePath);
-
-            removeMediaButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ViewGroup parent = (ViewGroup) v.getParent();
-                    ImageView imgView = (ImageView) parent.getChildAt(1);
-                    imgView.setImageBitmap(null);
-                    imgUrlTextView.setText("");
-                    parent.setVisibility(View.GONE);
-
-                }
-            });
+        } else {
+            Toast.makeText(this, mediaInstance.getErrorMsg(this), Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void setUpMediaView(String filePath, Bitmap thumbnail) {
+        setThumbnailView(filePath, thumbnail, View.VISIBLE);
+        enableTweetButton();
+
+        removeMediaButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearMediaOnClickRemove(v);
+                enableTweetButton();
+            }
+        });
+    }
+
+    private void clearMediaOnClickRemove(View v) {
+        ViewGroup parent = (ViewGroup) v.getParent();
+        ImageView imgView = (ImageView) parent.getChildAt(1);
+        imgView.setImageBitmap(null);
+        imgUrlTextView.setText("");
+        parent.setVisibility(View.GONE);
+    }
+
+    private void setThumbnailView(String filePath, Bitmap thumbnail, int visible) {
+        FrameLayout parent = (FrameLayout) imgViewSelectedMedia.getParent();
+        parent.setVisibility(visible);
+        imgViewSelectedMedia.setImageBitmap(thumbnail);
+        imgUrlTextView.setText(filePath);
     }
 
     private void populateTweetView(Tweet tweet) {
@@ -179,17 +186,24 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
 
     public void replyToTweet(View view) {
         String replyText = null;
+
+        resetMessageView();
+        String imageUrl = imgUrlTextView.getText().toString();
         try {
             replyText = new String(userInput.getText().toString().trim().getBytes("UTF-8"), "UTF-8");
         } catch (UnsupportedEncodingException exception) {
             Log.i("TweetReplyActivity", "Exception: " + exception);
             setErrorMessage("Error in encoding text");
         }
-        String imageUrl = imgUrlTextView.getText().toString();
 
-        if (replyText.length() != userScreenName.trim().length()) {
+        if (!hasNoTextOrMedia(replyText))
             new ReplyTask(dependencyProvider, this).execute(replyText, imageUrl);
-        }
+
+    }
+
+    private void resetMessageView() {
+        errorView.setText("");
+        errorView.setVisibility(View.GONE);
     }
 
     public void closeActivity(View v) {
@@ -203,17 +217,21 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        String inputWithWhiteSpace = userInput.getText().toString();
-        String userString = inputWithWhiteSpace.trim();
-        int length = userString.length();
+        int inputLength = userInput.getText().toString().length();
+        int charCount = CHAR_ALLOWED_COUNT - inputLength;
 
-        if ((length == userScreenName.length() && userString.equals(userScreenName)) || (length == 0 || userString.isEmpty())) {
-            tweetButton.setEnabled(false);
-        } else {
-            tweetButton.setEnabled(true);
-        }
-        int charCount = CHAR_ALLOWED_COUNT - inputWithWhiteSpace.length();
         charCountView.setText(String.valueOf(charCount));
+        enableTweetButton();
+    }
+
+    private void enableTweetButton() {
+        String userString = userInput.getText().toString().trim();
+        tweetButton.setEnabled(!hasNoTextOrMedia(userString));
+    }
+
+    private boolean hasNoTextOrMedia(String userString) {
+        int length = userString.length();
+        return (((length == userScreenName.length() && userString.equals(userScreenName)) || length == 0 || userString.isEmpty()) && imgUrlTextView.getText().toString().isEmpty());
     }
 
 
@@ -228,6 +246,12 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
         errorView.setText(errorMessage);
     }
 
+    private void clearView() {
+        userInput.setText("");
+        setThumbnailView("", null, View.GONE);
+        tweetButton.setEnabled(false);
+        resetMessageView();
+    }
 
     class ReplyTask extends AsyncTask<String, Void, Void> {
 
@@ -245,7 +269,7 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
         protected void onPreExecute() {
             super.onPreExecute();
             pD = new ProgressDialog(context);
-            pD.setMessage(context.getResources().getString(R.string.uploading_msg));
+            pD.setMessage(context.getString(R.string.uploading_msg));
             pD.setCancelable(false);
             pD.setIndeterminate(true);
             pD.show();
@@ -282,10 +306,11 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
                     dependencyProvider.getTweetUi().getTweetRepository().update(tweet.id, inputs[0], null, null, null, mediaIdString, new Callback<Tweet>() {
                         @Override
                         public void success(Result<Tweet> result) {
+                            clearView();
                             finish();
                             Toast.makeText(context, "You Tweeted :P", Toast.LENGTH_SHORT).show();
-
                         }
+
 
                         @Override
                         public void failure(TwitterException exception) {
@@ -302,6 +327,7 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
                 }
             });
         }
+
 
         private void replyWithoutMedia(String input) {
             dependencyProvider.getTweetUi().getTweetRepository().update(tweet.id, input, null, null, "", "", new Callback<Tweet>() {

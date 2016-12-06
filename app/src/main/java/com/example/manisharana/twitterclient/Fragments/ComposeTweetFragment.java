@@ -82,7 +82,7 @@ public class ComposeTweetFragment extends Fragment implements View.OnClickListen
 
     private void clearErrorView() {
         errorMsgView.setText("");
-        errorMsgView.setVisibility(View.VISIBLE);
+        errorMsgView.setVisibility(View.GONE);
     }
 
     @Override

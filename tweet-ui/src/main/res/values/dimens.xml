@@ -46,7 +46,7 @@
     <dimen name="tw__tweet_timestamp_margin_top">-4dp</dimen>
     <dimen name="tw__tweet_timestamp_padding_left">4dp</dimen>
     <!--Tweet text-->
-    <dimen name="tw__tweet_text_margin_top">12dp</dimen>
+    <dimen name="tw__tweet_text_margin_top">8dp</dimen>
     <dimen name="tw__tweet_text_margin_left">20dp</dimen>
     <dimen name="tw__tweet_text_margin_right">20dp</dimen>
     <!--Tweet actions-->
