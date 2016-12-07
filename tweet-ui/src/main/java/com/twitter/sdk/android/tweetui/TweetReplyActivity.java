@@ -59,7 +59,6 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
     private Button tweetButton;
     private TextView charCountView;
     private TextView errorView;
-   // private ImageView imgViewSelectedMedia;
     private TextView imgUrlTextView;
     private ImageButton removeMediaButton;
     private ImageView mediaImageView;
@@ -79,7 +78,6 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
             dependencyProvider = new BaseTweetView.DependencyProvider();
             populateTweetView(tweet);
         }
-        //   actualTweetContainer.animate().translationY(0-actualTweetContainer.getHeight());
     }
 
     private void getViewReferences() {
@@ -92,7 +90,6 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
         tweetButton = (Button) findViewById(R.id.tw__tweet_reply_button);
         charCountView = (TextView) findViewById(R.id.text_view_char_count);
         errorView = (TextView) findViewById(R.id.textView_error_message);
-     //   imgViewSelectedMedia = (ImageView) findViewById(R.id.image_view_selected_media);
         mediaContainer = (FrameLayout) findViewById(R.id.reply_tweet_media_container);
         gifOverlay = (ImageView) findViewById(R.id.tw__gif_overlay);
         mediaImageView = (ImageView) findViewById(R.id.tw__tweet_media);
@@ -197,7 +194,7 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
     }
 
     private void startActivityForVideo(String filePath) {
-        final Intent intent = new Intent(this, LinkWebViewActivity.class);
+        Intent intent = new Intent(this, LinkWebViewActivity.class);
         intent.putExtra(LinkWebViewActivity.URL,filePath);
         IntentUtils.safeStartActivity(this, intent);
     }
@@ -248,7 +245,7 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
             setErrorMessage("Error in encoding text");
         }
 
-        if (!hasNoTextOrMedia(replyText))
+        if (hasContent(replyText))
             new ReplyTask(dependencyProvider, this).execute(replyText, imageUrl);
 
     }
@@ -278,12 +275,20 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
 
     private void enableTweetButton() {
         String userString = userInput.getText().toString().trim();
-        tweetButton.setEnabled(!hasNoTextOrMedia(userString));
+        tweetButton.setEnabled(hasContent(userString));
     }
 
-    private boolean hasNoTextOrMedia(String userString) {
+    private boolean hasContent(String userString) {
         int length = userString.length();
-        return (((length == userScreenName.length() && userString.equals(userScreenName)) || length == 0 || userString.isEmpty()) && imgUrlTextView.getText().toString().isEmpty());
+        return (hasText(userString, length) || hasMedia());
+    }
+
+    private boolean hasText(String userString, int length) {
+        return !((length == userScreenName.length() && userString.equals(userScreenName)) || length == 0 || userString.isEmpty());
+    }
+
+    private boolean hasMedia() {
+        return !imgUrlTextView.getText().toString().isEmpty();
     }
 
 
@@ -375,7 +380,7 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
                 @Override
                 public void failure(TwitterException exception) {
                     Log.i("TweetReplyActivity", "Exception: " + exception);
-                    setErrorMessage("Error in uploading image");
+                    setErrorMessage(context.getResources().getString(R.string.error_in_uploading_media));
                 }
             });
         }

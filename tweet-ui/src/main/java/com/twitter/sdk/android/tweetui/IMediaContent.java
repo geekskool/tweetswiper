@@ -1,17 +1,17 @@
 package com.twitter.sdk.android.tweetui;
 
-import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
 public interface IMediaContent {
     boolean isValidMedia(String filePath);
 
-    Bitmap getThumbnail(Activity activity);
+    Bitmap getThumbnail(Context activity);
 
-    String getErrorMsg(Activity activity);
+    String getErrorMsg(Context activity);
 
-    void initializeFileDetails(Activity activity, Uri data);
+    void initializeFileDetails(Context activity, Uri data);
 
     String getType();
 }

@@ -1,5 +1,6 @@
 package com.example.manisharana.twitterclient.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -194,4 +195,14 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         this.finish();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if(fragmentManager!=null){
+            fragmentManager.findFragmentById(R.id.content_frame).onActivityResult(requestCode,resultCode,data);
+        }else{
+            Log.i(TAG,"fragment is null");
+        }
+    }
 }

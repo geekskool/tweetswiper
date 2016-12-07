@@ -1,6 +1,6 @@
 package com.twitter.sdk.android.tweetui;
 
-import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -18,17 +18,17 @@ public class ImageMediaContent implements IMediaContent {
     }
 
     @Override
-    public Bitmap getThumbnail(Activity activity) {
+    public Bitmap getThumbnail(Context activity) {
         return MediaStore.Images.Thumbnails.getThumbnail(activity.getContentResolver(), mediaId, MediaStore.Video.Thumbnails.MINI_KIND, null);
     }
 
     @Override
-    public String getErrorMsg(Activity activity) {
+    public String getErrorMsg(Context activity) {
         return activity.getString(R.string.imageErrorMsg);
     }
 
     @Override
-    public void initializeFileDetails(Activity activity, Uri data) {
+    public void initializeFileDetails(Context activity, Uri data) {
 
         String[] projection = getProjection();
         Cursor cursor = activity.getContentResolver().query(data, projection, null, null, null);

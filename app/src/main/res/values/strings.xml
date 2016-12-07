@@ -9,7 +9,7 @@
     <string name="compose_new_tweet">Compose new tweet</string>
     <string name="login_again">Login again</string>
     <string name="you_are_logged_out">You have logged out successfully.\nPlease login to continue</string>
-    <string name="what_happening">//Right now it only supports text</string>
+    <string name="what_happening">What\'s happening?</string>
     <string name="tweet_posted_successfully">Tweet posted successfully</string>
     <string name="error_in_posting_tweet">Error in posting tweet</string>
     <string name="error_in_encoding">Error in encoding tweet</string>
@@ -22,4 +22,5 @@
     <string name="internet_connection">Internet connection off</string>
     <string name="autorization_error">Authorization Error</string>
     <string name="login_error">Some error occured during login. Please try again later.</string>
+    <string name="error_in_uploading_media">Error in uploading media</string>
 </resources>

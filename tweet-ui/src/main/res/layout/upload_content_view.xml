@@ -33,13 +33,6 @@
         <com.twitter.sdk.android.tweetui.internal.MediaBadgeView
             android:id="@+id/tw__tweet_media_badge"
             style="@style/tw__TweetBadge" />
-
-        <!--<ImageView-->
-        <!--android:id="@+id/image_view_selected_media"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_margin="10dp" />-->
-
         <ImageButton
             android:id="@+id/image_remove_button"
             android:layout_width="wrap_content"

@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.example.manisharana.twitterclient.BuildConfig;
 import com.example.manisharana.twitterclient.Fragments.TwitterLoginFragment;
 import com.example.manisharana.twitterclient.R;
 import com.twitter.sdk.android.Twitter;
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(BuildConfig.TWITTER_KEY, BuildConfig.TWITTER_SECRET);
         Fabric.with(this, new Twitter(authConfig));
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         Class twitterLoginFragmentClass = TwitterLoginFragment.class;
