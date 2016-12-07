@@ -8,7 +8,7 @@ import android.provider.MediaStore;
 
 public class ImageMediaContent implements IMediaContent {
 
-    private static final long ALLOWED_FILE_SIZE = 4 * 1024 * 1024;
+    private static final long ALLOWED_FILE_SIZE = 3 * 1024 * 1024;
     private long mediaId;
     private long fileSize;
 
@@ -24,7 +24,7 @@ public class ImageMediaContent implements IMediaContent {
 
     @Override
     public String getErrorMsg(Activity activity) {
-        return activity.getString(R.string.ImageErrorMsg);
+        return activity.getString(R.string.imageErrorMsg);
     }
 
     @Override
@@ -41,6 +41,11 @@ public class ImageMediaContent implements IMediaContent {
             fileSize = cursor.getLong(sizeColumnIndex);
             cursor.close();
         }
+    }
+
+    @Override
+    public String getType() {
+        return "image";
     }
 
     private String[] getProjection() {

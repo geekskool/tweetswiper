@@ -522,7 +522,7 @@ public abstract class BaseTweetView extends LinearLayout {
                 if (displayTweet != null) {
                     if (displayTweet.user != null) {
                          String openUrl = Uri.parse("https://twitter.com/").buildUpon().appendPath(displayTweet.user.screenName).build().toString();
-                        new CustomTab(getContext()).getTabsIntent().viewLink(openUrl);
+                        new CustomTab(getContext()).getTabsIntent(openUrl);
                     }
                 }
 
@@ -825,7 +825,7 @@ public abstract class BaseTweetView extends LinearLayout {
                     if (tweetLinkClickListener != null) {
                         tweetLinkClickListener.onLinkClick(tweet, url);
                     } else {
-                      new CustomTab(getContext()).getTabsIntent().viewLink(url);
+                      new CustomTab(getContext()).getTabsIntent(url);
                     }
                 }
 

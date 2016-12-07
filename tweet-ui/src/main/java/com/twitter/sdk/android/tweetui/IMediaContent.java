@@ -12,4 +12,6 @@ public interface IMediaContent {
     String getErrorMsg(Activity activity);
 
     void initializeFileDetails(Activity activity, Uri data);
+
+    String getType();
 }

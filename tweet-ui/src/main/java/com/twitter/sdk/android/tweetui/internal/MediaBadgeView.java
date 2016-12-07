@@ -95,4 +95,12 @@ public class MediaBadgeView extends FrameLayout {
         videoDuration.setVisibility(View.GONE);
         badge.setVisibility(View.GONE);
     }
+
+    public void setMediaEntity(String type) {
+        if ("gif".equals(type))
+            setBadge(getResources().getDrawable(R.drawable.tw__gif_badge));
+        else
+            setEmpty();
+    }
+
 }

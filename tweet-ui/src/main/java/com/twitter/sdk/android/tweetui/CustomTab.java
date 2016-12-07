@@ -3,6 +3,7 @@ package com.twitter.sdk.android.tweetui;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
@@ -22,7 +23,7 @@ public class CustomTab {
         mContext = context;
     }
 
-    public CustomTab getTabsIntent() {
+    public void getTabsIntent(String url) {
         CustomTabsServiceConnection serviceConnection = new CustomTabsServiceConnection() {
 
             @Override
@@ -39,11 +40,8 @@ public class CustomTab {
         };
 
         CustomTabsClient.bindCustomTabsService(mContext, PACKAGE_NAME, serviceConnection);
-        intent = new CustomTabsIntent.Builder(customTabsSession).setShowTitle(true).build();
-        return this;
-    }
-
-    public void viewLink(String url) {
+        intent = new CustomTabsIntent.Builder(customTabsSession).setShowTitle(false).setCloseButtonIcon(BitmapFactory.decodeResource(mContext.getResources(),R.drawable.ic_navigation_close)).build();
         intent.launchUrl((Activity) mContext, Uri.parse(url));
     }
+
 }

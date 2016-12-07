@@ -6,9 +6,9 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-public class GifMediaContent implements IMediaContent{
+public class GifMediaContent implements IMediaContent {
 
-    private static final long ALLOWED_FILE_SIZE = 4 * 1024 * 1024;
+    private static final long ALLOWED_FILE_SIZE = 3 * 1024 * 1024;
     private long mediaId;
     private long fileSize;
 
@@ -24,7 +24,7 @@ public class GifMediaContent implements IMediaContent{
 
     @Override
     public String getErrorMsg(Activity activity) {
-        return activity.getString(R.string.ImageErrorMsg);
+        return activity.getString(R.string.gifErrorMsg);
     }
 
     @Override
@@ -42,6 +42,12 @@ public class GifMediaContent implements IMediaContent{
         }
     }
 
+    @Override
+    public String getType() {
+        return "gif";
+    }
+
+
     private String[] getProjection() {
         return new String[]{MediaStore.MediaColumns._ID, MediaStore.MediaColumns.SIZE};
     }
@@ -49,4 +55,5 @@ public class GifMediaContent implements IMediaContent{
     public boolean validFileExt(String extension) {
         return extension.equals("gif");
     }
+
 }

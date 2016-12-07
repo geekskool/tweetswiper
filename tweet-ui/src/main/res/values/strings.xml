@@ -45,6 +45,7 @@
     <string name="reply">Reply</string>
     <string name="tweet">Tweet</string>
     <string name="uploading_msg">Uploading ...</string>
-    <string name="ImageErrorMsg"><![CDATA[Please select a png/jpg/webp image with size < 4mb]]></string>
+    <string name="imageErrorMsg"><![CDATA[Please select a png/jpg/webp image with size < 3mb]]></string>
+    <string name="gifErrorMsg"><![CDATA[Please select a gif with size < 3mb]]></string>
 
 </resources>
