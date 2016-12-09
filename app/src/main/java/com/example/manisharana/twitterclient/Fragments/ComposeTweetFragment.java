@@ -1,6 +1,7 @@
 package com.example.manisharana.twitterclient.Fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -63,6 +64,7 @@ public class ComposeTweetFragment extends Fragment implements View.OnClickListen
     private TextView imgUrlTextView;
     private ImageButton removeMediaButton;
     private ImageButton cameraButton;
+    private ProgressDialog progressDialog;
 
     @Nullable
     @Override
@@ -262,6 +264,9 @@ public class ComposeTweetFragment extends Fragment implements View.OnClickListen
     public void onClick(View v) {
         if (v == sendTweetButton) {
             resetMessageView();
+            sendTweetButton.setEnabled(false);
+            progressDialog = getProgessDialog();
+            progressDialog.show();
             if (hasContent()) {
                 try {
                     String encodedString = new String(userInput.getText().toString().getBytes("UTF-8"), "UTF-8");
@@ -280,6 +285,14 @@ public class ComposeTweetFragment extends Fragment implements View.OnClickListen
         }
     }
 
+    private ProgressDialog getProgessDialog() {
+        ProgressDialog pD = new ProgressDialog(mContext);
+        pD.setMessage(mContext.getString(com.twitter.sdk.android.tweetui.R.string.uploading_msg));
+        pD.setCancelable(false);
+        pD.setIndeterminate(true);
+        return pD;
+    }
+
     private void postTweetWithMedia(final String encodedString, String mediaPath) {
         TwitterSession.Serializer serializer = new TwitterSession.Serializer();
         TwitterSession userSession = serializer.deserialize(TweetUtils.getUserSessionDetails(mContext));
@@ -296,11 +309,14 @@ public class ComposeTweetFragment extends Fragment implements View.OnClickListen
                     public void success(Result<Tweet> result) {
                         clearView();
                         setMessageView(mContext.getString(R.string.tweet_posted_successfully), com.twitter.sdk.android.tweetui.R.color.holo_green_light);
+                        progressDialog.dismiss();
                     }
 
                     @Override
                     public void failure(TwitterException exception) {
                         setMessageView(mContext.getString(R.string.error_in_posting_tweet), com.twitter.sdk.android.tweetui.R.color.holo_red_dark);
+                        progressDialog.dismiss();
+                        sendTweetButton.setEnabled(true);
                         Log.i(TAG, "Error in posting tweet" + exception.getMessage());
                     }
                 });
@@ -310,6 +326,8 @@ public class ComposeTweetFragment extends Fragment implements View.OnClickListen
             public void failure(TwitterException exception) {
                 Log.i("TweetReplyActivity", "Exception: " + exception);
                 setMessageView(mContext.getString(R.string.error_in_uploading_media), com.twitter.sdk.android.tweetui.R.color.holo_red_dark);
+                progressDialog.dismiss();
+                sendTweetButton.setEnabled(true);
             }
         });
     }
@@ -320,12 +338,16 @@ public class ComposeTweetFragment extends Fragment implements View.OnClickListen
             public void success(Result<Tweet> result) {
                 clearView();
                 setMessageView(mContext.getString(R.string.tweet_posted_successfully), com.twitter.sdk.android.tweetui.R.color.holo_green_light);
+                progressDialog.dismiss();
             }
+
 
             @Override
             public void failure(TwitterException exception) {
                 setMessageView(mContext.getString(R.string.error_in_posting_tweet), com.twitter.sdk.android.tweetui.R.color.holo_red_dark);
                 Log.i(TAG, "Error in posting tweet" + exception.getMessage());
+                progressDialog.dismiss();
+                sendTweetButton.setEnabled(true);
             }
         });
     }

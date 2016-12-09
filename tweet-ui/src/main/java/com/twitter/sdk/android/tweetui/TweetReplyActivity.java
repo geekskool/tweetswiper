@@ -65,6 +65,7 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
     private FrameLayout mediaContainer;
     private MediaBadgeView mediaBadge;
     private ImageView gifOverlay;
+    private Button replyButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -96,6 +97,7 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
         mediaBadge = (MediaBadgeView) findViewById(R.id.tw__tweet_media_badge);
         imgUrlTextView = (TextView) findViewById(R.id.text_view_selected_media_url);
         removeMediaButton = (ImageButton) findViewById(R.id.image_remove_button);
+        replyButton = (Button) findViewById(R.id.tw__tweet_reply_button);
     }
 
     public void pickPhoto(View view) {
@@ -235,7 +237,7 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
 
     public void replyToTweet(View view) {
         String replyText = null;
-
+        view.setEnabled(false);
         resetMessageView();
         String imageUrl = imgUrlTextView.getText().toString();
         try {
@@ -308,6 +310,7 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
         setThumbnailView("", null, View.GONE, "");  /* TODO */
         tweetButton.setEnabled(false);
         resetMessageView();
+        replyButton.setEnabled(false);
     }
 
     class ReplyTask extends AsyncTask<String, Void, Void> {
@@ -364,6 +367,7 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
                         @Override
                         public void success(Result<Tweet> result) {
                             clearView();
+
                             finish();
                             Toast.makeText(context, "You Tweeted :P", Toast.LENGTH_SHORT).show();
                         }
@@ -371,6 +375,7 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
 
                         @Override
                         public void failure(TwitterException exception) {
+                            replyButton.setEnabled(true);
                             Log.i("TweetReplyActivity", "Exception: " + exception);
                             setErrorMessage("Error in posting tweet");
                         }
@@ -379,6 +384,7 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
 
                 @Override
                 public void failure(TwitterException exception) {
+                    replyButton.setEnabled(true);
                     Log.i("TweetReplyActivity", "Exception: " + exception);
                     setErrorMessage(context.getResources().getString(R.string.error_in_uploading_media));
                 }
@@ -390,11 +396,13 @@ public class TweetReplyActivity extends AppCompatActivity implements TextWatcher
             dependencyProvider.getTweetUi().getTweetRepository().update(tweet.id, input, null, null, "", "", new Callback<Tweet>() {
                 @Override
                 public void success(Result<Tweet> result) {
+                    clearView();
                     finish();
                 }
 
                 @Override
                 public void failure(TwitterException exception) {
+                    replyButton.setEnabled(true);
                     Log.i("TweetReplyActivity", "Exception: " + exception);
                     setErrorMessage("Error in posting tweet");
                 }
