@@ -1,4 +1,4 @@
-package com.example.manisharana.twitterclient.Activities;
+package com.geekskool.tweetswiper.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,18 +8,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.manisharana.twitterclient.Fragments.AboutUsFragment;
-import com.example.manisharana.twitterclient.Fragments.ComposeTweetFragment;
-import com.example.manisharana.twitterclient.Fragments.LoginAgainFragment;
-import com.example.manisharana.twitterclient.Fragments.TweetListFragment;
-import com.example.manisharana.twitterclient.R;
-import com.example.manisharana.twitterclient.SessionUtils;
+import com.crashlytics.android.Crashlytics;
+import com.geekskool.tweetswiper.Fragments.AboutUsFragment;
+import com.geekskool.tweetswiper.Fragments.ComposeTweetFragment;
+import com.geekskool.tweetswiper.Fragments.LoginAgainFragment;
+import com.geekskool.tweetswiper.Fragments.TweetListFragment;
+import com.geekskool.tweetswiper.R;
+import com.geekskool.tweetswiper.SessionUtils;
 import com.squareup.picasso.Picasso;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
@@ -70,7 +70,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
             @Override
             public void failure(TwitterException exception) {
-                Log.i("UserUtility", "Error in getting user details");
+                Crashlytics.logException(exception);
                 currentUser = null;
             }
         });
@@ -184,8 +184,6 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (fragmentManager != null) {
             fragmentManager.findFragmentById(R.id.content_frame).onActivityResult(requestCode, resultCode, data);
-        } else {
-            Log.i(TAG, "fragment is null");
         }
     }
 }

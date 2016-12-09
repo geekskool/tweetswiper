@@ -1,4 +1,4 @@
-package com.example.manisharana.twitterclient;
+package com.geekskool.tweetswiper;
 
 import android.content.Context;
 import android.content.DialogInterface;

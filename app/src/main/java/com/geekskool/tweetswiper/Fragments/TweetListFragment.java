@@ -1,4 +1,4 @@
-package com.example.manisharana.twitterclient.Fragments;
+package com.geekskool.tweetswiper.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.manisharana.twitterclient.R;
-import com.example.manisharana.twitterclient.SessionUtils;
+import com.geekskool.tweetswiper.R;
+import com.geekskool.tweetswiper.SessionUtils;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
@@ -37,7 +37,6 @@ public class TweetListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        // TwitterSession session = Twitter.getInstance().core.getSessionManager().getActiveSession();
         TwitterSession userSession = new SessionUtils(getActivity()).getUserSessionDetails();
 
         mRootview = inflater.inflate(R.layout.tweet_list_view, container, false);
@@ -52,7 +51,6 @@ public class TweetListFragment extends Fragment {
             @Override
             public void success(Result<TimelineResult<Tweet>> result) {
                 mErrorTextView.setVisibility(View.GONE);
-                //         hideProgressBar();
                 tweetPage.setAdapter(adapter);
             }
 

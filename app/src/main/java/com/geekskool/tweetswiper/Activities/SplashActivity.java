@@ -1,4 +1,4 @@
-package com.example.manisharana.twitterclient.Activities;
+package com.geekskool.tweetswiper.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,9 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 import io.fabric.sdk.android.BuildConfig;
 import io.fabric.sdk.android.Fabric;
 
+import static com.geekskool.tweetswiper.BuildConfig.TWITTER_KEY;
+import static com.geekskool.tweetswiper.BuildConfig.TWITTER_SECRET;
+
 public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,10 +22,8 @@ public class SplashActivity extends AppCompatActivity {
         CrashlyticsCore core = new CrashlyticsCore.Builder()
                 .disabled(BuildConfig.DEBUG)
                 .build();
-        Fabric.with(this, new Crashlytics.Builder().core(core).build());
-
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(com.example.manisharana.twitterclient.BuildConfig.TWITTER_KEY, com.example.manisharana.twitterclient.BuildConfig.TWITTER_SECRET);
-        Fabric.with(this, new Twitter(authConfig));
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+        Fabric.with(this, new Twitter(authConfig),new Crashlytics.Builder().core(core).build());
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

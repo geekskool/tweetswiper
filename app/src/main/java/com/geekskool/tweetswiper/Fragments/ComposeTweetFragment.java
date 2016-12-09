@@ -1,4 +1,4 @@
-package com.example.manisharana.twitterclient.Fragments;
+package com.geekskool.tweetswiper.Fragments;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -13,7 +13,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.manisharana.twitterclient.R;
+import com.crashlytics.android.Crashlytics;
+import com.geekskool.tweetswiper.R;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.IntentUtils;
@@ -277,9 +277,9 @@ public class ComposeTweetFragment extends Fragment implements View.OnClickListen
                         postTweet(encodedString);
                     }
 
-                } catch (UnsupportedEncodingException e) {
+                } catch (UnsupportedEncodingException exception) {
                     setMessageView(mContext.getString(R.string.error_in_posting_tweet), com.twitter.sdk.android.tweetui.R.color.holo_red_dark);
-                    Log.i(TAG, "Error in encoding tweet text" + e.getMessage());
+                    Crashlytics.logException(exception);
                 }
             }
         }
@@ -317,14 +317,14 @@ public class ComposeTweetFragment extends Fragment implements View.OnClickListen
                         setMessageView(mContext.getString(R.string.error_in_posting_tweet), com.twitter.sdk.android.tweetui.R.color.holo_red_dark);
                         progressDialog.dismiss();
                         sendTweetButton.setEnabled(true);
-                        Log.i(TAG, "Error in posting tweet" + exception.getMessage());
+                        Crashlytics.logException(exception);
                     }
                 });
             }
 
             @Override
             public void failure(TwitterException exception) {
-                Log.i("TweetReplyActivity", "Exception: " + exception);
+                Crashlytics.logException(exception);
                 setMessageView(mContext.getString(R.string.error_in_uploading_media), com.twitter.sdk.android.tweetui.R.color.holo_red_dark);
                 progressDialog.dismiss();
                 sendTweetButton.setEnabled(true);
@@ -345,7 +345,7 @@ public class ComposeTweetFragment extends Fragment implements View.OnClickListen
             @Override
             public void failure(TwitterException exception) {
                 setMessageView(mContext.getString(R.string.error_in_posting_tweet), com.twitter.sdk.android.tweetui.R.color.holo_red_dark);
-                Log.i(TAG, "Error in posting tweet" + exception.getMessage());
+                Crashlytics.logException(exception);
                 progressDialog.dismiss();
                 sendTweetButton.setEnabled(true);
             }

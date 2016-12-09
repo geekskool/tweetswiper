@@ -1,19 +1,19 @@
-package com.example.manisharana.twitterclient.Fragments;
+package com.geekskool.tweetswiper.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.manisharana.twitterclient.Activities.NavigationDrawerActivity;
-import com.example.manisharana.twitterclient.R;
-import com.example.manisharana.twitterclient.SessionUtils;
+import com.crashlytics.android.Crashlytics;
+import com.geekskool.tweetswiper.Activities.NavigationDrawerActivity;
+import com.geekskool.tweetswiper.R;
+import com.geekskool.tweetswiper.SessionUtils;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
@@ -88,7 +88,7 @@ public class TwitterLoginFragment extends Fragment implements View.OnClickListen
             public void failure(TwitterException exception) {
                 sessionUtils.showErrorDialog(exception.getMessage());
                 mloginButton.setVisibility(View.VISIBLE);
-                Log.i("MainActivity", "Error in getting session details");
+                Crashlytics.logException(exception);
             }
         });
     }

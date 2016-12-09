@@ -1,4 +1,4 @@
-package com.example.manisharana.twitterclient;
+package com.geekskool.tweetswiper;
 
 import org.junit.Test;
 

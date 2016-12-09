@@ -1,33 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.manisharana.twitterclient">
+    package="com.geekskool.tweetswiper">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <supports-screens
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true" />
     <application
-        android:icon="@mipmap/ic_launcher"
         android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.MainActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:screenOrientation="portrait">
-        </activity>
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="fbab66c83d9c7966f34f54b0f061a5cdcb0f7010" />
-        <activity android:name=".Activities.NavigationDrawerActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/tweets"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
-            android:name=".Activities.SplashActivity"
+            android:name="com.geekskool.tweetswiper.Activities.SplashActivity"
             android:theme="@style/SplashStyle">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.geekskool.tweetswiper.Activities.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="fbab66c83d9c7966f34f54b0f061a5cdcb0f7010" />
+
+        <activity
+            android:name="com.geekskool.tweetswiper.Activities.NavigationDrawerActivity"
+            android:label="@string/tweets"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
     </application>
 
 </manifest>
