@@ -31,7 +31,6 @@ public class TweetListFragment extends Fragment {
     private TextView mErrorTextView;
     private ViewPager tweetPage;
     private View mRootview;
-    private TwitterSession.Serializer serializer;
     private ProgressBar mProgressBar;
 
     @Nullable
@@ -39,8 +38,7 @@ public class TweetListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         // TwitterSession session = Twitter.getInstance().core.getSessionManager().getActiveSession();
-        serializer = new TwitterSession.Serializer();
-        TwitterSession userSession = serializer.deserialize(new SessionUtils(getActivity()).getUserSessionDetails());
+        TwitterSession userSession = new SessionUtils(getActivity()).getUserSessionDetails();
 
         mRootview = inflater.inflate(R.layout.tweet_list_view, container, false);
         tweetPage = (ViewPager) mRootview.findViewById(R.id.view_pager_tweet_list);

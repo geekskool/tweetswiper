@@ -20,16 +20,15 @@ import com.example.manisharana.twitterclient.Fragments.LoginAgainFragment;
 import com.example.manisharana.twitterclient.Fragments.TweetListFragment;
 import com.example.manisharana.twitterclient.R;
 import com.example.manisharana.twitterclient.SessionUtils;
-import com.example.manisharana.twitterclient.UserUtility;
 import com.squareup.picasso.Picasso;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.internal.UserUtils;
 import com.twitter.sdk.android.core.models.User;
-import com.twitter.sdk.android.tweetui.TweetUi;
 
 public class NavigationDrawerActivity extends AppCompatActivity {
 
@@ -37,6 +36,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     private RelativeLayout navHeaderView;
     private String TAG = NavigationDrawerActivity.class.getSimpleName();
     private SessionUtils sessionUtils;
+    private User currentUser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,77 +45,60 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         sessionUtils = new SessionUtils(this);
-        User currentUser = new UserUtility().getDetails();
+        currentUser = sessionUtils.getUserDetails();
+        if (currentUser == null)
+            getUser();
+        populateNavHeader(navHeaderView,currentUser);
 
         if (navigationView != null) {
             selectDrawerItem(navigationView.getMenu().getItem(0));
             navHeaderView = (RelativeLayout) navigationView.getHeaderView(0);
         }
-
-        if(currentUser == null){
-            getUserAndPopulateNavHeader(navHeaderView);
-        }else{
-            populateNavHeader(navHeaderView,currentUser);
-        }
-
         setUpNavigationDrawer(navigationView);
 
     }
 
-    private void getUserAndPopulateNavHeader(final RelativeLayout navHeaderView) {
-        TwitterSession userSession = new TwitterSession.Serializer().deserialize(sessionUtils.getUserSessionDetails());
+    private void getUser() {
+        Session session = sessionUtils.getUserSessionDetails();
+        Twitter.getApiClient(session).getAccountService().verifyCredentials(true, false, false, new Callback<User>() {
 
-        Twitter.getApiClient(userSession).getAccountService().verifyCredentials(true, false, new Callback<User>() {
             @Override
             public void success(Result<User> result) {
-                populateNavHeader(navHeaderView,result.data);
+                currentUser= result.data;
+                sessionUtils.saveUserDetails(result.data);
             }
 
             @Override
             public void failure(TwitterException exception) {
-                Log.i(TAG, "Error in current user");
+                Log.i("UserUtility", "Error in getting user details");
+                currentUser = null;
             }
         });
-
     }
 
     private void populateNavHeader(RelativeLayout navHeaderView, User currentUser) {
         ImageView profileBannerImg = (ImageView) navHeaderView.findViewById(R.id.image_view_profile_banner_img);
-        ImageView usrImg = (ImageView)navHeaderView.findViewById(R.id.image_view_user_img);
+        ImageView usrImg = (ImageView) navHeaderView.findViewById(R.id.image_view_user_img);
         TextView usrScreenName = (TextView) navHeaderView.findViewById(R.id.tv_user_screen_name);
         TextView usrName = (TextView) navHeaderView.findViewById(R.id.tv_user_name);
 
+        if(currentUser == null) return;
 
-        Picasso imageLoader = TweetUi.getInstance().getImageLoader();
-        if (imageLoader == null) return;
-
-        final String url;
-        final String bannerUrl;
-
-        if (currentUser.profileImageUrlHttps == null) {
-            url = null;
-        } else {
-            url = UserUtils.getProfileImageUrlHttps(currentUser, UserUtils.AvatarSize.REASONABLY_SMALL);
-        }
-
-        imageLoader.load(url).placeholder(R.drawable.ic_tw_default_user_img).into(usrImg);
-
-        if(currentUser.screenName !=null)
+        if (currentUser.screenName != null)
             usrScreenName.setText(UserUtils.formatScreenName(currentUser.screenName));
 
-
-        if(currentUser.name !=null)
+        if (currentUser.name != null)
             usrName.setText(currentUser.name);
 
-
-        if (currentUser.profileImageUrlHttps == null) {
-            bannerUrl = null;
-        } else {
-            bannerUrl = currentUser.profileBannerUrl+"/mobile";
+        Picasso picasso = Picasso.with(this);
+        if (currentUser.profileImageUrlHttps != null) {
+            String url = UserUtils.getProfileImageUrlHttps(currentUser, UserUtils.AvatarSize.REASONABLY_SMALL);
+            picasso.load(url).placeholder(R.drawable.ic_tw_default_user_img).into(usrImg);
         }
-
-        imageLoader.load(bannerUrl).into(profileBannerImg);
-
+        if (currentUser.profileImageUrlHttps != null) {
+            String bannerUrl = currentUser.profileBannerUrl + "/mobile";
+            picasso.load(bannerUrl).into(profileBannerImg);
+        }
     }
 
     private void selectDrawerItem(MenuItem item) {
@@ -140,22 +123,22 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
     private Class getFragmentClass(MenuItem item) {
         Class fragmentClass = null;
-        String userSession = sessionUtils.getUserSessionDetails();
+        TwitterSession userSession = sessionUtils.getUserSessionDetails();
 
         switch (item.getItemId()) {
 
             case R.id.nav_home:
-                if (userSession.isEmpty())
+                if (userSession == null)
                     fragmentClass = LoginAgainFragment.class;
-                 else
+                else
                     fragmentClass = TweetListFragment.class;
                 break;
 
             case R.id.nav_send_tweet:
                 if (!item.isChecked()) {
-                    if (userSession.isEmpty())
+                    if (userSession == null)
                         fragmentClass = LoginAgainFragment.class;
-                     else
+                    else
                         fragmentClass = ComposeTweetFragment.class;
                 }
                 break;
@@ -199,10 +182,10 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if(fragmentManager!=null){
-            fragmentManager.findFragmentById(R.id.content_frame).onActivityResult(requestCode,resultCode,data);
-        }else{
-            Log.i(TAG,"fragment is null");
+        if (fragmentManager != null) {
+            fragmentManager.findFragmentById(R.id.content_frame).onActivityResult(requestCode, resultCode, data);
+        } else {
+            Log.i(TAG, "fragment is null");
         }
     }
 }

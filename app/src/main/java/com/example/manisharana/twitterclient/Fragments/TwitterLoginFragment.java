@@ -24,7 +24,6 @@ public class TwitterLoginFragment extends Fragment implements View.OnClickListen
 
     private Button mloginButton;
     private TwitterAuthClient mTwitterAuthClient;
-    private TwitterSession.Serializer serializer;
     private SessionUtils sessionUtils;
     private FragmentActivity activity;
 
@@ -43,8 +42,7 @@ public class TwitterLoginFragment extends Fragment implements View.OnClickListen
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.twitter_login_view, container, false);
         mloginButton = (Button) rootView.findViewById(R.id.login_button);
-        serializer = new TwitterSession.Serializer();
-        TwitterSession userSession = serializer.deserialize(sessionUtils.getUserSessionDetails());
+        TwitterSession userSession = sessionUtils.getUserSessionDetails();
 
         if (userSession != null) {
             Intent intent = new Intent(activity, NavigationDrawerActivity.class);
@@ -79,7 +77,7 @@ public class TwitterLoginFragment extends Fragment implements View.OnClickListen
             @Override
             public void success(Result<TwitterSession> result) {
                 mloginButton.setVisibility(View.GONE);
-                sessionUtils.saveUserSessionDetails(serializer.serialize(result.data));
+                sessionUtils.saveUserSessionDetails(result.data);
                 Intent intent = new Intent(activity, NavigationDrawerActivity.class);
                 startActivity(intent);
                 activity.finish();
