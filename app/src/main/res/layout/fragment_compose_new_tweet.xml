@@ -20,25 +20,31 @@
             android:text="@string/compose_new_tweet"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/colorBackgroundDark" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:orientation="vertical"
             android:padding="8dp"
             android:background="@color/orangeLight">
 
             <EditText
                 android:id="@+id/edit_text_compose_tweet"
+                android:padding="@dimen/padding_medium"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:background="@color/tw__solid_white"
                 android:ems="10"
                 android:gravity="top"
+                android:layout_weight="1"
                 android:hint="@string/what_happening"
                 android:inputType="textMultiLine"
                 android:maxLength="140"
                 android:textSize="14sp" />
+            <include
+                layout="@layout/upload_content_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
 
         <TextView
@@ -61,27 +67,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_tw_camera_icon" />
 
-            <!--<LinearLayout-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight=".5"-->
-            <!--android:gravity="center">-->
-
-            <!--<ImageButton-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:id="@+id/tweet_reply_button"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@drawable/ic_gif_icon" />-->
-            <!--</LinearLayout>-->
-
-            <!--<LinearLayout-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight=".5"-->
-            <!--android:gravity="center">-->
-
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center" />
@@ -96,6 +83,7 @@
                     android:id="@+id/text_view_char_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
                     tools:text="100" />
 
                 <Button

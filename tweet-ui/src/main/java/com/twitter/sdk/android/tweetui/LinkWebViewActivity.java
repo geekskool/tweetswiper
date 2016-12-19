@@ -4,13 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 public class LinkWebViewActivity extends AppCompatActivity {
 
     private WebView mWebView;
+    public static final String URL = "url";
 
     @Override
     public void onBackPressed() {
@@ -27,11 +27,9 @@ public class LinkWebViewActivity extends AppCompatActivity {
         setContentView(R.layout.tw_link_web_view);
 
         mWebView = (WebView) findViewById(R.id.link_webview);
-        WebSettings settings = mWebView.getSettings();
-        settings.setJavaScriptEnabled(true);
         mWebView.setWebViewClient(new WebViewClient());
         Intent intent = getIntent();
-        String url = intent.getStringExtra("Url");
+        String url = intent.getStringExtra(URL);
         if(url!=null){
             mWebView.loadUrl(url);
         }

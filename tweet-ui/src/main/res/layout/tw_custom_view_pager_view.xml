@@ -44,7 +44,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-
                 android:gravity="center">
 
                 <com.twitter.sdk.android.tweetui.ToggleImageButton
@@ -105,7 +104,7 @@
                 android:id="@+id/tw__tweet_share_button"
                 style="@style/tw__TweetActionButton.Share"
                 android:contentDescription="@string/tw__share_tweet"
-                android:src="@drawable/tw_share_action" />
+                android:src="@drawable/ic_tw_share_action" />
             </LinearLayout>
 
         </com.twitter.sdk.android.tweetui.TweetActionBarView>

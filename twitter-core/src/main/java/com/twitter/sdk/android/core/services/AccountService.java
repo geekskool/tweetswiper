@@ -37,7 +37,7 @@ public interface AccountService {
      */
     @GET("/1.1/account/verify_credentials.json")
     void verifyCredentials(@Query("include_entities") Boolean includeEntities,
-            @Query("skip_status") Boolean skipStatus,
+            @Query("skip_status") Boolean skipStatus,@Query("include_email") Boolean includeEmail,
             Callback<User> cb);
 
     /**
@@ -54,6 +54,6 @@ public interface AccountService {
      */
     @GET("/1.1/account/verify_credentials.json")
     User verifyCredentials(@Query("include_entities") Boolean includeEntities,
-            @Query("skip_status") Boolean skipStatus);
+            @Query("skip_status") Boolean skipStatus,@Query("include_email") Boolean includeEmail);
 
 }

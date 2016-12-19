@@ -56,7 +56,7 @@ public class TwitterSessionVerifier implements SessionVerifier {
         final AccountService accountService = accountServiceProvider.getAccountService(session);
         try {
             scribeVerifySession();
-            accountService.verifyCredentials(true, false);
+            accountService.verifyCredentials(true, false,false);
         } catch (RetrofitError e) {
             // We ignore failures since we will attempt the verification again the next time
             // the verification period comes up. This has the potential to lose events, but we

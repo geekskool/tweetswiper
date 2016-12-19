@@ -46,7 +46,7 @@
     <dimen name="tw__tweet_timestamp_margin_top">-4dp</dimen>
     <dimen name="tw__tweet_timestamp_padding_left">4dp</dimen>
     <!--Tweet text-->
-    <dimen name="tw__tweet_text_margin_top">12dp</dimen>
+    <dimen name="tw__tweet_text_margin_top">8dp</dimen>
     <dimen name="tw__tweet_text_margin_left">20dp</dimen>
     <dimen name="tw__tweet_text_margin_right">20dp</dimen>
     <!--Tweet actions-->
@@ -55,7 +55,6 @@
     <dimen name="tw__tweet_action_bar_offset_left">8dp</dimen>
     <dimen name="tw__tweet_action_button_margin_top">-4dp</dimen>
     <dimen name="tw__tweet_action_heart_size">43dp</dimen>
-    <dimen name="tw__tweet_action_share_padding">14dp</dimen>
 
     <!--Tweet Media-->
     <item name="tw__tweet_media_aspect_ratio" format="float" type="dimen">1.777777</item>

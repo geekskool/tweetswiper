@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,31 +50,23 @@ public class MediaEntityAdapter extends RecyclerView.Adapter<MediaEntityAdapter.
         clearMediaView(holder);
         MediaEntity mediaEntity = mediaEntityList.get(position);
         if (TweetMediaUtils.isPhotoType(mediaEntity)) {
-            holder.mediaBadgeView.setMediaEntity(mediaEntity);
             setPhotoLauncher(holder, displayTweet, mediaEntity);
-            setMediaImage(holder, mediaEntity.mediaUrlHttps, getAspectRatio(mediaEntity));
-
         } else if (TweetMediaUtils.isVideoType(mediaEntity)) {
-
-            holder.mediaView.setOverlayDrawable(context.getResources().getDrawable(R.drawable.tw__player_overlay));
-            holder.mediaBadgeView.setMediaEntity(mediaEntity);
+            holder.mediaView.setOverlayDrawable(ContextCompat.getDrawable(context,R.drawable.tw__player_overlay));
             setMediaLauncher(holder, displayTweet, mediaEntity);
-            setMediaImage(holder, mediaEntity.mediaUrlHttps, getAspectRatio(mediaEntity));
-//            scribeMediaEntityImpression(displayTweet.id, mediaEntity);
 
         }
-
+        holder.mediaBadgeView.setMediaEntity(mediaEntity);
+        setMediaImage(holder, mediaEntity.mediaUrlHttps, getAspectRatio(mediaEntity));
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     protected void clearMediaView(MediaEntityViewHolder holder) {
-      //   Clear out the background behind any potential error images that we had
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             holder.mediaView.setBackground(null);
         } else {
             holder.mediaView.setBackgroundDrawable(null);
         }
-
         holder.mediaView.setOverlayDrawable(null);
         holder.mediaView.setOnClickListener(null);
         holder.mediaView.setClickable(false);

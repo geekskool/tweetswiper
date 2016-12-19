@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:padding="8dp"
-    android:background="@color/colorBackgroundLight"
-    android:layout_height="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/tw__solid_white"
+    android:padding="8dp">
+
     <FrameLayout
+        android:id="@+id/reply_tweet_media_container"
         android:layout_width="wrap_content"
         android:visibility="gone"
         android:layout_height="wrap_content">
+
         <TextView
+            android:id="@+id/text_view_selected_media_url"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:id="@+id/text_view_selected_media_url"/>
+            android:visibility="gone" />
         <ImageView
+            android:id="@+id/tw__tweet_media"
+            style="@style/tw__TweetMedia"
             android:layout_width="wrap_content"
-            android:id="@+id/image_view_selected_media"
-            android:layout_margin="10dp"
-            android:layout_height="wrap_content" />
+            tools:ignore="ContentDescription" />
+        <ImageView
+            android:id="@+id/tw__gif_overlay"
+            android:src="@drawable/tw__player_overlay"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:visibility="gone"
+            tools:ignore="ContentDescription" />
+        <com.twitter.sdk.android.tweetui.internal.MediaBadgeView
+            android:id="@+id/tw__tweet_media_badge"
+            style="@style/tw__TweetBadge" />
         <ImageButton
+            android:id="@+id/image_remove_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|right"
-            android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:id="@+id/image_remove_button"
-            android:background="@drawable/ic_navigation_close"/>
+            android:layout_marginTop="10dp"
+            android:background="@drawable/ic_navigation_close" />
     </FrameLayout>
 
-    <!--<ImageView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:id="@+id/image_view_2"-->
-        <!--android:layout_weight="1"-->
-        <!--android:layout_height="wrap_content" />-->
-    <!--<ImageView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:id="@+id/image_view_3"-->
-        <!--android:layout_weight="1"-->
-        <!--android:layout_height="wrap_content" />-->
-    <!--<ImageView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:id="@+id/image_view_4"-->
-        <!--android:layout_weight="1"-->
-        <!--android:layout_height="wrap_content" />-->
-</LinearLayout>
+</FrameLayout>
