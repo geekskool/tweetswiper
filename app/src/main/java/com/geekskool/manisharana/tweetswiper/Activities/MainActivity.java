@@ -1,4 +1,4 @@
-package com.geekskool.tweetswiper.Activities;
+package com.geekskool.manisharana.tweetswiper.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,8 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
-import com.geekskool.tweetswiper.Fragments.TwitterLoginFragment;
-import com.geekskool.tweetswiper.R;
+import com.geekskool.manisharana.tweetswiper.Fragments.TwitterLoginFragment;
+import com.geekskool.manisharana.R;
 
 public class MainActivity extends AppCompatActivity {
 

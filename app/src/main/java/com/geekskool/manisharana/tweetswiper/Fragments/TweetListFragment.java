@@ -1,4 +1,4 @@
-package com.geekskool.tweetswiper.Fragments;
+package com.geekskool.manisharana.tweetswiper.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.geekskool.tweetswiper.R;
-import com.geekskool.tweetswiper.SessionUtils;
+import com.geekskool.manisharana.R;
+import com.geekskool.manisharana.tweetswiper.SessionUtils;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;

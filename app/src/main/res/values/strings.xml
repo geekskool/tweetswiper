@@ -21,6 +21,6 @@
     <string name="by_geekskool">by Geekskool</string>
     <string name="internet_connection">Internet connection off</string>
     <string name="autorization_error">Authorization Error</string>
-    <string name="login_error">Some error occured during login. Please try again later.</string>
+    <string name="login_error">Some error occurred during login. Please try again later.</string>
     <string name="error_in_uploading_media">Error in uploading media</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.geekskool.tweetswiper.Activities;
+package com.geekskool.manisharana.tweetswiper.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,12 +14,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
-import com.geekskool.tweetswiper.Fragments.AboutUsFragment;
-import com.geekskool.tweetswiper.Fragments.ComposeTweetFragment;
-import com.geekskool.tweetswiper.Fragments.LoginAgainFragment;
-import com.geekskool.tweetswiper.Fragments.TweetListFragment;
-import com.geekskool.tweetswiper.R;
-import com.geekskool.tweetswiper.SessionUtils;
+import com.geekskool.manisharana.tweetswiper.Fragments.AboutUsFragment;
+import com.geekskool.manisharana.tweetswiper.Fragments.ComposeTweetFragment;
+import com.geekskool.manisharana.tweetswiper.Fragments.LoginAgainFragment;
+import com.geekskool.manisharana.tweetswiper.Fragments.TweetListFragment;
+import com.geekskool.manisharana.R;
+import com.geekskool.manisharana.tweetswiper.SessionUtils;
 import com.squareup.picasso.Picasso;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
@@ -33,8 +33,6 @@ import com.twitter.sdk.android.core.models.User;
 public class NavigationDrawerActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
-    private RelativeLayout navHeaderView;
-    private String TAG = NavigationDrawerActivity.class.getSimpleName();
     private SessionUtils sessionUtils;
     private User currentUser;
 
@@ -42,20 +40,21 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.nav_drawer_layout);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         sessionUtils = new SessionUtils(this);
         currentUser = sessionUtils.getUserDetails();
         if (currentUser == null)
             getUser();
-        populateNavHeader(navHeaderView,currentUser);
 
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        RelativeLayout navHeaderView = null;
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (navigationView != null) {
             selectDrawerItem(navigationView.getMenu().getItem(0));
             navHeaderView = (RelativeLayout) navigationView.getHeaderView(0);
         }
         setUpNavigationDrawer(navigationView);
-
+        populateNavHeader(navHeaderView, currentUser);
     }
 
     private void getUser() {
@@ -64,7 +63,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
             @Override
             public void success(Result<User> result) {
-                currentUser= result.data;
+                currentUser = result.data;
                 sessionUtils.saveUserDetails(result.data);
             }
 
@@ -82,7 +81,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         TextView usrScreenName = (TextView) navHeaderView.findViewById(R.id.tv_user_screen_name);
         TextView usrName = (TextView) navHeaderView.findViewById(R.id.tv_user_name);
 
-        if(currentUser == null) return;
+        if (currentUser == null) return;
 
         if (currentUser.screenName != null)
             usrScreenName.setText(UserUtils.formatScreenName(currentUser.screenName));
@@ -92,7 +91,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
         Picasso picasso = Picasso.with(this);
         if (currentUser.profileImageUrlHttps != null) {
-            String url = UserUtils.getProfileImageUrlHttps(currentUser, UserUtils.AvatarSize.REASONABLY_SMALL);
+            String url = UserUtils.getProfileImageUrlHttps(currentUser, UserUtils.AvatarSize.BIGGER);
             picasso.load(url).placeholder(R.drawable.ic_tw_default_user_img).into(usrImg);
         }
         if (currentUser.profileImageUrlHttps != null) {

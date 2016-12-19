@@ -1,4 +1,4 @@
-package com.geekskool.tweetswiper.Fragments;
+package com.geekskool.manisharana.tweetswiper.Fragments;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -25,7 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
-import com.geekskool.tweetswiper.R;
+import com.geekskool.manisharana.R;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.IntentUtils;
@@ -50,7 +50,6 @@ import retrofit.mime.TypedFile;
 public class ComposeTweetFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
     private static final int CHAR_COUNT = 140;
-    private static final String TAG = ComposeTweetFragment.class.getSimpleName();
     private static final int SELECT_MEDIA = 1;
     private EditText userInput;
     private Button sendTweetButton;
@@ -307,49 +306,49 @@ public class ComposeTweetFragment extends Fragment implements View.OnClickListen
                 Twitter.getApiClient().getStatusesService().update(encodedString, null, false, null, null, null, false, true, mediaIdString, new Callback<Tweet>() {
                     @Override
                     public void success(Result<Tweet> result) {
-                        clearView();
-                        setMessageView(mContext.getString(R.string.tweet_posted_successfully), com.twitter.sdk.android.tweetui.R.color.holo_green_light);
-                        progressDialog.dismiss();
+                        onSuccess();
                     }
 
                     @Override
                     public void failure(TwitterException exception) {
-                        setMessageView(mContext.getString(R.string.error_in_posting_tweet), com.twitter.sdk.android.tweetui.R.color.holo_red_dark);
-                        progressDialog.dismiss();
-                        sendTweetButton.setEnabled(true);
-                        Crashlytics.logException(exception);
+                        onFailure(exception, R.string.error_in_posting_tweet);
                     }
                 });
             }
 
             @Override
             public void failure(TwitterException exception) {
-                Crashlytics.logException(exception);
-                setMessageView(mContext.getString(R.string.error_in_uploading_media), com.twitter.sdk.android.tweetui.R.color.holo_red_dark);
-                progressDialog.dismiss();
-                sendTweetButton.setEnabled(true);
+                onFailure(exception,R.string.error_in_uploading_media);
+
             }
         });
+    }
+
+    private void onSuccess() {
+        clearView();
+        setMessageView(mContext.getString(R.string.tweet_posted_successfully), com.twitter.sdk.android.tweetui.R.color.holo_green_light);
+        progressDialog.dismiss();
     }
 
     private void postTweet(String encodedString) {
         Twitter.getApiClient().getStatusesService().update(encodedString, null, false, null, null, null, false, true, null, new Callback<Tweet>() {
             @Override
             public void success(Result<Tweet> result) {
-                clearView();
-                setMessageView(mContext.getString(R.string.tweet_posted_successfully), com.twitter.sdk.android.tweetui.R.color.holo_green_light);
-                progressDialog.dismiss();
+                onSuccess();
             }
-
 
             @Override
             public void failure(TwitterException exception) {
-                setMessageView(mContext.getString(R.string.error_in_posting_tweet), com.twitter.sdk.android.tweetui.R.color.holo_red_dark);
-                Crashlytics.logException(exception);
-                progressDialog.dismiss();
-                sendTweetButton.setEnabled(true);
+                onFailure(exception,R.string.error_in_posting_tweet);
             }
         });
+    }
+
+    private void onFailure(TwitterException exception,int msgId) {
+        setMessageView(mContext.getString(msgId), com.twitter.sdk.android.tweetui.R.color.holo_red_dark);
+        Crashlytics.logException(exception);
+        progressDialog.dismiss();
+        sendTweetButton.setEnabled(true);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.geekskool.tweetswiper;
+package com.geekskool.manisharana;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

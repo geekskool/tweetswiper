@@ -1,4 +1,4 @@
-package com.geekskool.tweetswiper.Fragments;
+package com.geekskool.manisharana.tweetswiper.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.crashlytics.android.Crashlytics;
-import com.geekskool.tweetswiper.Activities.NavigationDrawerActivity;
-import com.geekskool.tweetswiper.R;
-import com.geekskool.tweetswiper.SessionUtils;
+import com.geekskool.manisharana.tweetswiper.Activities.NavigationDrawerActivity;
+import com.geekskool.manisharana.R;
+import com.geekskool.manisharana.tweetswiper.SessionUtils;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;

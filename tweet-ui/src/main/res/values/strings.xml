@@ -48,5 +48,7 @@
     <string name="imageErrorMsg"><![CDATA[Please select a png/jpg/webp image with size < 3mb]]></string>
     <string name="gifErrorMsg"><![CDATA[Please select a gif with size < 3mb]]></string>
     <string name="error_in_uploading_media">Error in uploading media</string>
+    <string name="error_encoding_text">Error in encoding text</string>
+    <string name="error_posting_tweet">Error in posting tweet</string>
 
 </resources>

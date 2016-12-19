@@ -1,4 +1,4 @@
-package com.geekskool.tweetswiper.Fragments;
+package com.geekskool.manisharana.tweetswiper.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,8 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.geekskool.tweetswiper.Activities.MainActivity;
-import com.geekskool.tweetswiper.R;
+import com.geekskool.manisharana.tweetswiper.Activities.MainActivity;
+import com.geekskool.manisharana.R;
 
 public class LoginAgainFragment extends Fragment implements View.OnClickListener {
 

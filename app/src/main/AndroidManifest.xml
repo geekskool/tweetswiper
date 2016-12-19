@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.geekskool.tweetswiper">
+    package="com.geekskool.manisharana">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
+    <uses-sdk android:maxSdkVersion="24"/>
     <supports-screens
         android:largeScreens="true"
         android:normalScreens="true"
@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.geekskool.tweetswiper.Activities.SplashActivity"
+            android:name="com.geekskool.manisharana.tweetswiper.Activities.SplashActivity"
             android:theme="@style/SplashStyle">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.geekskool.tweetswiper.Activities.MainActivity"
+            android:name="com.geekskool.manisharana.tweetswiper.Activities.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <meta-data
@@ -32,7 +32,7 @@
             android:value="fbab66c83d9c7966f34f54b0f061a5cdcb0f7010" />
 
         <activity
-            android:name="com.geekskool.tweetswiper.Activities.NavigationDrawerActivity"
+            android:name="com.geekskool.manisharana.tweetswiper.Activities.NavigationDrawerActivity"
             android:label="@string/tweets"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

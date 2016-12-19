@@ -1,4 +1,4 @@
-package com.geekskool.tweetswiper;
+package com.geekskool.manisharana.tweetswiper;
 
 import android.content.Context;
 import android.content.DialogInterface;

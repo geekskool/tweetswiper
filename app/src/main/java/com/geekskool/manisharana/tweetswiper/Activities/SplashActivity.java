@@ -1,4 +1,4 @@
-package com.geekskool.tweetswiper.Activities;
+package com.geekskool.manisharana.tweetswiper.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +12,8 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 import io.fabric.sdk.android.BuildConfig;
 import io.fabric.sdk.android.Fabric;
 
-import static com.geekskool.tweetswiper.BuildConfig.TWITTER_KEY;
-import static com.geekskool.tweetswiper.BuildConfig.TWITTER_SECRET;
+import static com.geekskool.manisharana.BuildConfig.TWITTER_KEY;
+import static com.geekskool.manisharana.BuildConfig.TWITTER_SECRET;
 
 public class SplashActivity extends AppCompatActivity {
     @Override

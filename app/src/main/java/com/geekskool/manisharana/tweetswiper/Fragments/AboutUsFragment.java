@@ -1,4 +1,4 @@
-package com.geekskool.tweetswiper.Fragments;
+package com.geekskool.manisharana.tweetswiper.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.geekskool.tweetswiper.R;
+import com.geekskool.manisharana.R;
 
 public class AboutUsFragment extends Fragment {
 
