@@ -11,17 +11,17 @@ TweetSwiper allows you to swipe through your tweets horizontally,where each twee
 3. build and run.
 
 #Code Structure
-[MainActivity](geekskool/tweetswiper/blob/master/app/src/main/java/com/geekskool/manisharana/tweetswiper/Activities/MainActivity.java)  
-[NavigationDrawerActivity](geekskool/tweetswiper/blob/master/app/src/main/java/com/geekskool/manisharana/tweetswiper/Activities/NavigationDrawerActivity.java)  
-[ComposeTweetFragment](geekskool/tweetswiper/blob/master/app/src/main/java/com/geekskool/manisharana/tweetswiper/Fragments/ComposeTweetFragment.java)  
-[TweetListFragment](geekskool/tweetswiper/blob/master/app/src/main/java/com/geekskool/manisharana/tweetswiper/Fragments/TweetListFragment.java)  
-[TwitterLoginFragment](geekskool/tweetswiper/blob/master/app/src/main/java/com/geekskool/manisharana/tweetswiper/Fragments/TwitterLoginFragment.java)  
+[MainActivity](https://github.com/geekskool/tweetswiper/blob/master/app/src/main/java/com/geekskool/manisharana/tweetswiper/Activities/MainActivity.java)  
+[NavigationDrawerActivity](https://github.com/geekskool/tweetswiper/blob/master/app/src/main/java/com/geekskool/manisharana/tweetswiper/Activities/NavigationDrawerActivity.java)  
+[ComposeTweetFragment](https://github.com/geekskool/tweetswiper/blob/master/app/src/main/java/com/geekskool/manisharana/tweetswiper/Fragments/ComposeTweetFragment.java)  
+[TweetListFragment](https://github.com/geekskool/tweetswiper/blob/master/app/src/main/java/com/geekskool/manisharana/tweetswiper/Fragments/TweetListFragment.java)  
+[TwitterLoginFragment](https://github.com/geekskool/tweetswiper/blob/master/app/src/main/java/com/geekskool/manisharana/tweetswiper/Fragments/TwitterLoginFragment.java)  
 [CustomTweetViewAdapter](https://github.com/geekskool/tweetswiper/blob/master/tweet-ui/src/main/java/com/twitter/sdk/android/tweetui/CustomTweetViewAdapter.java)  
-[MediaEntityAdapter](tweetswiper/tweet-ui/src/main/java/com/twitter/sdk/android/tweetui/MediaEntityAdapter.java )  
-[RetweetAction](geekskool/tweetswiper/blob/master/tweet-ui/src/main/java/com/twitter/sdk/android/tweetui/RetweetAction.java)  
-[TweetReplyActivity](geekskool/tweetswiper/blob/master/tweet-ui/src/main/java/com/twitter/sdk/android/tweetui/TweetReplyActivity.java)  
-[ImageMediaContent](geekskool/tweetswiper/blob/master/tweet-ui/src/main/java/com/twitter/sdk/android/tweetui/ImageMediaContent.java)  
-[MediaContentHandler](geekskool/tweetswiper/blob/master/tweet-ui/src/main/java/com/twitter/sdk/android/tweetui/MediaContentHandler.java)
+[MediaEntityAdapter](https://github.com/tweetswiper/tweet-ui/src/main/java/com/twitter/sdk/android/tweetui/MediaEntityAdapter.java )  
+[RetweetAction](https://github.com/geekskool/tweetswiper/blob/master/tweet-ui/src/main/java/com/twitter/sdk/android/tweetui/RetweetAction.java)  
+[TweetReplyActivity](https://github.com/geekskool/tweetswiper/blob/master/tweet-ui/src/main/java/com/twitter/sdk/android/tweetui/TweetReplyActivity.java)  
+[ImageMediaContent](https://github.com/geekskool/tweetswiper/blob/master/tweet-ui/src/main/java/com/twitter/sdk/android/tweetui/ImageMediaContent.java)  
+[MediaContentHandler](https://github.com/geekskool/tweetswiper/blob/master/tweet-ui/src/main/java/com/twitter/sdk/android/tweetui/MediaContentHandler.java)
 
 
 
